@@ -1,31 +1,37 @@
 {
-  "name": "tailwind-ecommerce-template",
-  "version": "1.0.0",
-  "description": "An ecommerce template built with TailwindCSS",
-  "main": "index.html",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:css": "tailwindcss -i ./src/main.css -o ./dist/main.css -w",
-    "serve": "five-server",
-    "start": "concurrently \"npm run build:css\" \"npm run serve\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jluterek/tailwind-ecommerce-template.git"
-  },
-  "author": "James Luterek",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jluterek/tailwind-ecommerce-template/issues"
-  },
-  "homepage": "https://github.com/jluterek/tailwind-ecommerce-template#readme",
-  "devDependencies": {
-    "autoprefixer": "^10.4.13",
-    "concurrently": "^7.6.0",
-    "five-server": "^0.1.9",
-    "postcss": "^8.4.21",
-    "tailwindcss": "^3.2.7"
-  },
-  "dependencies": {
-  }
+	"name": "wad_ga03",
+	"version": "1.0.0",
+	"description": "**HCMUS-WAD-GA03**",
+	"main": "server.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"create-db": "node createDatabase.js",
+		"migrate:dev": "knex migrate:latest --env development",
+		"seed:dev": "knex seed:run --env development",
+		"setup-dev": "npm run create-db && npm run migrate:dev && npm run seed:dev",
+		"dev": "npm run setup-dev && nodemon server.js --watch ./views --ext ejs,html",
+		"migrate:prod": "knex migrate:latest --env production",
+		"seed:prod": "knex seed:run --env production",
+		"setup:prod": "npm run create-db && npm run migrate:prod && npm run seed:prod",
+		"build": "npm run setup:prod",
+		"build:css": "npx tailwindcss -i ./public/css/main.css -o ./dist/main.css",
+		"serve": "five-server",
+		"start": "concurrently \"npm run build:css\" \"npm run serve\""
+	},
+	"author": "Manh Trong Kien, Ma Cat Huynh, Nguyen Minh Khang",
+	"license": "ISC",
+	"dependencies": {
+		"concurrently": "^6.2.1",
+		"dotenv": "^16.4.5",
+		"ejs": "^3.1.10",
+		"express": "^4.21.1",
+		"http-status-codes": "^2.3.0",
+		"knex": "^3.1.0",
+		"pg": "^8.13.1",
+		"wad_ga03": "file:"
+	},
+	"devDependencies": {
+		"nodemon": "^3.1.7",
+		"tailwindcss": "^3.4.15"
+	}
 }

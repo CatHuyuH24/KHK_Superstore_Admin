@@ -1,0 +1,26 @@
+<!-- views/layouts/mainLayout.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= title %></title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="referrer" content="always" />
+    <meta name="description" content="TailwindCSS Ecommerce Template" />
+    <link rel="stylesheet" href="../../dist/main.css" />
+    <link href="https://unpkg.com/css.gg/icons/all.css" rel="stylesheet" />
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="../../public/js/main.js" defer></script>
+  </head>
+  <body>
+    <div x-data="{ cartOpen: false , isOpen: false }">
+      <%- include('partials/header') %>
+      <main class="my-8"><%- body %></main>
+      <%- include('partials/footer') %>
+    </div>
+  </body>
+</html>
