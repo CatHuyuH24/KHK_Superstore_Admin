@@ -145,65 +145,70 @@
               </h3>
               <div class="space-y-2">
                 <div class="flex items-center">
-                  <input type="checkbox" name="cat-1" id="cat-1" class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="cat-1" class="text-gray-600 ml-3 cusror-pointer">Hats</label>
-                  <div class="ml-auto text-gray-600 text-sm">(2)</div>
-                </div>
-                <div class="flex items-center">
                   <input type="checkbox" name="cat-2" id="cat-2" class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="cat-2" class="text-gray-600 ml-3 cusror-pointer">Tops</label>
-                  <div class="ml-auto text-gray-600 text-sm">(9)</div>
+                  <label for="cat-2" class="text-gray-600 ml-3 cusror-pointer">Mobilephones</label>
+                  <div class="ml-auto text-gray-600 text-sm">(10)</div>
                 </div>
                 <div class="flex items-center">
                   <input type="checkbox" name="cat-3" id="cat-3" class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="cat-3" class="text-gray-600 ml-3 cusror-pointer">Bottoms</label>
-                  <div class="ml-auto text-gray-600 text-sm">(11)</div>
+                  <label for="cat-3" class="text-gray-600 ml-3 cusror-pointer">Computers</label>
+                  <div class="ml-auto text-gray-600 text-sm">(9)</div>
                 </div>
                 <div class="flex items-center">
                   <input type="checkbox" name="cat-4" id="cat-4" class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="cat-4" class="text-gray-600 ml-3 cusror-pointer">Accessories</label>
-                  <div class="ml-auto text-gray-600 text-sm">(23)</div>
+                  <label for="cat-4" class="text-gray-600 ml-3 cusror-pointer">Televisions</label>
+                  <div class="ml-auto text-gray-600 text-sm">(8)</div>
                 </div>
               </div>
             </div>
 
-            <div class="pt-4">
-              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
-                Brands
-              </h3>
-              <div class="space-y-2">
-                <div class="flex items-center">
-                  <input type="checkbox" name="brand-1" id="brand-1" class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="brand-1" class="text-gray-600 ml-3 cusror-pointer">Apple</label>
-                  <div class="ml-auto text-gray-600 text-sm">(7)</div>
-                </div>
-                <div class="flex items-center">
-                  <input type="checkbox" name="brand-2" id="brand-2" class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="brand-2" class="text-gray-600 ml-3 cusror-pointer">Dell</label>
-                  <div class="ml-auto text-gray-600 text-sm">(2)</div>
-                </div>
-                <div class="flex items-center">
-                  <input type="checkbox" name="brand-3" id="brand-3" class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="brand-3" class="text-gray-600 ml-3 cusror-pointer">Acer</label>
-                  <div class="ml-auto text-gray-600 text-sm">(1)</div>
-                </div>
-              </div>
-            </div>
+            <div>
+              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium mt-3">Brands</h3>
+              <form id="brand-filter-form" method="GET" action="/mobilephones">
+                  <div class="space-y-2">
+                      <% if (categories && categories.length > 0) { %>
+                          <% categories.forEach(category => { %>
+                              <div class="flex items-center">
+                                  <input type="checkbox" name="brands" value="<%= category.name %>" id="<%= category.id %>"
+                                      class="text-primary focus:ring-0 cursor-pointer" <% if (selectedBrands &&
+                                      selectedBrands.includes(category.name)) { %>
+                                  checked
+                                  <% } %>
+                                      onchange="document.getElementById('brand-filter-form').submit()"
+                                  />
+                                  <label for="<%= category.id %>" class="text-gray-600 ml-3 cursor-pointer">
+                                      <%= category.name %>
+                                  </label>
+                                  <div class="ml-auto text-gray-600 text-sm">(<%= category.count %>)</div>
+                              </div>
+                          <% }); %>
+                      <% } else { %>
+                          <p class="text-gray-500">No categories available for this section.</p>
+                      <% } %>
+                  </div>
+              </form>
+          </div>
 
-            <div class="pt-4">
-              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
-                Price
-              </h3>
-              <div class="mt-4 flex items-center">
-                <input type="text" name="min" id="min"
-                  class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md"
-                  placeholder="min" />
-                <span class="mx-3 text-gray-500">-</span>
-                <input type="text" name="max" id="max"
-                  class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md"
-                  placeholder="max" />
+
+            <form id="price-filter-form" method="GET" action="/mobilephones">
+              <div class="pt-4">
+                <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
+                  Price
+                </h3>
+                <div class="mt-4 flex items-center">
+                  <input type="text" name="min" id="min"
+                    class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md"
+                    placeholder="min" value="<%= min %>" />
+                  <span class="mx-3 text-gray-500">-</span>
+                  <input type="text" name="max" id="max"
+                    class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md"
+                    placeholder="max" value="<%= max %>" />
+                </div>
+                <button type="submit" class="mt-4 bg-primary text-white px-4 py-2 rounded-md">
+                  Filter
+                </button>
               </div>
-            </div>
+            </form>
 
             <div class="pt-4">
               <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
@@ -284,23 +289,26 @@
           function updateSort() {
             const sortValue = document.getElementById("sort").value;
             let url = new URL(window.location.href); // Tạo một URL đối tượng từ URL hiện tại
-            
+
             if (sortValue) {
               url.searchParams.set('sortBy', sortValue); // Thêm hoặc cập nhật query parameter 'sortBy'
             } else {
               url.searchParams.delete('sortBy'); // Xóa 'sortBy' nếu giá trị là mặc định
             }
-        
+
             window.location.href = url.toString(); // Thay đổi URL mà không tải lại trang
           }
         </script>
         <div class="col-span-3">
           <div class="flex items-center mb-4">
-            <select name="sort" id="sort" 
-              class="rounded-lg h-7 bg-gray-200 w-44 text-sm text-gray-600 px-2 border-gray-300 shadow-sm focus:ring-primary focus:border-primary" onchange="updateSort()">
+            <select name="sort" id="sort"
+              class="rounded-lg h-7 bg-gray-200 w-44 text-sm text-gray-600 px-2 border-gray-300 shadow-sm focus:ring-primary focus:border-primary"
+              onchange="updateSort()">
               <option value="">Default sorting</option>
-              <option value="price-low-to-high" <%= sortBy === 'price-low-to-high' ? 'selected' : '' %>>Price low to high</option>
-              <option value="price-high-to-low" <%= sortBy === 'price-high-to-low' ? 'selected' : '' %>>Price high to low</option>
+              <option value="price-low-to-high" <%=sortBy==='price-low-to-high' ? 'selected' : '' %>>Price low to high
+              </option>
+              <option value="price-high-to-low" <%=sortBy==='price-high-to-low' ? 'selected' : '' %>>Price high to low
+              </option>
             </select>
 
           </div>
