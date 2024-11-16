@@ -1,9 +1,20 @@
 const pool = require('../../config/database');
 
-async function getAllComputers () {
+async function getAllComputers (sortBy) {
     try {
-        const result = await pool.query('SELECT * FROM computers');
-        return result;
+        // Xây dựng câu truy vấn cơ bản
+        let query = "SELECT * FROM computers";
+    
+        // Bổ sung logic sắp xếp dựa trên `sortBy`
+        if (sortBy === "price-low-to-high") {
+          query += " ORDER BY price ASC";
+        } else if (sortBy === "price-high-to-low") {
+          query += " ORDER BY price DESC";
+        }
+    
+        // Thực hiện truy vấn
+        const result = await pool.query(query);
+        return result.rows;
     } catch (error) {
         console.error('Error fetching all computers', error);
         return [];
@@ -23,5 +34,5 @@ async function getComputerByID(id) {
 module.exports = {
     getAllComputers,
     getComputerByID,
-}
+};
     

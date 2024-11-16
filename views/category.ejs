@@ -9,11 +9,11 @@
   <meta name="referrer" content="always" />
   <meta name="description" content="TailwindCSS Ecommerce Template" />
   <link href="//fonts.googleapis.com/css?family=Righteous" rel="stylesheet" />
-    <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700" rel="stylesheet" />
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/all.min.css" />
-    <link rel="stylesheet" href="/css/style.css" />
-    <script src="https://cdn.tailwindcss.com"></script>
+  <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700" rel="stylesheet" />
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/all.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
@@ -21,36 +21,36 @@
     <!-- #region Header -->
     <div class="col-12 bg-slate-900 py-2 px-2 d-md-block d-none ">
       <div class="flex flex-wrap">
-          <div class="flex-auto mr-auto">
-              <ul class="flex space-x-4">
-                  <li>
-                      <a href="tel:+123-456-7890" class="text-white flex items-center">
-                          <i class="fa fa-phone-square mr-2"></i>+123-456-7890
-                      </a>
-                  </li>
-                  <li>
-                      <a href="mailto:mail@ecom.com" class="text-white flex items-center">
-                          <i class="fa fa-envelope mr-2"></i>mail@ecom.com
-                      </a>
-                  </li>
-              </ul>
-          </div>
-          <div class="flex">
-              <ul class="flex space-x-4">
-                  <li>
-                      <a href="register" class="text-white flex items-center">
-                          <i class="fas fa-user-edit mr-2"></i>Register
-                      </a>
-                  </li>
-                  <li>
-                      <a href="#" class="text-white flex items-center">
-                          <i class="fas fa-sign-in-alt mr-2"></i>Login
-                      </a>
-                  </li>
-              </ul>
-          </div>
+        <div class="flex-auto mr-auto">
+          <ul class="flex space-x-4">
+            <li>
+              <a href="tel:+123-456-7890" class="text-white flex items-center">
+                <i class="fa fa-phone-square mr-2"></i>+123-456-7890
+              </a>
+            </li>
+            <li>
+              <a href="mailto:mail@ecom.com" class="text-white flex items-center">
+                <i class="fa fa-envelope mr-2"></i>mail@ecom.com
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="flex">
+          <ul class="flex space-x-4">
+            <li>
+              <a href="register" class="text-white flex items-center">
+                <i class="fas fa-user-edit mr-2"></i>Register
+              </a>
+            </li>
+            <li>
+              <a href="#" class="text-white flex items-center">
+                <i class="fas fa-sign-in-alt mr-2"></i>Login
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
-  </div>
+    </div>
     <header class="bg-slate-900">
       <div class="container mx-auto px-6 py-3">
         <div class="flex items-center justify-between">
@@ -174,13 +174,18 @@
               <div class="space-y-2">
                 <div class="flex items-center">
                   <input type="checkbox" name="brand-1" id="brand-1" class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="brand-1" class="text-gray-600 ml-3 cusror-pointer">Acme</label>
-                  <div class="ml-auto text-gray-600 text-sm">(15)</div>
+                  <label for="brand-1" class="text-gray-600 ml-3 cusror-pointer">Apple</label>
+                  <div class="ml-auto text-gray-600 text-sm">(7)</div>
                 </div>
                 <div class="flex items-center">
                   <input type="checkbox" name="brand-2" id="brand-2" class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="brand-2" class="text-gray-600 ml-3 cusror-pointer">Elastic Path</label>
-                  <div class="ml-auto text-gray-600 text-sm">(9)</div>
+                  <label for="brand-2" class="text-gray-600 ml-3 cusror-pointer">Dell</label>
+                  <div class="ml-auto text-gray-600 text-sm">(2)</div>
+                </div>
+                <div class="flex items-center">
+                  <input type="checkbox" name="brand-3" id="brand-3" class="text-primary focus:ring-0 cursor-pointer" />
+                  <label for="brand-3" class="text-gray-600 ml-3 cusror-pointer">Acer</label>
+                  <div class="ml-auto text-gray-600 text-sm">(1)</div>
                 </div>
               </div>
             </div>
@@ -275,16 +280,29 @@
         <!-- #endregion Sidebar -->
 
         <!-- #region Products -->
+        <script>
+          function updateSort() {
+            const sortValue = document.getElementById("sort").value;
+            let url = new URL(window.location.href); // Tạo một URL đối tượng từ URL hiện tại
+            
+            if (sortValue) {
+              url.searchParams.set('sortBy', sortValue); // Thêm hoặc cập nhật query parameter 'sortBy'
+            } else {
+              url.searchParams.delete('sortBy'); // Xóa 'sortBy' nếu giá trị là mặc định
+            }
+        
+            window.location.href = url.toString(); // Thay đổi URL mà không tải lại trang
+          }
+        </script>
         <div class="col-span-3">
           <div class="flex items-center mb-4">
-            <select name="sort" id="sort"
-              class="rounded-lg h-7 bg-gray-200 w-44 text-sm text-gray-600 px-2 border-gray-300 shadow-sm focus:ring-primary focus:border-primary">
+            <select name="sort" id="sort" 
+              class="rounded-lg h-7 bg-gray-200 w-44 text-sm text-gray-600 px-2 border-gray-300 shadow-sm focus:ring-primary focus:border-primary" onchange="updateSort()">
               <option value="">Default sorting</option>
-              <option value="price-low-to-high">Price low to high</option>
-              <option value="price-high-to-low">Price high to low</option>
-              <option value="latest">Latest product</option>
+              <option value="price-low-to-high" <%= sortBy === 'price-low-to-high' ? 'selected' : '' %>>Price low to high</option>
+              <option value="price-high-to-low" <%= sortBy === 'price-high-to-low' ? 'selected' : '' %>>Price high to low</option>
             </select>
-        
+
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
