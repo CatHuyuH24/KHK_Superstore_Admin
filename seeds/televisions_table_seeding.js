@@ -8,6 +8,7 @@ exports.seed = async function (knex) {
   await knex("televisions").insert([
     {
       name: "Samsung QLED 8K",
+      brand: "Samsung",
       price: 2999,
       imageurl:
         "https://images.samsung.com/is/image/samsung/p6pim/at/qe85qn900btxxn/gallery/at-qled-tv-qe85qn900btxxn-front-black-533043096?$650_519_PNG$",
@@ -21,6 +22,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "LG OLED 4K",
+      brand: "LG",
       price: 1999,
       imageurl: "https://i.ebayimg.com/images/g/xz4AAOSwr~ZmxX6e/s-l1600.webp",
       detail: `$$
@@ -33,6 +35,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "LG OLED 4K",
+      brand: "LG",
       price: 1999,
       imageurl: "https://i.ebayimg.com/images/g/xz4AAOSwr~ZmxX6e/s-l1600.webp",
       detail: `$$
@@ -45,6 +48,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Smart Tivi 32 inch Darling 32HD946T2",
+      brand: "Darling",
       price: 229,
       imageurl:
         "https://darlingvietnam.net/wp-content/uploads/smart-tivi-darling-32hd946t2.jpg",
@@ -55,6 +59,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Smart Tivi Darling 43 Inch 43FH960S",
+      brand: "Darling",
       price: 289,
       imageurl:
         "https://darlingvietnam.net/wp-content/uploads/a1-3027-e1578627782300.jpg",
@@ -68,6 +73,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Tivi Led 40 inch Darling 40HD957T2",
+      brand: "Darling",
       price: 259,
       imageurl:
         "https://darlingvietnam.net/wp-content/uploads/tivi-led-darling-40hd957t2.jpg",
@@ -81,6 +87,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Tivi Led 32 inch Darling 32HD955T2",
+      brand: "Darling",
       price: 159,
       imageurl:
         "https://darlingvietnam.net/wp-content/uploads/smart-tivi-32-inch-darling-32hd955t2-1.jpg",
@@ -94,6 +101,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Tivi Led Darling 32HD957T2 32 inch",
+      brand: "Darling",
       price: 159,
       imageurl:
         "https://darlingvietnam.net/wp-content/uploads/tivi-led-darling-32-inch-32hd957t2.jpg",

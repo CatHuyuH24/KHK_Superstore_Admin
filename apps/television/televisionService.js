@@ -1,9 +1,22 @@
 const pool = require("../../config/database");
 
-async function getAllTelevisions(sortBy) {
+async function getAllTelevisions(sortBy, minPrice, maxPrice, selectedBrands) {
   try {
     // Xây dựng câu truy vấn cơ bản
-    let query = "SELECT * FROM televisions";
+    let query = "SELECT * FROM televisions WHERE 1 = 1";
+
+    // Lọc theo giá nếu có minPrice và maxPrice
+    if (minPrice !== null) {
+      query += ` AND price >= ${minPrice}`;
+    }
+    if (maxPrice !== null) {
+      query += ` AND price <= ${maxPrice}`;
+    }
+
+    // Lọc theo các thương hiệu đã chọn
+    if (selectedBrands.length > 0) {
+      query += ` AND brand IN (${selectedBrands.map(brand => `'${brand}'`).join(", ")})`;
+    }
 
     // Bổ sung logic sắp xếp dựa trên `sortBy`
     if (sortBy === "price-low-to-high") {

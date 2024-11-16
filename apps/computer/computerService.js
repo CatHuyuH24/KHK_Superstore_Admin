@@ -1,9 +1,27 @@
 const pool = require('../../config/database');
 
-async function getAllComputers (sortBy) {
+async function getAllComputers (sortBy, minPrice, maxPrice, selectedBrands, search) {
     try {
         // Xây dựng câu truy vấn cơ bản
-        let query = "SELECT * FROM computers";
+        let query = "SELECT * FROM computers WHERE 1 = 1";
+    
+        if (search) {
+            query += " AND (name ILIKE $1 OR description ILIKE $1)";
+            queryParams.push(`%${search}%`);
+          }
+          
+        // Lọc theo giá nếu có minPrice và maxPrice
+        if (minPrice !== null) {
+          query += ` AND price >= ${minPrice}`;
+        }
+        if (maxPrice !== null) {
+          query += ` AND price <= ${maxPrice}`;
+        }
+    
+        // Lọc theo các thương hiệu đã chọn
+        if (selectedBrands.length > 0) {
+          query += ` AND brand IN (${selectedBrands.map(brand => `'${brand}'`).join(", ")})`;
+        }
     
         // Bổ sung logic sắp xếp dựa trên `sortBy`
         if (sortBy === "price-low-to-high") {

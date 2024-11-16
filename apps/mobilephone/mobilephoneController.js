@@ -4,6 +4,7 @@ const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 async function renderMobilephoneCategoryPage(req, res) {
   try {
     const sortBy = req.query.sortBy || "";
+    const search = req.query.search || "";
     const minPrice = req.query.min ? parseInt(req.query.min) : null; // Chuyển min thành số
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
     const currentCategory = req.params.category; // Lấy category từ URL (vd: /mobilephone)
@@ -32,12 +33,14 @@ async function renderMobilephoneCategoryPage(req, res) {
       minPrice,
       maxPrice,
       selectedBrands,
+      search,
     );
     res.render("category", {
       title: "Mobilephone Category",
       products: products, // Use products directly
       category: "mobilephones",
       sortBy,
+      search,
       min: minPrice || "",
       max: maxPrice || "",
       categories, // Truyền danh sách categories
