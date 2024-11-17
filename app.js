@@ -6,7 +6,7 @@ const indexRoutes = require("./routes/index");
 const mobilephoneRoutes = require("./routes/mobilephoneRouter");
 const computerRoutes = require("./routes/computerRouter");
 const televisionRoutes = require("./routes/televisionRouter");
-const searchRoutes = require("./routes/searchRouter");
+const searchRoutes = require("./routes/search");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));

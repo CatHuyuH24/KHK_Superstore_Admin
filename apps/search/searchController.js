@@ -1,19 +1,15 @@
-const searchService = require("./searchService");
-const { StatusCodes, getReasonPhrase } = require("http-status-codes");
+const searchService = require('./searchService');
 
-async function handleAjaxSearch(req, res) {
+exports.renderSearchResultsPage = async (req, res) => {
   try {
-    const search = req.query.search || "";
-    const products = await searchService.searchAllProducts(search);
-    res.json({ products });
+    const query = req.query.search || '';
+    if (!query) {
+      console.error("Query is empty or undefined in controller");
+    }
+    const products = await searchService.searchAllProducts(query);
+    res.render('searchResult', { title: 'Search Results', products, query });
   } catch (error) {
-    console.error("Error handling AJAX search:", error);
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) });
+    console.error('Error rendering search results page:', error);
+    res.status(500).send('Internal Server Error');
   }
-}
-
-module.exports = {
-  handleAjaxSearch,
 };

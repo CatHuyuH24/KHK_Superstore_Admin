@@ -6,6 +6,7 @@ const indexRouter = require("./apps/home/indexRouter");
 const televisionRouter = require("./apps/television/televisionRouter");
 const mobilephoneRouter = require("./apps/mobilephone/mobilephoneRouter");
 const computerRouter = require("./apps/computer/computerRouter");
+const searchRouter = require("./apps/search/searchRouter");
 const registrationRouter = require("./apps/registration/registrationRouter");
 
 const app = express();
@@ -23,6 +24,7 @@ app.use("/televisions", televisionRouter);
 app.use("/mobilephones", mobilephoneRouter);
 app.use("/computers", computerRouter);
 app.use("/register", registrationRouter);
+app.use("/search", searchRouter);
 
 const PORT = process.env.SERVER_PORT || 3000;
 app.listen(PORT, () => {

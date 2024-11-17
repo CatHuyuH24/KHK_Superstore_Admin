@@ -1,17 +1,31 @@
 const pool = require("../../config/database");
 
-async function searchAllProducts(search) {
+async function searchAllProducts(query) {
   try {
-    let query = `
-      SELECT 'mobilephones' AS category, id, name, description, price, imageurl FROM mobilephones WHERE name ILIKE $1 OR description ILIKE $1
-      UNION
-      SELECT 'computers' AS category, id, name, description, price, imageurl FROM computers WHERE name ILIKE $1 OR description ILIKE $1
-      UNION
-      SELECT 'televisions' AS category, id, name, description, price, imageurl FROM televisions WHERE name ILIKE $1 OR description ILIKE $1
-    `;
-    const queryParams = [`%${search}%`];
+    if (!query) {
+      console.error("Query is empty or undefined");
+      return [];
+    }
 
-    const result = await pool.query(query, queryParams);
+    const sqlQuery = `
+      SELECT id, name, price, imageurl, 'mobilephones' AS category 
+      FROM mobilephones 
+      WHERE name ILIKE $1
+      UNION ALL
+      SELECT id, name, price, imageurl, 'computers' AS category 
+      FROM computers 
+      WHERE name ILIKE $1
+      UNION ALL
+      SELECT id, name, price, imageurl, 'televisions' AS category 
+      FROM televisions 
+      WHERE name ILIKE $1
+    `;
+    const queryParams = [`%${query}%`];
+    
+    console.log("Executing query with params:", queryParams);
+    const result = await pool.query(sqlQuery, queryParams);
+    
+    console.log("Query result:", result.rows);
     return result.rows;
   } catch (error) {
     console.error("Error searching products:", error.message);
