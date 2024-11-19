@@ -1,7 +1,8 @@
 const registrationService = require('./registrationService');
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
-const salt = require('../utils/salt');
-const md5 = require('../utils/hasher/md5');
+const utils=require('../libraries/passwordUtils');
+var crypto = require('crypto');
+
 
 async function handleRegisterRequest(req, res) {
     try {
@@ -17,22 +18,28 @@ async function handleRegisterRequest(req, res) {
         }
         
         const userCheck = await registrationService.findUserByEmail(email);
-        if (userCheck.rows.length > 0) {
+        if (userCheck) {
             message =
                 "Email này đã được đăng ký. Vui lòng sử dụng email khác.";
             return res.render("register", { message });
         }
 
-        const Salt=salt.genSalt(50);
-	    const Md5 = md5.newMd5Hash();
-	    const hashedPassword = Md5.hash(password + Salt);
+        var salt = crypto.randomBytes(16).toString('hex');
+        crypto.pbkdf2(password, salt, 310000, 32, 'sha256', async function(err, hashedPassword) {
+          if (err) { return next(err); }
+            registrationService.createUser(name,email,hashedPassword.toString('hex'),salt);
+            // const newUser = await registrationService.findUserByEmail(email); 
+            // const jwt=utils.issueJWT(newUser);
+            // res.json({success:true,user:newUser,token:jwt.token, expiresIn:jwt.expires})
+        });
+          
+        // console.log("Đã ghi dữ liệu vào cơ sở dữ liệu.");
+	    // message = "Đăng ký thành công!";
 
-        registrationService.createUser(name,email,hashedPassword,Salt);
+        // res.render("register", { message });
 
-        console.log("Đã ghi dữ liệu vào cơ sở dữ liệu.");
-	    message = "Đăng ký thành công!";
+        res.redirect('login');
 
-        res.render("register", { message });
     } catch (error) {
         console.error('Error handler register:', error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(
