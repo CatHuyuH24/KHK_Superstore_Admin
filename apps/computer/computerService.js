@@ -19,7 +19,7 @@ async function getAllComputers (sortBy, minPrice, maxPrice, selectedBrands, sear
         }
     
         // Lọc theo các thương hiệu đã chọn
-        if (selectedBrands.length > 0) {
+        if ( selectedBrands.length > 0) {
           query += ` AND brand IN (${selectedBrands.map(brand => `'${brand}'`).join(", ")})`;
         }
     
@@ -49,8 +49,25 @@ async function getComputerByID(id) {
     }
 }
 
+async function getRelatedComputers(currentId, limit = 3) {
+  try {
+      const query = `
+          SELECT * FROM computers 
+          WHERE ID != $1 
+          ORDER BY RANDOM() 
+          LIMIT $2
+      `;
+      const result = await pool.query(query, [currentId, limit]);
+      return result.rows;
+  } catch (error) {
+      console.error('Error fetching related computers', error);
+      return [];
+  }
+}
+
 module.exports = {
     getAllComputers,
     getComputerByID,
+    getRelatedComputers
 };
     

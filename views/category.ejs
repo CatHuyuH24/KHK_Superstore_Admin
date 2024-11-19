@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="/css/all.min.css" />
   <link rel="stylesheet" href="/css/style.css" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <link id="favicon" rel="icon" type="image/png" href="/images/shop_icon.ico">
 </head>
 
 <body>
@@ -249,25 +250,17 @@
                 <!-- Phần hình ảnh sản phẩm -->
                 <div class="relative group w-[302px] h-80 flex items-center justify-center">
                   <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="max-w-full max-h-full" />
-                  <div
+                  <a href="/<%= category %>/<%= product.id %>">
+                    <div
                     class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
-                    <a href="#"
-                      class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
-                      title="view product">
-                      <i class="gg-search"></i>
-                    </a>
-                    <a href="#"
-                      class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
-                      title="add to wishlist">
-                      <i class="gg-heart"></i>
-                    </a>
                   </div>
+                  </a>
                 </div>
 
                 <!-- Phần nội dung sản phẩm -->
                 <div class="flex-grow pt-4 pb-3 px-4 flex flex-col">
                   <!-- Tên sản phẩm -->
-                  <a href="#">
+                  <a href="/<%= category %>/<%= product.id %>">
                     <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
                       <%= product.name %>
                     </h4>
@@ -276,11 +269,11 @@
                   <!-- Giá sản phẩm -->
                   <div class="flex items-baseline mb-1 space-x-2">
                     <p class="text-xl text-primary font-semibold">
-                      <%= product.price %>
-                    </p>
+                      <%= product.price %> $
+                    <!-- </p>
                     <p class="text-sm text-gray-400 line-through">
                       <%= product.original_price || 'N/A' %>
-                    </p>
+                    </p> -->
                   </div>
 
                   <!-- Đánh giá -->

@@ -50,6 +50,7 @@
       }
     });
   </script>
+  <link id="favicon" rel="icon" type="image/png" href="/images/shop_icon.ico">
 </head>
 
 <body>
@@ -148,8 +149,8 @@
         <!-- #region Products -->
         <div class="col-span-3">
           <div class="grid grid-cols-3 gap-6">
-
-            <% products.forEach(product=> { %>
+            <% console.log(products); %>
+            <% products.forEach(product => { %>
               <div class="bg-white shadow-md overflow-hidden">
                 <div class="relative group">
                   <img src="<%= product.image %>" alt="<%= product.name %>" class="w-full" />
