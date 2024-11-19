@@ -8,6 +8,7 @@ exports.seed = async function (knex) {
   await knex("computers").insert([
     {
       name: "Macbook Air M2",
+      brand: "Apple",
       price: 899,
       imageurl:
         "https://cdn.hoanghamobile.com/i/content/Uploads/2024/09/09/macbook-air-13-in-m3-chip-starlight-pure-front-screen-usen.jpg",
@@ -22,6 +23,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Macbook Pro 14 M2",
+      brand: "Apple",
       price: 1699,
       imageurl:
         "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2023/02/28/mabookpro14-silver-1.png",
@@ -36,6 +38,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Macbook Pro 16 M2 (16/256)",
+      brand: "Apple",
       price: 1999,
       imageurl:
         "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2024/11/05/macbook-pro-14-inch-m4-max-den-1.png",
@@ -67,6 +70,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Macbook Air M2",
+      brand: "Apple",
       price: 1399,
       imageurl:
         "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2024/09/21/macbook-m2-xam-2.png",
@@ -98,6 +102,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Macbook Pro 16 M1 Max",
+      brand: "Apple",
       price: 2499,
       imageurl:
         "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2021/10/19/gray-macbook-2021-3.png",
@@ -129,6 +134,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Macbook Air M3",
+      brand: "Apple",
       price: 1699,
       imageurl:
         "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2024/09/21/air-m3-15-inch-xanh-den-1.png",
@@ -160,6 +166,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Macbook Air M3",
+      brand: "Apple",
       price: 1699,
       imageurl:
         "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2024/09/21/air-m3-15-inch-xanh-den-1.png",
@@ -191,6 +198,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Laptop Dell XPS 13 9340 ",
+      brand: "Dell",
       price: 3149,
       imageurl:
         "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2024/10/17/71034922-2.png",
@@ -206,6 +214,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Laptop Dell XPS 13 Plus 9320-5CG56",
+      brand: "Dell",
       price: 1149,
       imageurl:
         "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2022/11/09/image-removebg-preview-58.png",
@@ -221,6 +230,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "Laptop Acer Nitro 5 Tiger",
+      brand: "Acer",
       price: 1449,
       imageurl:
         "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2022/09/16/image-removebg-preview-2022-09-16t145717-836.png",

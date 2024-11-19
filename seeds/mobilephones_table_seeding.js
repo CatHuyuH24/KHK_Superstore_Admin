@@ -8,6 +8,7 @@ exports.seed = async function (knex) {
   await knex("mobilephones").insert([
     {
       name: "iPhone 14 Pro Max",
+      brand: "Apple",
       price: 999,
       imageurl:
         "https://cdn.hoanghamobile.com/i/productlist/dsp/Uploads/2023/06/05/my-project.png",
@@ -34,6 +35,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "iPhone 16",
+      brand: "Apple",
       price: 799,
       imageurl:
         "https://cdn.hoanghamobile.com/i/content/Uploads/2024/09/10/iphone-16-white-pdp-image-position-1a-white-color-vn-vi.jpg",
@@ -60,6 +62,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "iPhone 16 Plus",
+      brand: "Apple",
       price: 899,
       imageurl:
         "https://cdn.hoanghamobile.com/i/content/Uploads/2024/09/10/iphone-16-black-pdp-image-position-1a-black-color-vn-vi.jpg",
@@ -86,6 +89,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "iPhone 16 Pro",
+      brand: "Apple",
       price: 999,
       imageurl:
         "https://cdn.hoanghamobile.com/i/content/Uploads/2024/09/11/iphone-16-pro-white-titanium-pdp-image-position-1b-white-titanium-color-vn-vi.jpg",
@@ -102,6 +106,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "iPhone 16 Pro Max",
+      brand: "Apple",
       price: 1099,
       imageurl:
         "https://cdn.hoanghamobile.com/i/content/Uploads/2024/09/11/iphone-16-pro-desert-titanium-pdp-image-position-1a-desert-titanium-color-vn-vi.jpg",
@@ -118,6 +123,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "iPhone 15",
+      brand: "Apple",
       price: 729,
       imageurl:
         "https://admin.hoanghamobile.com/Uploads/2023/09/14/vn-iphone-15-pink-pdp-image-position-1a-pink-color.jpg",
@@ -144,6 +150,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "iPhone 15 Plus",
+      brand: "Apple",
       price: 829,
       imageurl:
         "https://cdn.hoanghamobile.com/i/preview-h-V2/Uploads/2024/09/09/iphone-15-plus-vang-1.jpg",
@@ -169,6 +176,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "iPhone 15 Pro",
+      brand: "Apple",
       price: 929,
       imageurl:
         "https://cdn.hoanghamobile.com/i/preview-h-V2/Uploads/2024/09/09/iphone-15-pro-tu-nhien-1.jpg",
@@ -199,6 +207,7 @@ exports.seed = async function (knex) {
     },
     {
       name: "iPhone 15 Pro Max",
+      brand: "Apple",
       price: 1029,
       imageurl:
         "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2024/06/24/15-pro-max-trang-2.png",
@@ -225,6 +234,50 @@ exports.seed = async function (knex) {
         Width: 3.02 inches (76.7mm)
         Depth: 0.32 inch (8.25mm)
         Weight: 7.81 ounces (221 grams)
+        $$`,
+    },
+    {
+      name: "Samsung Galaxy S24 Ultra",
+      brand: "Samsung",
+      price: 1399,
+      imageurl:
+        "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2024/01/16/s24-xam-den.png",
+      detail: `$$ 
+        Samsung Galaxy S24 Ultra. The ultimate smartphone with advanced camera technology, exceptional performance, and cutting-edge design.
+        DESIGN AND DISPLAY - The S24 Ultra features a stunning 6.8" Dynamic AMOLED display with a 120Hz refresh rate, offering vibrant colors and smooth performance. The design is sleek, with premium materials and a durable frame.
+        CAMERA SYSTEM - Equipped with a 200MP main camera and advanced zoom capabilities, the Galaxy S24 Ultra can capture breathtaking photos and videos in any condition. It includes a 12MP ultra-wide camera and two telephoto lenses for detailed shots at various distances.
+        PERFORMANCE - Powered by the Exynos 2400 chip (or Snapdragon 8 Gen 3 depending on region), the S24 Ultra offers exceptional performance for gaming, multitasking, and productivity. Coupled with up to 12GB of RAM, you get a fast and responsive experience.
+        BATTERY AND CHARGING - With a large 5000mAh battery, the S24 Ultra ensures all-day usage. It also supports fast charging, allowing you to quickly power up your phone when you need it the most.
+        SOFTWARE EXPERIENCE - Running the latest version of One UI, Samsung’s custom skin, the Galaxy S24 Ultra offers a user-friendly interface, along with useful features like DeX for desktop-like functionality, split-screen multitasking, and more.
+        CONNECTIVITY - The S24 Ultra supports 5G connectivity for lightning-fast internet speeds, as well as Wi-Fi 6E, Bluetooth 5.3, and ultra-wideband (UWB) for advanced features.
+        SECURITY - Samsung's Knox security platform offers robust protection for your personal data, while features like an under-display fingerprint sensor and facial recognition provide secure unlocking options.
+        WATER-RESISTANT - The Galaxy S24 Ultra is IP68 rated, meaning it is resistant to water and dust, making it durable and perfect for everyday use in various environments.
+        INCLUDES SAMSUNG CARE - Every purchase of the Galaxy S24 Ultra comes with a limited warranty and customer support services. You can also opt for Samsung Care+ for added protection.
+        Legal
+        The Samsung Galaxy S24 Ultra has been tested under controlled laboratory conditions and is certified with an IP68 rating for water and dust resistance. Actual performance may vary based on usage and conditions.
+        Battery life may vary depending on usage patterns and software settings. For optimum battery health, follow the manufacturer's charging guidelines.
+      $$`,
+    },
+    {
+      name: "Samsung Galaxy S24",
+      brand: "Samsung",
+      price: 999,
+      imageurl:
+        "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2024/01/30/samsung-galaxy-s24-1.png",
+      detail: `$$ 
+        Samsung Galaxy S24. A sleek, powerful, and versatile smartphone designed for a premium experience with cutting-edge technology and a stunning display.
+        DISPLAY AND DESIGN - The Samsung Galaxy S24 boasts a 6.1" Dynamic AMOLED 2X display with 120Hz refresh rate, providing smooth and vibrant visuals. Its compact design fits comfortably in your hand while delivering an immersive viewing experience.
+        CAMERA SYSTEM - The S24 is equipped with a triple camera setup, including a 50MP primary camera, a 12MP ultra-wide lens, and a 10MP telephoto lens with 3x optical zoom. Capture stunning photos with enhanced clarity and detail in all lighting conditions.
+        PERFORMANCE - Powered by the latest Snapdragon 8 Gen 3 processor (or Exynos 2400, depending on the region), the Galaxy S24 provides blazing-fast performance for multitasking, gaming, and productivity. It comes with up to 12GB of RAM and multiple storage options.
+        BATTERY AND CHARGING - With a 3900mAh battery, the Galaxy S24 ensures you can use your phone throughout the day. It also supports 25W fast charging and wireless charging, so you can quickly recharge your device.
+        SOFTWARE EXPERIENCE - Running Samsung's One UI, the Galaxy S24 offers an intuitive and customizable interface with a variety of features like DeX mode, split-screen multitasking, and more.
+        CONNECTIVITY - The phone supports 5G connectivity for ultra-fast internet speeds, Wi-Fi 6E, Bluetooth 5.3, and NFC for a smooth and connected experience.
+        SECURITY - Samsung Knox security provides multi-layered protection for your personal data. Features like an in-display fingerprint sensor and facial recognition ensure secure access to your device.
+        WATER-RESISTANT - The Galaxy S24 comes with an IP68 rating, making it water and dust resistant, perfect for all-day use in various environments.
+        INCLUDED WITH SAMSUNG CARE - Enjoy peace of mind with Samsung's warranty and customer support services. You can also choose Samsung Care+ for extended protection options.
+        Legal
+        The Samsung Galaxy S24 is IP68 rated for water and dust resistance and has been tested under controlled conditions. Actual performance may vary based on usage and environmental conditions.
+        Battery life is subject to change based on usage patterns, apps, and settings. Refer to the manufacturer's guide for optimal charging and battery care.
         $$`,
     },
   ]);

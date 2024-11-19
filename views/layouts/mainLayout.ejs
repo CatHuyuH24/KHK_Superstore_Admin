@@ -1,26 +1,67 @@
-<!-- views/layouts/mainLayout.ejs -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title><%= title %></title>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="referrer" content="always" />
     <meta name="description" content="TailwindCSS Ecommerce Template" />
-    <link rel="stylesheet" href="../../dist/main.css" />
-    <link href="https://unpkg.com/css.gg/icons/all.css" rel="stylesheet" />
-    <script src="//unpkg.com/alpinejs" defer></script>
-    <script src="../../public/js/main.js" defer></script>
-  </head>
-  <body>
+    <link rel="stylesheet" href="/css/all.min.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+</head>
+
+<body>
     <div x-data="{ cartOpen: false , isOpen: false }">
-      <%- include('partials/header') %>
-      <main class="my-8"><%- body %></main>
-      <%- include('partials/footer') %>
+        <!-- #region Header -->
+        <div class="col-12 bg-slate-900 py-2 px-2 d-md-block d-none">
+            <div class="flex flex-wrap">
+                <div class="flex-auto mr-auto">
+                    <ul class="flex space-x-4">
+                        <li>
+                            <a href="tel:+123-456-7890" class="text-white flex items-center">
+                                <i class="fa fa-phone-square mr-2"></i>+123-456-7890
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:mail@ecom.com" class="text-white flex items-center">
+                                <i class="fa fa-envelope mr-2"></i>mail@ecom.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex">
+                    <ul class="flex space-x-4">
+                        <li>
+                            <a href="/register" class="text-white flex items-center">
+                                <i class="fas fa-user-edit mr-2"></i>Register
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-white flex items-center">
+                                <i class="fas fa-sign-in-alt mr-2"></i>Login
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <%- include('header') %>
+        <!-- #endregion Header -->
+
+        <main class="my-8">
+            <!-- Page-specific content here -->
+            <%- content %>
+        </main>
+
+        <!-- #region Footer-->
+        <!-- #endregion Footer -->
     </div>
-  </body>
+</body>
+
 </html>
