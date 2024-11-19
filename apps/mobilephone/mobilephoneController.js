@@ -61,7 +61,9 @@ async function renderMobilephoneDetailPage(req, res) {
     const queryResult = await mobilephoneService.getMobilephoneByID(
       mobilephoneID
     );
-    res.render("product", { product: queryResult.rows[0] });
+
+    const relatedMobilephones = await mobilephoneService.getRelatedMobilephones(mobilephoneID, 5);
+    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedMobilephones });
   } catch (error) {
     console.error("Error rendering mobilephone detail page:", error);
     res
