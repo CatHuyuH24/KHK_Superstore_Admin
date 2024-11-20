@@ -179,7 +179,7 @@ exports.seed = async function (knex) {
       brand: "Apple",
       price: 929,
       imageurl:
-        "https://cdn.hoanghamobile.com/i/preview-h-V2/Uploads/2024/09/09/iphone-15-pro-tu-nhien-1.jpg",
+        "https://carrefourbr.vtexassets.com/arquivos/ids/178720663/apple-iphone-15-pro-max-256-gb-titanio-natural-e-sim.jpg?v=638669130795300000",
       detail: `$$
         iPhone 15 Pro. Forged in titanium and featuring the groundbreaking A17 Pro chip, a customizable Action button, and the most powerful iPhone camera system ever.
         FORGED IN TITANIUM - iPhone 15 Pro Max has a strong and light aerospace-grade titanium design with a textured matte-glass back. It also features a Ceramic Shield front that's tougher than any smartphone glass. And it's splash, water, and dust resistant.
