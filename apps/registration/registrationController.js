@@ -1,8 +1,7 @@
 const registrationService = require('./registrationService');
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
-const utils=require('../libraries/passwordUtils');
 var crypto = require('crypto');
-
+const genPassword=require('../Utils/passwordUtils').genPassword;
 
 async function handleRegisterRequest(req, res) {
     try {
@@ -24,21 +23,21 @@ async function handleRegisterRequest(req, res) {
             return res.render("register", { message });
         }
 
-        var salt = crypto.randomBytes(16).toString('hex');
-        crypto.pbkdf2(password, salt, 310000, 32, 'sha256', async function(err, hashedPassword) {
-          if (err) { return next(err); }
-            registrationService.createUser(name,email,hashedPassword.toString('hex'),salt);
-            // const newUser = await registrationService.findUserByEmail(email); 
-            // const jwt=utils.issueJWT(newUser);
-            // res.json({success:true,user:newUser,token:jwt.token, expiresIn:jwt.expires})
-        });
-          
-        // console.log("Đã ghi dữ liệu vào cơ sở dữ liệu.");
-	    // message = "Đăng ký thành công!";
-
-        // res.render("register", { message });
-
-        res.redirect('login');
+        try {
+            const genPass = await genPassword(password);
+            registrationService.createUser(name, email, genPass.hashedPassword, genPass.salt);
+            res.redirect('login');
+        } catch (error) {
+            if (error.message.includes('crypto')) {
+                console.error('Error generating password:', error);
+                message = 'Có lỗi khi tạo mật khẩu. Vui lòng thử lại.';
+                return res.render('register', { message });
+            }
+            console.error('Error handler register:', error);
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(
+                getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR)
+            );
+        }
 
     } catch (error) {
         console.error('Error handler register:', error);

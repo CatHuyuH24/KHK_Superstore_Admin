@@ -1,6 +1,7 @@
 const express = require('express');
 const path =require('path');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
 require("dotenv").config();
 
@@ -20,7 +21,7 @@ const computerRouter = require("./apps/computer/computerRouter");
 const searchRouter = require("./apps/search/searchRouter");
 const registrationRouter = require("./apps/registration/registrationRouter");
 const loginRouter=require('./apps/login/loginRouter');
-
+const logoutRouter=require('./apps/logout/logoutRouter')
 
 // Set the view engine to EJS
 app.set("view engine", "ejs");
@@ -28,7 +29,7 @@ app.set("views", "views");
 
 
 // Middleware
-
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.static(path.join(__dirname,"public")));
 
@@ -43,8 +44,13 @@ app.use("/computers", computerRouter);
 app.use("/register", registrationRouter);
 app.use("/search", searchRouter);
 app.use("/login",loginRouter);
+app.use("/logout",logoutRouter)
+
 
 const PORT = process.env.SERVER_PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
 });
+
+
+

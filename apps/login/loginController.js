@@ -1,27 +1,33 @@
-const { success } = require('concurrently/src/defaults');
 const loginService = require('./loginService');
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
-const validPassword=require('../libraries/passwordUtils').validPassword;
-const utils=require('../libraries/passwordUtils');
+const validPassword=require('../Utils/passwordUtils').validPassword;
+const utils=require('../Utils/jwtUtils');
 
 async function handleLoginRequest(req, res, next) {
     try{
         const {email, password} = req.body;
         const user= await loginService.findUserByEmail(email);
         if(!user){
-            alert("Incorrect email or password!");
-             res.status(401).json({success:false});
+            message =
+                "Incorrect Email or Password!.";
+            return res.render("login", { message });
         }
         const isValid=await validPassword(password,user.password,user.salt);
 
         if(isValid){
             const tokenObject = utils.issueJWT(user);
-            res.status(200).json({success:true,user:user,token:tokenObject.token, expriresIn:tokenObject.expires})
+            res.cookie('token', tokenObject.token, {
+                httpOnly: false, 
+                secure: true,   
+                maxAge: 3600000 
+            });
+            
+            return res.redirect('/mobilephones');
         }
         else {
-            //res.status(401).json({success:false,msg:"Incorrect email or password!"});
-            alert("Incorrect email or password!");
-            res.status(401).json({success:false});
+            message =
+                "Incorrect Email or Password!.";
+            return res.render("login", { message });
         }
     }
     catch(err){

@@ -28,7 +28,7 @@ async function findUserById(id) {
 
 async function createUser(name,email,hashedPassword,salt) {
     try {  
-        const query ="INSERT INTO users (username,email, password, salt) VALUES ($1, $2, $3, $4)";
+        const query ="INSERT INTO users (name,email, password, salt) VALUES ($1, $2, $3, $4)";
 	    const values = [name,email, hashedPassword, salt];
         
         await pool.query(query, values);     
