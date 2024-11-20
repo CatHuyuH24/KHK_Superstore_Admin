@@ -267,19 +267,27 @@
                 <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6">Related products</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row gap-3">
                     <% relatedProducts.forEach( product => { %>
-                        <div class="flex flex-col items-center">
-                            <img  class="w-48 h-auto" src="<%= product.imageurl %>" alt="related product's image"/>
-                                <div class="pt-4 pb-3 px-4">
-                                    <a href="#">
-                                        <h4
-                                        class="text-wrap uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
-                                        <%= product.name %></h4>
-                                    </a>
-                                    <div class="flex items-baseline mb-1 space-x-2">
-                                        <p class="text-xl text-primary font-semibold">$ <%= product.price %></p>
-                                        <!-- <p class="text-sm text-gray-400 line-through">$19.99</p> -->
-                                    </div>
+                        <div class="flex flex-col justify-around my-5 items-center">
+                            <div class="relative group w-[302px] h-80 flex items-center justify-center">
+                                <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="max-w-full max-h-full" />
+                                <a href="/<%= category %>/<%= product.id %>">
+                                    <div
+                                    class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
                                 </div>
+                                </a>
+                            </div>
+                            
+                            <div>
+                                <a href="/<%= category %>/<%= product.ID %>">
+                                    <h4
+                                    class="text-wrap uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+                                    <%= product.name %></h4>
+                                </a>
+                                <div class="flex items-baseline mb-1 space-x-2">
+                                    <p class="text-xl text-primary font-semibold">$ <%= product.price %></p>
+                                    <!-- <p class="text-sm text-gray-400 line-through">$19.99</p> -->
+                                </div>
+                            </div>
                                 <div class="flex items-center">
                                     <div class="flex gap-1">
                                         <i class="star"></i>
@@ -444,7 +452,7 @@
                             <ul>
                                 <li class="block pb-2">
                                     <a href="mailto:test.email0123@elyssi.com"
-                                        class="text-base transition-colors hover:text-primary">support@supperstore.com</a>
+                                        class="text-base transition-colors hover:text-primary">support@superstore.com</a>
                                 </li>
                                 <li class="block pb-2">
                                     <a href="tel:5555555555"
