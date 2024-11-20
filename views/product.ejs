@@ -15,7 +15,7 @@
     <link id="favicon" rel="icon" type="image/png" href="/images/shop_icon.ico">
 </head>
 
-<body>
+<body class="w-full overflow-x-hidden">
     <div x-data="{ cartOpen: false , isOpen: false }">
         <!-- #region Header -->
         <header class="bg-white">
@@ -26,7 +26,7 @@
                     </div>
                     <div
                         class="w-full text-blue-900 md:text-center font-mono text-4xl font-semibold uppercase tracking-widest">
-                        Acme
+                        Superstore
                     </div>
                     <div class="flex items-center justify-end w-full">
                         <button @click="cartOpen = !cartOpen" class="text-gray-600 focus:outline-none mx-4 sm:mx-0">
@@ -105,9 +105,8 @@
             <!-- #region Body -->
 
             <!-- #region Product Info -->
-            <div class="container grid grid-cols-2 gap-6 mx-auto">
+            <div class="container grid grid-cols-1 md:grid-cols-2 gap-6 mx-3">
                 <div>
-                    
                     <img src="<%= product.imageurl %>" alt="product's image" class="w-full">
 
                     <!-- <img src="images/tshirt-front-white-large.png" alt="product" class="w-full">
@@ -121,7 +120,7 @@
                     </div> -->
                 </div>
 
-                <div>
+                <div class="px-3">
                     <h2 class="text-3xl font-medium uppercase mb-2"><%= product.name %></h2>
                     <div class="flex items-center mb-4">
                         <div class="flex gap-1 text-sm text-yellow-400">
@@ -217,13 +216,15 @@
             <!-- #endregion Product Info -->
 
             <!-- description -->
-            <div class="container py-16 mx-auto">
-                <h3 class="border-b border-gray-200 font-roboto text-gray-800 pb-3 font-medium"><%= product.name %></h3>
+            <div class="py-16 text-base text-wrap px-3 lg:text-lg lg:px-6">
+                <h3 class="border-b border-gray-200 font-roboto text-gray-800 pb-3 font-medium">
+                    <%= product.name %>
+                </h3>
                 <div class="w-full pt-6">
                     <div class="text-gray-600">
-                        <ul class="py-4 text-wrap text-base lg:text-lg">
                             <%= product.detail.slice(2, product.detail.length - 2) %>
-                        </ul>
+                    </div>
+                       
                         <!-- <p class="py-4">The standout feature of this t-shirt is undoubtedly the bold and eye-catching
                             logo design. Our skilled designers have meticulously crafted this logo to be both stylish
                             and recognizable, making it the perfect way to show off your love for your favorite brand.
@@ -242,7 +243,6 @@
                             show off your love for your favorite brand, or simply a comfortable and stylish t-shirt to
                             wear, our logo t-shirt has got you covered. Order yours today and experience the perfect
                             combination of quality, style, and comfort!</p> -->
-                    </div>
 
                     <!-- <table class="table-auto border-collapse w-full text-left text-gray-600 text-sm mt-6">
                         <tr>
@@ -261,42 +261,24 @@
                 </div>
             </div>
             <!-- ./description -->
-
+            
             <!-- related product -->
-            <div class="container pb-16 mx-auto">
+            <div class="container pb-16 mx-3">
                 <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6">Related products</h2>
-                <div class="grid grid-flow-col grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row gap-3">
                     <% relatedProducts.forEach( product => { %>
-                    <div class="bg-white shadow-md overflow-hidden">
-                        
-                            <img  class="w-48 h-auto" src="<%= product.imageurl %>" alt="related product's image">
-                        <!-- <div class="relative group">
-                            
-                            <img src="<%= product.imageurl %>"  class="w-2">
-                            <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center 
-                            justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
-                                <a href="#"
-                                    class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
-                                    title="view product">
-                                    <i class="gg-search"></i>
-                                </a>
-                                <a href="#"
-                                    class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
-                                    title="add to wishlist">
-                                    <i class="gg-heart"></i>
-                                </a>
-                            </div>
-                        </div> -->
-                        <div class="flex flex-col">
-                            <div class="pt-4 pb-3 px-4">
-                                <a href="#">
-                                    <h4
-                                        class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+                        <div class="flex flex-col items-center">
+                            <img  class="w-48 h-auto" src="<%= product.imageurl %>" alt="related product's image"/>
+                                <div class="pt-4 pb-3 px-4">
+                                    <a href="#">
+                                        <h4
+                                        class="text-wrap uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
                                         <%= product.name %></h4>
-                                </a>
-                                <div class="flex items-baseline mb-1 space-x-2">
-                                    <p class="text-xl text-primary font-semibold">$ <%= product.price %></p>
-                                    <!-- <p class="text-sm text-gray-400 line-through">$19.99</p> -->
+                                    </a>
+                                    <div class="flex items-baseline mb-1 space-x-2">
+                                        <p class="text-xl text-primary font-semibold">$ <%= product.price %></p>
+                                        <!-- <p class="text-sm text-gray-400 line-through">$19.99</p> -->
+                                    </div>
                                 </div>
                                 <div class="flex items-center">
                                     <div class="flex gap-1">
@@ -308,15 +290,15 @@
                                     </div>
                                     <div class="text-xs text-gray-500 ml-3">(150)</div>
                                 </div>
-                            </div>
-                            <a href="#"
-                            class="block w-full py-3 text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">Add
-                            to cart</a>
+                                    
+                                <a href="#"
+                                class="block w-1/2 py-3 text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">Add
+                                to cart</a>
                         </div>
-                        
-                        </div>
-                  
-                        <% }); %>
+                    <% }); %>
+                </div>
+            </div>
+            <!-- ./related product -->
 <!--                     
                     <div class="bg-white shadow-md overflow-hidden">
                         <div class="relative group">
@@ -448,7 +430,6 @@
                     </div>
                 </div>
             </div> -->
-            <!-- ./related product -->
 
             <!-- #endregion Body -->
         </main>
@@ -463,7 +444,7 @@
                             <ul>
                                 <li class="block pb-2">
                                     <a href="mailto:test.email0123@elyssi.com"
-                                        class="text-base transition-colors hover:text-primary">support@acme.com</a>
+                                        class="text-base transition-colors hover:text-primary">support@supperstore.com</a>
                                 </li>
                                 <li class="block pb-2">
                                     <a href="tel:5555555555"
@@ -472,7 +453,7 @@
                             </ul>
                         </div>
                         <div class="py-16 text-center lg:py-0 w-full">
-                            <a href="index.html" class="font-mono text-4xl uppercase tracking-widest">Acme</a>
+                            <a href="index.html" class="font-mono text-4xl uppercase tracking-widest">Superstore</a>
                             <div class="flex items-center justify-center pt-5">
                                 <a href="#">
                                     <div class="mr-5 flex items-center bg-white px-2 py-2 group-hover:bg-blue-200">
@@ -515,11 +496,11 @@
                     </div>
                 </div>
             </div>
-            <div class="py-2">
+            <!-- <div class="py-2">
                 <p class="text-center text-base text-secondary">
                     <a href="https://github.com/jluterek/tailwind-ecommerce-template">Source Code - GitHub</a>
                 </p>
-            </div>
+            </div> -->
         </footer>
 
         <!-- #endregion Footer -->
