@@ -43,7 +43,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="text-white flex items-center">
+                            <a href="/login" class="text-white flex items-center">
                                 <i class="fas fa-sign-in-alt mr-2"></i>Login
                             </a>
                         </li>
@@ -63,6 +63,35 @@
         <!-- #endregion Footer -->
     </div>
     <script src="/js/header.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Kiểm tra xem token có trong cookies không
+            const token = document.cookie.split(';').reduce((acc, item) => {
+                const [name, value] = item.trim().split('=');
+                if (name === 'token') {
+                    acc = value; // Lưu giá trị của token
+                }
+                return acc;
+            }, '');
+   
+            
+            // Nếu có token, thay đổi các liên kết thành "Logout"
+            if (token) {
+                const loginLink = document.querySelector('a[href="/login"]');
+                const registerLink = document.querySelector('a[href="/register"]');
+    
+                if (loginLink) {
+                    loginLink.innerHTML = '<i class="fas fa-sign-out-alt mr-2"></i>Logout';;
+                    loginLink.href = '/logout'; // Liên kết logout
+                }
+                
+                if (registerLink) {
+                    registerLink.style.display = 'none'; // Ẩn liên kết đăng ký
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>

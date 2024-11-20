@@ -57,7 +57,7 @@ async function renderTelevisionDetailPage(req, res) {
     const televisionID = req.params.id;
     const queryResult = await televisionService.getTelevisionByID(televisionID);
     const relatedTelevisions = await televisionService.getRelatedTelevisions(televisionID, 5);
-    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedTelevisions });
+    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedTelevisions, category: "televisions" });
   } catch (error) {
     console.error("Error rendering television detail page:", error);
     res

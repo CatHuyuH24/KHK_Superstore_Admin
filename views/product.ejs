@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title><%= product.name %></title>
+    <title><%= product.name %> - Superstore - GA05</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -19,7 +19,7 @@
     <div x-data="{ cartOpen: false , isOpen: false }">
         <!-- #region Header -->
         <header class="bg-white">
-            <div class="container mx-auto px-6 py-3">
+            <div class="container mx-6 px-6 py-3">
                 <div class="flex items-center justify-between">
                     <div class="hidden w-full text-gray-600 md:flex md:items-center">
                         <i class="gg-profile"></i>
@@ -51,7 +51,7 @@
                         <a class="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="contact.html">Contact</a>
                     </div>
                 </nav>
-                <div class="relative mt-6 max-w-lg mx-auto">
+                <div class="relative mt-6 max-w-lg mx-6">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                         <i class="gg-search"></i>
                     </span>
@@ -105,7 +105,7 @@
             <!-- #region Body -->
 
             <!-- #region Product Info -->
-            <div class="container grid grid-cols-1 md:grid-cols-2 gap-6 mx-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mx-3">
                 <div>
                     <img src="<%= product.imageurl %>" alt="product's image" class="w-full">
 
@@ -220,7 +220,7 @@
                 <h3 class="border-b border-gray-200 font-roboto text-gray-800 pb-3 font-medium">
                     <%= product.name %>
                 </h3>
-                <div class="w-full pt-6">
+                <div class="w-full p-6 text-wrap">
                     <div class="text-gray-600">
                             <%= product.detail.slice(2, product.detail.length - 2) %>
                     </div>
@@ -263,24 +263,32 @@
             <!-- ./description -->
             
             <!-- related product -->
-            <div class="container pb-16 mx-3">
-                <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6">Related products</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row gap-3">
+            <div class="pb-16 mx-3 w-full">
+                <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6 w-full text-center">Related products</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row gap-3 xl:gap-9 lg:p-5">
                     <% relatedProducts.forEach( product => { %>
-                        <div class="flex flex-col items-center">
-                            <img  class="w-48 h-auto" src="<%= product.imageurl %>" alt="related product's image"/>
-                                <div class="pt-4 pb-3 px-4">
-                                    <a href="#">
-                                        <h4
-                                        class="text-wrap uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
-                                        <%= product.name %></h4>
-                                    </a>
-                                    <div class="flex items-baseline mb-1 space-x-2">
-                                        <p class="text-xl text-primary font-semibold">$ <%= product.price %></p>
-                                        <!-- <p class="text-sm text-gray-400 line-through">$19.99</p> -->
-                                    </div>
+                        <div class="flex flex-col justify-around my-5 items-center">
+                            <div class="relative group w-[302px] h-80 flex items-center justify-center">
+                                <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="max-w-full max-h-full" />
+                                <a href="/<%= category %>/<%= product.id %>">
+                                    <div
+                                    class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
                                 </div>
-                                <div class="flex items-center">
+                                </a>
+                            </div>
+
+                            <div>
+                                <a href="/<%= category %>/<%= product.id %>">
+                                    <h4
+                                    class="text-wrap uppercase font-medium text-base lg:text-xl mb-2 text-gray-800 hover:text-primary transition">
+                                    <%= product.name %></h4>
+                                </a>
+                                <div class="flex items-baseline mb-1 space-x-2">
+                                    <p class="text-xl text-primary font-semibold">$ <%= product.price %></p>
+                                    <!-- <p class="text-sm text-gray-400 line-through">$19.99</p> -->
+                                </div>
+                            </div>
+                                <div class="flex items-center p-3">
                                     <div class="flex gap-1">
                                         <i class="star"></i>
                                         <i class="star"></i>
@@ -437,14 +445,14 @@
         <!-- #region Footer-->
         <footer class="bg-slate-200">
             <div class="bg-slate-900 text-white">
-                <div class="py-16 sm:py-20 md:py-24 container mx-auto px-6">
-                    <div class="mx-auto flex flex-col items-center justify-between lg:flex-row">
+                <div class="py-16 sm:py-20 md:py-24 container mx-6 px-6">
+                    <div class="mx-6 flex flex-col items-center justify-between lg:flex-row">
                         <div class="text-center lg:text-left w-full">
                             <h4 class="pb-8 text-xl font-bold">Contact</h4>
                             <ul>
                                 <li class="block pb-2">
                                     <a href="mailto:test.email0123@elyssi.com"
-                                        class="text-base transition-colors hover:text-primary">support@supperstore.com</a>
+                                        class="text-base transition-colors hover:text-primary">support@superstore.com</a>
                                 </li>
                                 <li class="block pb-2">
                                     <a href="tel:5555555555"

@@ -63,7 +63,7 @@
             <i class="gg-profile"></i>
           </div>
           <div class="w-full text-blue-900 md:text-center font-mono text-4xl font-semibold uppercase tracking-widest">
-            Supperstore
+            superstore
           </div>
           <div class="flex items-center justify-end w-full">
             <button @click="cartOpen = !cartOpen" class="text-gray-600 focus:outline-none mx-4 sm:mx-0">
@@ -139,21 +139,164 @@
     <main class="my-8">
       <!-- #region Body -->
       <div class="container grid grid-cols-4 gap-6 pt-4 pb-16 items-start mx-auto">
+        
         <!-- #region Sidebar -->
-        <div class="col-span-1 bg-white px-4 pb-6 shadow overflow-hidden">
+        <div class="col-span-1 bg-white px-4 pb-6 shadow overflow-hidden rounded-lg">
           <div class="divide-y divide-gray-200 space-y-5">
-            <!-- Sidebar content here -->
+            <!--region category checkbox-->
+            <div>
+              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium mt-3">
+                Categories
+              </h3>
+              <div class="space-y-2">
+                <div class="flex items-center">
+                  <input onchange="window.location.href='/mobilephones'" type="checkbox" name="cat-2" id="cat-2"
+                    class="text-primary focus:ring-0 cursor-pointer" />
+                  <label for="cat-2" class="text-gray-600 ml-3 cusror-pointer">Mobilephones</label>
+                  <div class="ml-auto text-gray-600 text-sm">(10)</div>
+                </div>
+                <div class="flex items-center">
+                  <input onchange="window.location.href='/computers'" type="checkbox" name="cat-3" id="cat-3"
+                    class="text-primary focus:ring-0 cursor-pointer" />
+                  <label for="cat-3" class="text-gray-600 ml-3 cusror-pointer">Computers</label>
+                  <div class="ml-auto text-gray-600 text-sm">(9)</div>
+                </div>
+                <div class="flex items-center">
+                  <input onchange="window.location.href='/televisions'" type="checkbox" name="cat-4" id="cat-4"
+                    class="text-primary focus:ring-0 cursor-pointer" />
+                  <label for="cat-4" class="text-gray-600 ml-3 cusror-pointer">Televisions</label>
+                  <div class="ml-auto text-gray-600 text-sm">(8)</div>
+                </div>
+              </div>
+            </div>
+            <!--region Brand-->
+            <div>
+              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium mt-3">Brands</h3>
+                <div class="space-y-2">
+                  <% if (categories && categories.length> 0) { %>
+                    <% categories.forEach(category=> { %>
+                      <div class="flex items-center">
+                        <input type="checkbox" name="brands" value="<%= category.name %>" id="<%= category.id %>"
+                          class="text-primary focus:ring-0 cursor-pointer" <% if (selectedBrands &&
+                          selectedBrands.includes(category.name)) { %>
+                        checked
+                        <% } %>
+                          onchange="document.getElementById('brand-filter-form').submit()"
+                          />
+                          <label for="<%= category.id %>" class="text-gray-600 ml-3 cursor-pointer">
+                            <%= category.name %>
+                          </label>
+                          <div class="ml-auto text-gray-600 text-sm">(<%= category.count %>)</div>
+                      </div>
+                      <% }); %>
+                        <% } else { %>
+                          <p class="text-gray-500">No categories available for this section.</p>
+                          <% } %>
+                </div>
+            </div>
+
+
+            <form id="price-filter-form" method="GET" action="/mobilephones">
+              <div class="pt-4">
+                <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
+                  Price
+                </h3>
+                <div class="mt-4 flex items-center">
+                  <input type="text" name="min" id="min"
+                    class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md"
+                    placeholder="min" value="<%= min %>" />
+                  <span class="mx-3 text-gray-500">-</span>
+                  <input type="text" name="max" id="max"
+                    class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md"
+                    placeholder="max" value="<%= max %>" />
+                </div>
+                <button type="submit" class="mt-4 bg-primary text-white px-4 py-2 rounded-md">
+                  Filter
+                </button>
+              </div>
+            </form>
+
+            <div class="pt-4">
+              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
+                size
+              </h3>
+              <div class="flex items-center gap-2">
+                <div class="size-selector">
+                  <input type="radio" name="size" id="size-xs" class="hidden" />
+                  <label for="size-xs"
+                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">XS</label>
+                </div>
+                <div class="size-selector">
+                  <input type="radio" name="size" id="size-sm" class="hidden" />
+                  <label for="size-sm"
+                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">S</label>
+                </div>
+                <div class="size-selector">
+                  <input type="radio" name="size" id="size-m" class="hidden" />
+                  <label for="size-m"
+                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">M</label>
+                </div>
+                <div class="size-selector">
+                  <input type="radio" name="size" id="size-l" class="hidden" />
+                  <label for="size-l"
+                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">L</label>
+                </div>
+                <div class="size-selector">
+                  <input type="radio" name="size" id="size-xl" class="hidden" />
+                  <label for="size-xl"
+                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">XL</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4">
+              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
+                Color
+              </h3>
+              <div class="flex items-center gap-2">
+                <div class="color-selector">
+                  <input type="radio" name="color" id="black" class="hidden" />
+                  <label for="black" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
+                    style="background-color: #000"></label>
+                </div>
+                <div class="color-selector">
+                  <input type="radio" name="color" id="white" class="hidden" />
+                  <label for="white" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
+                    style="background-color: #fff"></label>
+                </div>
+                <div class="color-selector">
+                  <input type="radio" name="color" id="gray" class="hidden" />
+                  <label for="gray" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
+                    style="background-color: #a4a9ad"></label>
+                </div>
+                <div class="color-selector">
+                  <input type="radio" name="color" id="blue" class="hidden" />
+                  <label for="blue" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
+                    style="background-color: #0033cc"></label>
+                </div>
+                <div class="color-selector">
+                  <input type="radio" name="color" id="navy" class="hidden" />
+                  <label for="navy" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
+                    style="background-color: #091740"></label>
+                </div>
+                <div class="color-selector">
+                  <input type="radio" name="color" id="red" class="hidden" />
+                  <label for="red" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
+                    style="background-color: #990000"></label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <!-- #endregion Sidebar -->
+
         <!-- #region Products -->
         <div class="col-span-3">
           <div class="grid grid-cols-3 gap-6">
-            <% console.log(products); %>
-            <% products.forEach(product => { %>
+            <% products.mobilephones.forEach(product => { %>
               <div class="bg-white shadow-md overflow-hidden">
                 <div class="relative group">
-                  <img src="<%= product.image %>" alt="<%= product.name %>" class="w-full" />
+                  <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="w-full" />
                   <div
                     class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
                     <a href="#"
@@ -185,6 +328,78 @@
                   to cart</a>
               </div>
               <% }) %>
+
+              <% products.computers.forEach(product => { %>
+                <div class="bg-white shadow-md overflow-hidden">
+                  <div class="relative group">
+                    <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="w-full" />
+                    <div
+                      class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
+                      <a href="#"
+                        class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
+                        title="view product">
+                        <i class="gg-search"></i>
+                      </a>
+                      <a href="#"
+                        class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
+                        title="add to wishlist">
+                        <i class="gg-heart"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="pt-4 pb-3 px-4">
+                    <a href="#">
+                      <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+                        <%= product.name %>
+                      </h4>
+                    </a>
+                    <div class="flex items-baseline mb-1 space-x-2">
+                      <p class="text-xl text-primary font-semibold">
+                        $<%= product.price %>
+                      </p>
+                    </div>
+                  </div>
+                  <a href="#"
+                    class="block w-full py-3 text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">Add
+                    to cart</a>
+                </div>
+                <% }) %>
+
+                <% products.televisions.forEach(product => { %>
+                  <div class="bg-white shadow-md overflow-hidden">
+                    <div class="relative group">
+                      <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="w-full" />
+                      <div
+                        class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
+                        <a href="#"
+                          class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
+                          title="view product">
+                          <i class="gg-search"></i>
+                        </a>
+                        <a href="#"
+                          class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
+                          title="add to wishlist">
+                          <i class="gg-heart"></i>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="pt-4 pb-3 px-4">
+                      <a href="#">
+                        <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+                          <%= product.name %>
+                        </h4>
+                      </a>
+                      <div class="flex items-baseline mb-1 space-x-2">
+                        <p class="text-xl text-primary font-semibold">
+                          $<%= product.price %>
+                        </p>
+                      </div>
+                    </div>
+                    <a href="#"
+                      class="block w-full py-3 text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">Add
+                      to cart</a>
+                  </div>
+                  <% }) %>
           </div>
         </div>
         <!-- #endregion Products -->
@@ -199,7 +414,7 @@
               <ul>
                 <li class="block pb-2">
                   <a href="mailto:test.email0123@elyssi.com"
-                    class="text-base transition-colors hover:text-primary">support@supperstore.com</a>
+                    class="text-base transition-colors hover:text-primary">support@superstore.com</a>
                 </li>
                 <li class="block pb-2">
                   <a href="tel:5555555555" class="text-base transition-colors hover:text-primary">(555) 555-5555</a>
@@ -207,7 +422,7 @@
               </ul>
             </div>
             <div class="py-16 text-center lg:py-0 w-full">
-              <a href="index.html" class="font-mono text-4xl uppercase tracking-widest">Supperstore</a>
+              <a href="index.html" class="font-mono text-4xl uppercase tracking-widest">superstore</a>
               <div class="flex items-center justify-center pt-5">
                 <a href="#">
                   <div class="mr-5 flex items-center bg-white px-2 py-2 group-hover:bg-blue-200">

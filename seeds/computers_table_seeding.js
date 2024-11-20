@@ -69,11 +69,11 @@ exports.seed = async function (knex) {
         $$`,
     },
     {
-      name: "Macbook Air M2",
+      name: "Macbook M2",
       brand: "Apple",
       price: 1399,
       imageurl:
-        "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2024/09/21/macbook-m2-xam-2.png",
+        "https://i5.walmartimages.com/asr/d03ec3d9-4695-494f-b01d-891c447c26c5.d5e6614d71a17b27cb22d27fa8f00601.jpeg",
       detail: `$$
         M2  brings power to take on even more demanding projects.
         Stunning 13.6-inch Liquid Retina XDR display with extreme dynamic range and contrast ratio
@@ -133,13 +133,13 @@ exports.seed = async function (knex) {
         $$`,
     },
     {
-      name: "Macbook Air M3",
+      name: "Macbook Pro 13",
       brand: "Apple",
       price: 1699,
       imageurl:
-        "https://cdn.hoanghamobile.com/i/previewV2/Uploads/2024/09/21/air-m3-15-inch-xanh-den-1.png",
+        "https://macfinder.co.uk/wp-content/uploads/2019/10/img-MacBook-Pro-Retina-13-Inch-94944.jpg",
       detail: `$$
-        M2  brings power to take on even more demanding projects.
+        Pro Retina  brings power to take on even more demanding projects.
         Stunning 13.6-inch Liquid Retina XDR display with extreme dynamic range and contrast ratio
         M2 chip for exceptional speed and power
         10-core CPU to fly through pro workflows quicker than ever
