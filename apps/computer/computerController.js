@@ -58,8 +58,14 @@ async function renderComputerDetailPage(req, res) {
     const computerID = req.params.id;
     const queryResult = await computerService.getComputerByID(computerID);
 
-    const relatedComputers = await computerService.getRelatedComputers(computerID, 5);
-    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedComputers });
+    const relatedComputers = await computerService.getRelatedComputers(
+      computerID,
+      5
+    );
+    res.render("product", {
+      product: queryResult.rows[0],
+      relatedProducts: relatedComputers,
+    });
   } catch (error) {
     console.error("Error rendering computer detail page:", error);
     res
