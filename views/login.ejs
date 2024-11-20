@@ -42,52 +42,16 @@
                             <i class="fas fa-user-edit mr-2"></i>Register
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="login" class="text-white flex items-center">
                             <i class="fas fa-sign-in-alt mr-2"></i>Login
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </div>
     </div>
 
-    <header class="bg-white">
-        <div class="container mx-auto px-6 py-3">
-            <div class="flex items-center justify-between">
-                <div class="hidden w-full text-gray-600 md:flex md:items-center">
-                    <i class="gg-profile"></i>
-                </div>
-                <div
-                    class="w-full text-blue-900 md:text-center font-mono text-4xl font-semibold uppercase tracking-widest">
-                    Acme
-                </div>
-                <div class="flex items-center justify-end w-full">
-                    <button @click="cartOpen = !cartOpen" class="text-gray-600 focus:outline-none mx-4 sm:mx-0">
-                        <i class="gg-shopping-cart"></i>
-                    </button>
-
-                    <div class="flex sm:hidden">
-                        <button @click="isOpen = !isOpen" type="button"
-                            class="text-gray-600 hover:text-gray-500 focus:outline-none focus:text-gray-500"
-                            aria-label="toggle menu">
-                            <i class="gg-menu-grid-r"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <nav :class="isOpen ? '' : 'hidden'" class="sm:flex sm:justify-center sm:items-center mt-4">
-                <div class="flex flex-col sm:flex-row">
-                    <a class="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="index.html">Home</a>
-                    <a class="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="category.html">Category</a>
-                    <a class="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="product.html">Product</a>
-                    <a class="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="cart.html">Cart</a>
-                    <a class="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="contact.html">Contact</a>
-                </div>
-            </nav>
-
-        </div>
-    </header>
 
     <main class="my-8">
         <div class="text-center text-uppercase mb-6">
@@ -242,8 +206,10 @@
             </p>
         </div>
     </footer>
+ 
+    <!-- footer -->
+    <%- include('layouts/footer') %>
 
-    <!-- #endregion Footer -->
     
 </body>
 

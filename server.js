@@ -2,6 +2,7 @@ const express = require('express');
 const path =require('path');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const utils=require('./apps/Utils/jwtUtils');
 
 require("dotenv").config();
 
@@ -46,6 +47,13 @@ app.use("/search", searchRouter);
 app.use("/login",loginRouter);
 app.use("/logout",logoutRouter)
 
+app.get("/cart",utils.authMiddleware({session:false}),(req,res)=>{
+  res.render('cart',{
+    title: 'Your Cart',
+    body: '<p></p>' 
+
+  });
+})
 
 const PORT = process.env.SERVER_PORT || 3000;
 app.listen(PORT, () => {
