@@ -47,7 +47,24 @@ async function getMobilephoneByID(id) {
   }
 }
 
+async function getRelatedMobilephones(currentId, limit = 3) {
+  try {
+      const query = `
+          SELECT * FROM mobilephones 
+          WHERE ID != $1 
+          ORDER BY RANDOM() 
+          LIMIT $2
+      `;
+      const result = await pool.query(query, [currentId, limit]);
+      return result.rows;
+  } catch (error) {
+      console.error('Error fetching related mobilephones', error);
+      return [];
+  }
+}
+
 module.exports = {
   getAllMobilephones,
   getMobilephoneByID,
+  getRelatedMobilephones,
 };

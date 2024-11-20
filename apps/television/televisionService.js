@@ -46,7 +46,24 @@ async function getTelevisionByID(id) {
   }
 }
 
+async function getRelatedTelevisions(currentId, limit = 3) {
+  try {
+      const query = `
+          SELECT * FROM televisions 
+          WHERE ID != $1 
+          ORDER BY RANDOM() 
+          LIMIT $2
+      `;
+      const result = await pool.query(query, [currentId, limit]);
+      return result.rows;
+  } catch (error) {
+      console.error('Error fetching related televisions', error);
+      return [];
+  }
+}
+
 module.exports = {
   getAllTelevisions,
   getTelevisionByID,
+  getRelatedTelevisions,
 };
