@@ -61,6 +61,28 @@ async function renderCategoryPage(req, res) {
   }
 }
 
+async function renderProductPage(req, res) {
+  const { category, id } = req.params;
+
+  let product;
+  if (category === 'mobilephones') {
+    product = await categoryService.getMobilePhoneById(id);
+  } else if (category === 'computers') {
+    product = await categoryService.getComputerById(id);
+  } else if (category === 'televisions') {
+    product = await categoryService.getTelevisionById(id);
+  } else {
+    return res.status(404).send('Category not found');
+  }
+
+  if (!product) {
+    return res.status(404).send('Product not found');
+  }
+
+  res.render('product', { title: 'Product Page', product });
+}
+
 module.exports = {
   renderCategoryPage,
+  renderProductPage,
 };

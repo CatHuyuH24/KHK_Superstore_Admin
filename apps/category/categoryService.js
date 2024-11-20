@@ -1,68 +1,3 @@
-// const pool = require("../../config/database");
-
-// async function getAllProducts(
-//   sortBy,
-//   minPrice,
-//   maxPrice,
-//   selectedBrands,
-//   search
-// ) {
-//   try {
-//     // Initialize query and queryParams
-//     let query = `
-//       SELECT id, name, price, imageurl, 'mobilephones' AS category FROM mobilephones WHERE 1 = 1
-//       UNION ALL
-//       SELECT id, name, price, imageurl, 'computers' AS category FROM computers WHERE 1 = 1
-//       UNION ALL
-//       SELECT id, name, price, imageurl, 'televisions' AS category FROM televisions WHERE 1 = 1
-//     `;
-//     let queryParams = [];
-//     let filterConditions = [];
-
-//     // Apply search filter
-//     if (search) {
-//       filterConditions.push("(name ILIKE $1 OR description ILIKE $1)");
-//       queryParams.push(`%${search}%`);
-//     }
-
-//     // Lọc theo giá nếu có minPrice và maxPrice
-//     if (minPrice !== null) {
-//       query += ` AND price >= ${minPrice}`;
-//     }
-//     if (maxPrice !== null) {
-//       query += ` AND price <= ${maxPrice}`;
-//     }
-
-//     // Lọc theo các thương hiệu đã chọn
-//     if (selectedBrands.length > 0) {
-//       query += ` AND brand IN (${selectedBrands
-//         .map((brand) => `'${brand}'`)
-//         .join(", ")})`;
-//     }
-//     // Combine filter conditions
-//     if (filterConditions.length > 0) {
-//       query += ` AND ${filterConditions.join(" AND ")}`;
-//     }
-
-//     // Apply sorting
-//     if (sortBy === "price-low-to-high") {
-//       query += " ORDER BY price ASC";
-//     } else if (sortBy === "price-high-to-low") {
-//       query += " ORDER BY price DESC";
-//     }
-
-//     // Execute query
-//     const result = await pool.query(query, queryParams);
-//     return result.rows;
-//   } catch (error) {
-//     console.error("Error fetching products:", error.message);
-//     return [];
-//   }
-// }
-
-// module.exports = {
-//   getAllProducts,
-// };
 const pool = require("../../config/database");
 
 async function getAllProducts(
@@ -134,6 +69,42 @@ async function getAllProducts(
   }
 }
 
+async function getMobilePhoneById(id) {
+  try {
+    const query = 'SELECT * FROM mobilephones WHERE id = $1';
+    const result = await pool.query(query, [id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error fetching mobile phone:', error.message);
+    return null;
+  }
+}
+
+async function getComputerById(id) {
+  try {
+    const query = 'SELECT * FROM computers WHERE id = $1';
+    const result = await pool.query(query, [id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error fetching computer:', error.message);
+    return null;
+  }
+}
+
+async function getTelevisionById(id) {
+  try {
+    const query = 'SELECT * FROM televisions WHERE id = $1';
+    const result = await pool.query(query, [id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error fetching television:', error.message);
+    return null;
+  }
+}
+
 module.exports = {
   getAllProducts,
+  getMobilePhoneById,
+  getComputerById,
+  getTelevisionById,
 };
