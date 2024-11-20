@@ -1,5 +1,7 @@
 const computerService = require("./computerService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
+const {calculateDiscountedPrice} = require("../Utils/calculateDiscountedPrice");
+const { query } = require("express");
 
 async function renderCompterCategoryPage(req, res) {
   try {
@@ -33,6 +35,10 @@ async function renderCompterCategoryPage(req, res) {
       selectedBrands,
       search
     );
+    products.forEach((product) => {
+      product.price = calculateDiscountedPrice(product.price, product.discount);
+    });
+
     res.render("category", {
       title: "Computer Category",
       products: products, // Use products directly
@@ -59,7 +65,11 @@ async function renderComputerDetailPage(req, res) {
     const queryResult = await computerService.getComputerByID(computerID);
 
     const relatedComputers = await computerService.getRelatedComputers(computerID, 5);
-    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedComputers, category: "computers" });
+    relatedComputers.forEach((product) => {
+      product.price = calculateDiscountedPrice(product.price, product.discount);
+    });
+
+    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedComputers, category: "computers",title: queryResult.rows[0].name, });
   } catch (error) {
     console.error("Error rendering computer detail page:", error);
     res

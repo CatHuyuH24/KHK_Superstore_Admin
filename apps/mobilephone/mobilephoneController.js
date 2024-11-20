@@ -1,5 +1,6 @@
 const mobilephoneService = require("./mobilephoneService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
+const {calculateDiscountedPrice} = require("../Utils/calculateDiscountedPrice");
 
 async function renderMobilephoneCategoryPage(req, res) {
   try {
@@ -35,6 +36,9 @@ async function renderMobilephoneCategoryPage(req, res) {
       selectedBrands,
       search,
     );
+    products.forEach((product) => {
+      product.price = calculateDiscountedPrice(product.price, product.discount);
+    });
     res.render("category", {
       title: "Mobilephone Category",
       products: products, // Use products directly
@@ -63,7 +67,11 @@ async function renderMobilephoneDetailPage(req, res) {
     );
 
     const relatedMobilephones = await mobilephoneService.getRelatedMobilephones(mobilephoneID, 5);
-    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedMobilephones, category: "mobilephones" });
+    relatedMobilephones.forEach((product) => {
+      product.price = calculateDiscountedPrice(product.price, product.discount);
+    });
+
+    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedMobilephones, category: "mobilephones", title: queryResult.rows[0].name });
   } catch (error) {
     console.error("Error rendering mobilephone detail page:", error);
     res

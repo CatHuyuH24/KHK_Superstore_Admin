@@ -19,6 +19,7 @@ exports.seed = async function (knex) {
               Quantum HDR for enhanced contrast
               Smart TV features with voice control
       $$`,
+      discount: 10,
     },
     {
       name: "LG Electronics 22-inch",
@@ -35,6 +36,7 @@ exports.seed = async function (knex) {
               Triple XD Enginge
               LED Backlighting
               $$`,
+              discount: 0,
     },
     {
       name: "LG OLED 4K",
@@ -48,6 +50,7 @@ exports.seed = async function (knex) {
               Dolby Vision and Dolby Atmos
               Smart TV with AI ThinQ
               $$`,
+              discount: 0,
     },
     {
       name: "Smart Tivi 32 inch Darling 32HD946T2",
@@ -59,6 +62,7 @@ exports.seed = async function (knex) {
           32-inch Smart TV Darling 32HD946T2 with Full HD Quality
           Featuring a sleek and modern design with a 32-inch screen, the Darling 32HD946T2 Smart TV has ultra-thin bezels and a black color scheme that adds a sophisticated touch. It fits perfectly in various spaces within your home. Additionally, the TV stand is designed with an outward tilt on both sides, allowing the TV to stand stably on different flat surfaces.
           $$`,
+          discount: 0,
     },
     {
       name: "Smart Tivi Darling 43 Inch 43FH960S",
@@ -73,6 +77,7 @@ exports.seed = async function (knex) {
           USB Port: Enables the TV to directly play images and videos from external storage via the TV's USB connection.
           HDMI Port: Quickly connects images and audio between the TV and devices like laptops or DVD players.
           $$`,
+          discount: 0,
     },
     {
       name: "Tivi Led 40 inch Darling 40HD957T2",
@@ -87,6 +92,7 @@ exports.seed = async function (knex) {
           USB Port: Enables the TV to directly play images and videos from external storage via the TV's USB connection.
           HDMI Port: Quickly connects images and audio between the TV and devices like laptops or DVD players.
           $$`,
+          discount: 28,
     },
     {
       name: "Tivi Led 32 inch Darling 32HD955T2",
@@ -101,6 +107,7 @@ exports.seed = async function (knex) {
           USB Port: Enables the TV to directly play images and videos from external storage via the TV's USB connection.
           HDMI Port: Quickly connects images and audio between the TV and devices like laptops or DVD players.
           $$`,
+          discount: 10,
     },
     {
       name: "Tivi Led Darling 32HD957T2 32 inch",
@@ -115,6 +122,7 @@ exports.seed = async function (knex) {
             USB Port: Enables the TV to directly play images and videos from external storage via the TV's USB connection.
             HDMI Port: Quickly connects images and audio between the TV and devices like laptops or DVD players.
             $$`,
+            discount: 0,
     },
   ]);
 };

@@ -20,6 +20,7 @@ exports.seed = async function (knex) {
         BIG, BEAUTIFUL DISPLAY - The 13.6-inch Liquid Retina display features over 500 nits of brightness, P3 wide color and support for 1 billion colors for vibrant images and incredible detail.
         ADVANCED CAMERA AND AUDIO - Look sharp and sound great with a 1080p FaceTime HD camera, three-mic array and four-speaker sound system with Spatial Audio.
         $$`,
+      discount: 0,
     },
     {
       name: "Macbook Pro 14 M2",
@@ -35,6 +36,7 @@ exports.seed = async function (knex) {
         This product may be returned within 90 days for free return or replacement if you are not satisfied.
         Battery capacity exceeds 80% capacity relative to its new equivalent.
         $$`,
+      discount: 10,
     },
     {
       name: "Macbook Pro 16 M2 (16/256)",
@@ -67,6 +69,7 @@ exports.seed = async function (knex) {
         Solid State Drive Capacity 8 TB
         Configure To Order {Factory Upgraded from Base Spec}
         $$`,
+        discount: 30,
     },
     {
       name: "Macbook M2",
@@ -99,6 +102,7 @@ exports.seed = async function (knex) {
         Solid State Drive Capacity 8 TB
         Configure To Order {Factory Upgraded from Base Spec}
         $$`,
+        discount: 0,
     },
     {
       name: "Macbook Pro 16 M1 Max",
@@ -131,6 +135,7 @@ exports.seed = async function (knex) {
         Solid State Drive Capacity 8 TB
         Configure To Order {Factory Upgraded from Base Spec}
         $$`,
+        discount: 0,
     },
     {
       name: "Macbook Pro 13",
@@ -163,6 +168,7 @@ exports.seed = async function (knex) {
         Solid State Drive Capacity 8 TB
         Configure To Order {Factory Upgraded from Base Spec}
         $$`,
+        discount: 10,
     },
     {
       name: "Macbook Air M3",
@@ -195,6 +201,7 @@ exports.seed = async function (knex) {
         Solid State Drive Capacity 8 TB
         Configure To Order {Factory Upgraded from Base Spec}
         $$`,
+        discount: 12,
     },
     {
       name: "Laptop Dell XPS 13 9340 ",
@@ -211,6 +218,7 @@ exports.seed = async function (knex) {
         Ample Memory and Storage: With 16GB LPDDR5X RAM and 1TB M.2 PCIe NVMe SSD, it provides spacious storage and high processing speeds.
         Advanced Connectivity: Equipped with Wi-Fi 7, Bluetooth 5.4, and two Thunderbolt 4 ports, ensuring fast data transfer and connectivity.
         $$`,
+        discount: 0,
     },
     {
       name: "Laptop Dell XPS 13 Plus 9320-5CG56",
@@ -227,6 +235,7 @@ exports.seed = async function (knex) {
         Ample Memory and Storage: With 16GB LPDDR5X RAM and 1TB M.2 PCIe NVMe SSD, it provides spacious storage and high processing speeds.
         Advanced Connectivity: Equipped with Wi-Fi 7, Bluetooth 5.4, and two Thunderbolt 4 ports, ensuring fast data transfer and connectivity.
         $$`,
+        discount: 0,
     },
     {
       name: "Laptop Acer Nitro 5 Tiger",
@@ -243,6 +252,7 @@ exports.seed = async function (knex) {
         Ample Memory and Storage: With 16GB LPDDR5X RAM and 1TB M.2 PCIe NVMe SSD, it provides spacious storage and high processing speeds.
         Advanced Connectivity: Equipped with Wi-Fi 7, Bluetooth 5.4, and two Thunderbolt 4 ports, ensuring fast data transfer and connectivity.
         $$`,
+        discount: 0,
     },
   ]);
 };

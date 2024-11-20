@@ -32,6 +32,7 @@ exports.seed = async function (knex) {
         iPhone 14 Pro Max is splash, water, and dust resistant and was tested under controlled laboratory conditions with a rating of IP68 under IEC standard 60529 (maximum depth of 6 meters up to 30 minutes). Splash, water, and dust resistance are not permanent conditions. Resistance might decrease as a result of normal wear. Do not attempt to charge a wet iPhone; refer to the user guide for cleaning and drying instructions. Liquid damage not covered under warranty.
         Some features may not be available for all countries or all areas.
         $$`,
+        discount: 10,
     },
     {
       name: "iPhone 16",
@@ -59,6 +60,7 @@ exports.seed = async function (knex) {
         iPhone 14 Pro Max is splash, water, and dust resistant and was tested under controlled laboratory conditions with a rating of IP68 under IEC standard 60529 (maximum depth of 6 meters up to 30 minutes). Splash, water, and dust resistance are not permanent conditions. Resistance might decrease as a result of normal wear. Do not attempt to charge a wet iPhone; refer to the user guide for cleaning and drying instructions. Liquid damage not covered under warranty.
         Some features may not be available for all countries or all areas.
         $$`,
+        discount: 10,
     },
     {
       name: "iPhone 16 Plus",
@@ -86,6 +88,7 @@ exports.seed = async function (knex) {
         iPhone 14 Pro Max is splash, water, and dust resistant and was tested under controlled laboratory conditions with a rating of IP68 under IEC standard 60529 (maximum depth of 6 meters up to 30 minutes). Splash, water, and dust resistance are not permanent conditions. Resistance might decrease as a result of normal wear. Do not attempt to charge a wet iPhone; refer to the user guide for cleaning and drying instructions. Liquid damage not covered under warranty.
         Some features may not be available for all countries or all areas.
         $$`,
+        discount: 10,
     },
     {
       name: "iPhone 16 Pro",
@@ -103,6 +106,7 @@ exports.seed = async function (knex) {
         Pair the iPhone 16 Pro with a Straight Talk no-contract plan featuring unlimited talk & text, plus 10GB of high-speed data starting at only $35/month for a single line, all on America's most reliable 5G network. 
         To activate this device, a Straight Talk Wireless plan is required. Shop for the iPhone 16 Pro online or at your local Walmart.
         $$`,
+        discount: 0,
     },
     {
       name: "iPhone 16 Pro Max",
@@ -120,6 +124,7 @@ exports.seed = async function (knex) {
         Pair the iPhone 16 Pro Max with a Straight Talk no-contract plan featuring unlimited talk & text, plus 10GB of high-speed data starting at only $35/month for a single line, all on America's most reliable 5G network.
         To activate this device, a Straight Talk Wireless plan is required. Shop for the iPhone 16 Pro Max online or at your local Walmart.
         $$`,
+        discount: 0,
     },
     {
       name: "iPhone 15",
@@ -147,6 +152,7 @@ exports.seed = async function (knex) {
         All battery claims depend on network configuration and many other factors; actual results will vary. Battery has limited recharge cycles and may eventually need to be replaced. Battery life and charge cycles vary by use and settings. See apple.com/batteries and apple.com/iphone/battery.html for more information.
         The included USB‑C Charge Cable is compatible with AirPods Pro (2nd generation) with MagSafe Charging Case (USB‑C).
         $$`,
+        discount: 0,
     },
     {
       name: "iPhone 15 Plus",
@@ -173,6 +179,7 @@ exports.seed = async function (knex) {
         iPhone 15 is splash, water, and dust resistant and were tested under controlled laboratory conditions with a rating of IP68 under IEC standard 60529 (maximum depth of 6 meters up to 30 minutes). Splash, water, and dust resistance are not permanent conditions. Resistance might decrease as a result of normal wear. Do not attempt to charge a wet iPhone; refer to the user guide for cleaning and drying instructions. Liquid damage not covered under warranty.
         All battery claims depend on network configuration and many other factors; actual results will vary. Battery has limited recharge cycles and may eventually need to be replaced. Battery life and charge cycles vary by use and settings. See apple.com/batteries and apple.com/iphone/battery.html for more information.
         $$`,
+        discount: 0,
     },
     {
       name: "iPhone 15 Pro",
@@ -204,6 +211,7 @@ exports.seed = async function (knex) {
         Depth: 0.32 inch (8.25mm)
         Weight: 7.81 ounces (221 grams)
         $$`,
+        discount: 0,
     },
     {
       name: "iPhone 15 Pro Max",
@@ -235,6 +243,7 @@ exports.seed = async function (knex) {
         Depth: 0.32 inch (8.25mm)
         Weight: 7.81 ounces (221 grams)
         $$`,
+        discount: 50,
     },
     {
       name: "Samsung Galaxy S24 Ultra",
@@ -257,6 +266,7 @@ exports.seed = async function (knex) {
         The Samsung Galaxy S24 Ultra has been tested under controlled laboratory conditions and is certified with an IP68 rating for water and dust resistance. Actual performance may vary based on usage and conditions.
         Battery life may vary depending on usage patterns and software settings. For optimum battery health, follow the manufacturer's charging guidelines.
       $$`,
+      discount: 0,
     },
     {
       name: "Samsung Galaxy S24",
@@ -279,6 +289,7 @@ exports.seed = async function (knex) {
         The Samsung Galaxy S24 is IP68 rated for water and dust resistance and has been tested under controlled conditions. Actual performance may vary based on usage and environmental conditions.
         Battery life is subject to change based on usage patterns, apps, and settings. Refer to the manufacturer's guide for optimal charging and battery care.
         $$`,
+        discount: 0,
     },
   ]);
 };

@@ -1,5 +1,6 @@
 const televisionService = require("./televisionService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
+const {calculateDiscountedPrice} = require("../Utils/calculateDiscountedPrice");
 
 async function renderTelevisionCategoryPage(req, res) {
   try {
@@ -32,6 +33,10 @@ async function renderTelevisionCategoryPage(req, res) {
       selectedBrands,
       search
     );
+    products.forEach((product) => {
+      product.price = calculateDiscountedPrice(product.price, product.discount);
+    });
+
     res.render("category", {
       title: "Television Category",
       products: products, // Use products directly
@@ -57,7 +62,11 @@ async function renderTelevisionDetailPage(req, res) {
     const televisionID = req.params.id;
     const queryResult = await televisionService.getTelevisionByID(televisionID);
     const relatedTelevisions = await televisionService.getRelatedTelevisions(televisionID, 5);
-    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedTelevisions, category: "televisions" });
+    relatedTelevisions.forEach((product) => {
+      product.price = calculateDiscountedPrice(product.price, product.discount);
+    });
+
+    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedTelevisions, category: "televisions", title: queryResult.rows[0].name });
   } catch (error) {
     console.error("Error rendering television detail page:", error);
     res

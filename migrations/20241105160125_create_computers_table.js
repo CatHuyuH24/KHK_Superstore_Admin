@@ -10,7 +10,8 @@ exports.up = async function (knex) {
     brand VARCHAR(255) NOT NULL,
     price INT NOT NULL,
     imageurl VARCHAR(255) NOT NULL,
-    detail TEXT NOT NULL
+    detail TEXT NOT NULL,
+    discount REAL DEFAULT 0
 );
 
     `);

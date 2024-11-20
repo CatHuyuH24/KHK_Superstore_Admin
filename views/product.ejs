@@ -18,50 +18,7 @@
 <body class="w-full overflow-x-hidden">
     <div x-data="{ cartOpen: false , isOpen: false }">
         <!-- #region Header -->
-        <header class="bg-white">
-            <div class="container mx-6 px-6 py-3">
-                <div class="flex items-center justify-between">
-                    <div class="hidden w-full text-gray-600 md:flex md:items-center">
-                        <i class="gg-profile"></i>
-                    </div>
-                    <div
-                        class="w-full text-blue-900 md:text-center font-mono text-4xl font-semibold uppercase tracking-widest">
-                        Superstore
-                    </div>
-                    <div class="flex items-center justify-end w-full">
-                        <button @click="cartOpen = !cartOpen" class="text-gray-600 focus:outline-none mx-4 sm:mx-0">
-                            <i class="gg-shopping-cart"></i>
-                        </button>
-
-                        <div class="flex sm:hidden">
-                            <button @click="isOpen = !isOpen" type="button"
-                                class="text-gray-600 hover:text-gray-500 focus:outline-none focus:text-gray-500"
-                                aria-label="toggle menu">
-                                <i class="gg-menu-grid-r"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <nav :class="isOpen ? '' : 'hidden'" class="sm:flex sm:justify-center sm:items-center mt-4">
-                    <div class="flex flex-col sm:flex-row">
-                        <a class="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="index.html">Home</a>
-                        <a class="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="category.html">Category</a>
-                        <a class="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="product.html">Product</a>
-                        <a class="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="cart.html">Cart</a>
-                        <a class="mt-3 text-gray-600 hover:underline sm:mx-3 sm:mt-0" href="contact.html">Contact</a>
-                    </div>
-                </nav>
-                <div class="relative mt-6 max-w-lg mx-6">
-                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
-                        <i class="gg-search"></i>
-                    </span>
-
-                    <input
-                        class="pl-10 block w-full border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                        type="text" placeholder="Search">
-                </div>
-            </div>
-        </header>
+        <%- include('layouts/mainLayout', { content: locals.body }) %>
         <!-- #endregion Header -->
 
         <!-- #region Cart -->
@@ -152,7 +109,9 @@
                     </div>
                     <div class="flex items-baseline mb-1 space-x-2 font-roboto mt-4">
                         <p class="text-xl text-primary font-semibold">$<%= product.price %></p>
-                        <!-- <p class="text-base text-gray-400 line-through">$19.99</p> -->
+                        <% if (product.discount > 0) {%>
+                            <p class="text-base text-red-600 font-extrabold">-<%= product.discount %>%</p>
+                        <% } %>
                     </div>
 
                     <!-- <p class="mt-4 text-gray-600"><%= product.detail.slice(2, product.detail.length - 2) %></p> -->
@@ -285,7 +244,9 @@
                                 </a>
                                 <div class="flex items-baseline mb-1 space-x-2">
                                     <p class="text-xl text-primary font-semibold">$ <%= product.price %></p>
-                                    <!-- <p class="text-sm text-gray-400 line-through">$19.99</p> -->
+                                    <% if (product.discount > 0) {%>
+                                        <p class="text-sm text-red-600 font-extrabold">-<%= product.discount %>%</p>
+                                    <% } %>
                                 </div>
                             </div>
                                 <div class="flex items-center p-3">
@@ -443,74 +404,9 @@
         </main>
 
         <!-- #region Footer-->
-        <footer class="bg-slate-200">
-            <div class="bg-slate-900 text-white">
-                <div class="py-16 sm:py-20 md:py-24 container mx-6 px-6">
-                    <div class="mx-6 flex flex-col items-center justify-between lg:flex-row">
-                        <div class="text-center lg:text-left w-full">
-                            <h4 class="pb-8 text-xl font-bold">Contact</h4>
-                            <ul>
-                                <li class="block pb-2">
-                                    <a href="mailto:test.email0123@elyssi.com"
-                                        class="text-base transition-colors hover:text-primary">support@superstore.com</a>
-                                </li>
-                                <li class="block pb-2">
-                                    <a href="tel:5555555555"
-                                        class="text-base transition-colors hover:text-primary">(555) 555-5555</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="py-16 text-center lg:py-0 w-full">
-                            <a href="index.html" class="font-mono text-4xl uppercase tracking-widest">Superstore</a>
-                            <div class="flex items-center justify-center pt-5">
-                                <a href="#">
-                                    <div class="mr-5 flex items-center bg-white px-2 py-2 group-hover:bg-blue-200">
-                                        <i class="gg-facebook text-gray-900"></i>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="mr-5 flex items-center bg-white px-2 py-2 group-hover:bg-blue-200">
-                                        <i class="gg-twitter text-gray-900"></i>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="mr-5 flex items-center bg-white px-2 py-2 group-hover:bg-blue-200">
-                                        <i class="gg-instagram text-gray-900"></i>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div class="flex items-center bg-white px-2 py-2 group-hover:bg-blue-200">
-                                        <i class="gg-slack text-gray-900"></i>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="text-center lg:text-right w-full">
-                            <h4 class="pb-8 text-xl font-bold">Links</h4>
-                            <ul>
-                                <li class="block pb-2">
-                                    <a href="index.html" class="text-base transition-colors hover:text-primary">Home</a>
-                                </li>
-                                <li class="block pb-2">
-                                    <a href="category.html"
-                                        class="text-base transition-colors hover:text-primary">Category</a>
-                                </li>
-                                <li class="block pb-2">
-                                    <a href="product.html"
-                                        class="text-base transition-colors hover:text-primary">Product</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="py-2">
-                <p class="text-center text-base text-secondary">
-                    <a href="https://github.com/jluterek/tailwind-ecommerce-template">Source Code - GitHub</a>
-                </p>
-            </div> -->
+        <footer>
+            <%- include('layouts/footer') %>
         </footer>
-
         <!-- #endregion Footer -->
     </div>
 </body>

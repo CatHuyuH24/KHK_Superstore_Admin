@@ -37,7 +37,7 @@ async function renderHomePage(req, res) {
       { id: "cat-23", name: "Samsung", count: 0 },
     ];
 	const productsObject =
-		await indexService.getAllProductsAsObject(sortBy, minPrice, maxPrice, selectedBrands, search);
+		await indexService.getAllDiscountedProductsAsObject(sortBy, minPrice, maxPrice, selectedBrands, search);
 
 	res.render("index", 
 		{ 
@@ -52,6 +52,7 @@ async function renderHomePage(req, res) {
 			categories,
 			currentCategory,
 			selectedBrands,
+			title: "Homepage - Supershop - GA05"
 		});
 	
 } catch (error) {
