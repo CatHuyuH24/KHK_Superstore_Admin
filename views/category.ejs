@@ -20,297 +20,202 @@
   <div x-data="{ cartOpen: false , isOpen: false }">
     <!-- #region Header -->
     <%- include('layouts/mainLayout', { content: locals.body }) %>
-    <!-- #endregion Header -->
+      <!-- #endregion Header -->
 
-    <!-- #region Cart -->
-    <div :class="cartOpen ? 'translate-x-0 ease-out' : 'translate-x-full ease-in'"
-      class="fixed right-0 top-0 max-w-xs w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300 hidden"
-      x-init="() => { $el.classList.remove('hidden'); }">
-      <div class="flex items-center justify-between">
-        <h3 class="text-2xl font-medium text-gray-700">Your cart</h3>
-        <button @click="cartOpen = !cartOpen" class="text-gray-600 focus:outline-none">
-          <i class="gg-close"></i>
-        </button>
-      </div>
-      <hr class="my-3" />
-      <div class="flex justify-between mt-6">
-        <div class="flex">
-          <img class="h-20 w-20 object-cover" src="images/tshirt-front-white-small.png" alt="" />
-          <div class="mx-3">
-            <h3 class="text-sm text-gray-600">T-Shirt</h3>
-            <div class="flex items-center mt-2">
-              <button class="text-gray-500 focus:outline-none focus:text-gray-600">
-                <i class="gg-remove"></i>
-              </button>
-              <span class="text-gray-700 mx-2">2</span>
-              <button class="text-gray-500 focus:outline-none focus:text-gray-600">
-                <i class="gg-add"></i>
-              </button>
-            </div>
-          </div>
+      <!-- #region Cart -->
+      <div :class="cartOpen ? 'translate-x-0 ease-out' : 'translate-x-full ease-in'"
+        class="fixed right-0 top-0 max-w-xs w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300 hidden"
+        x-init="() => { $el.classList.remove('hidden'); }">
+        <div class="flex items-center justify-between">
+          <h3 class="text-2xl font-medium text-gray-700">Your cart</h3>
+          <button @click="cartOpen = !cartOpen" class="text-gray-600 focus:outline-none">
+            <i class="gg-close"></i>
+          </button>
         </div>
-        <span class="text-gray-600">$24.99</span>
-      </div>
-      <a
-        class="flex cursor-pointer items-center justify-center mt-4 px-3 py-2 bg-green-700 text-white text-sm uppercase font-medium hover:bg-green-500 focus:outline-none focus:bg-green-500">
-        <span>Checkout</span>
-        <i class="px-2 gg-arrow-right"></i>
-      </a>
-    </div>
-    <!-- #endregion Cart -->
-
-    <main class="my-8">
-      <!-- #region Body -->
-      <div class="container grid grid-cols-4 gap-6 pt-4 pb-16 items-start mx-auto">
-        <!-- #region Sidebar -->
-        <div class="col-span-1 bg-white px-4 pb-6 shadow overflow-hidden rounded-lg">
-          <div class="divide-y divide-gray-200 space-y-5">
-            <!--region category checkbox-->
-            <div>
-              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium mt-3">
-                Categories
-              </h3>
-              <div class="space-y-2">
-                <div class="flex items-center">
-                  <input onchange="window.location.href='/mobilephones'" type="checkbox" name="cat-2" id="cat-2"
-                    class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="cat-2" class="text-gray-600 ml-3 cusror-pointer">Mobilephones</label>
-                  <div class="ml-auto text-gray-600 text-sm">(10)</div>
-                </div>
-                <div class="flex items-center">
-                  <input onchange="window.location.href='/computers'" type="checkbox" name="cat-3" id="cat-3"
-                    class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="cat-3" class="text-gray-600 ml-3 cusror-pointer">Computers</label>
-                  <div class="ml-auto text-gray-600 text-sm">(9)</div>
-                </div>
-                <div class="flex items-center">
-                  <input onchange="window.location.href='/televisions'" type="checkbox" name="cat-4" id="cat-4"
-                    class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="cat-4" class="text-gray-600 ml-3 cusror-pointer">Televisions</label>
-                  <div class="ml-auto text-gray-600 text-sm">(8)</div>
-                </div>
-              </div>
-            </div>
-            <!--region Brand-->
-            <div>
-              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium mt-3">Brands</h3>
-              <form id="brand-filter-form" method="GET" action="<%= currentCategory %>">
-                <div class="space-y-2">
-                  <% if (categories && categories.length> 0) { %>
-                    <% categories.forEach(category=> { %>
-                      <div class="flex items-center">
-                        <input type="checkbox" name="brands" value="<%= category.name %>" id="<%= category.id %>"
-                          class="text-primary focus:ring-0 cursor-pointer" <% if (selectedBrands &&
-                          selectedBrands.includes(category.name)) { %>
-                        checked
-                        <% } %>
-                          onchange="document.getElementById('brand-filter-form').submit()"
-                          />
-                          <label for="<%= category.id %>" class="text-gray-600 ml-3 cursor-pointer">
-                            <%= category.name %>
-                          </label>
-                          <div class="ml-auto text-gray-600 text-sm">(<%= category.count %>)</div>
-                      </div>
-                      <% }); %>
-                        <% } else { %>
-                          <p class="text-gray-500">No categories available for this section.</p>
-                          <% } %>
-                </div>
-              </form>
-            </div>
-
-
-            <form id="price-filter-form" method="GET" action="/mobilephones">
-              <div class="pt-4">
-                <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
-                  Price
-                </h3>
-                <div class="mt-4 flex items-center">
-                  <input type="text" name="min" id="min"
-                    class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md"
-                    placeholder="min" value="<%= min %>" />
-                  <span class="mx-3 text-gray-500">-</span>
-                  <input type="text" name="max" id="max"
-                    class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md"
-                    placeholder="max" value="<%= max %>" />
-                </div>
-                <button type="submit" class="mt-4 bg-primary text-white px-4 py-2 rounded-md">
-                  Filter
+        <hr class="my-3" />
+        <div class="flex justify-between mt-6">
+          <div class="flex">
+            <img class="h-20 w-20 object-cover" src="images/tshirt-front-white-small.png" alt="" />
+            <div class="mx-3">
+              <h3 class="text-sm text-gray-600">T-Shirt</h3>
+              <div class="flex items-center mt-2">
+                <button class="text-gray-500 focus:outline-none focus:text-gray-600">
+                  <i class="gg-remove"></i>
+                </button>
+                <span class="text-gray-700 mx-2">2</span>
+                <button class="text-gray-500 focus:outline-none focus:text-gray-600">
+                  <i class="gg-add"></i>
                 </button>
               </div>
-            </form>
-
-            <div class="pt-4">
-              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
-                size
-              </h3>
-              <div class="flex items-center gap-2">
-                <div class="size-selector">
-                  <input type="radio" name="size" id="size-xs" class="hidden" />
-                  <label for="size-xs"
-                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">XS</label>
-                </div>
-                <div class="size-selector">
-                  <input type="radio" name="size" id="size-sm" class="hidden" />
-                  <label for="size-sm"
-                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">S</label>
-                </div>
-                <div class="size-selector">
-                  <input type="radio" name="size" id="size-m" class="hidden" />
-                  <label for="size-m"
-                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">M</label>
-                </div>
-                <div class="size-selector">
-                  <input type="radio" name="size" id="size-l" class="hidden" />
-                  <label for="size-l"
-                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">L</label>
-                </div>
-                <div class="size-selector">
-                  <input type="radio" name="size" id="size-xl" class="hidden" />
-                  <label for="size-xl"
-                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">XL</label>
-                </div>
-              </div>
-            </div>
-
-            <div class="pt-4">
-              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
-                Color
-              </h3>
-              <div class="flex items-center gap-2">
-                <div class="color-selector">
-                  <input type="radio" name="color" id="black" class="hidden" />
-                  <label for="black" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
-                    style="background-color: #000"></label>
-                </div>
-                <div class="color-selector">
-                  <input type="radio" name="color" id="white" class="hidden" />
-                  <label for="white" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
-                    style="background-color: #fff"></label>
-                </div>
-                <div class="color-selector">
-                  <input type="radio" name="color" id="gray" class="hidden" />
-                  <label for="gray" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
-                    style="background-color: #a4a9ad"></label>
-                </div>
-                <div class="color-selector">
-                  <input type="radio" name="color" id="blue" class="hidden" />
-                  <label for="blue" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
-                    style="background-color: #0033cc"></label>
-                </div>
-                <div class="color-selector">
-                  <input type="radio" name="color" id="navy" class="hidden" />
-                  <label for="navy" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
-                    style="background-color: #091740"></label>
-                </div>
-                <div class="color-selector">
-                  <input type="radio" name="color" id="red" class="hidden" />
-                  <label for="red" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
-                    style="background-color: #990000"></label>
-                </div>
-              </div>
             </div>
           </div>
+          <span class="text-gray-600">$24.99</span>
         </div>
-        <!-- #endregion Sidebar -->
+        <a
+          class="flex cursor-pointer items-center justify-center mt-4 px-3 py-2 bg-green-700 text-white text-sm uppercase font-medium hover:bg-green-500 focus:outline-none focus:bg-green-500">
+          <span>Checkout</span>
+          <i class="px-2 gg-arrow-right"></i>
+        </a>
+      </div>
+      <!-- #endregion Cart -->
 
-        <!-- #region Products -->
-        <script>
-          function updateSort() {
-            const sortValue = document.getElementById("sort").value;
-            let url = new URL(window.location.href); // Tạo một URL đối tượng từ URL hiện tại
+      <main class="my-8">
+        <!-- #region Body -->
+        <div class="container grid grid-cols-4 gap-6 pt-4 pb-16 items-start mx-auto">
+          <!-- #region Sidebar -->
+          <div class="col-span-1 bg-white px-4 pb-6 shadow overflow-hidden rounded-lg">
+            <div class="divide-y divide-gray-200 space-y-5">
 
-            if (sortValue) {
-              url.searchParams.set('sortBy', sortValue); // Thêm hoặc cập nhật query parameter 'sortBy'
-            } else {
-              url.searchParams.delete('sortBy'); // Xóa 'sortBy' nếu giá trị là mặc định
-            }
-
-            window.location.href = url.toString(); // Thay đổi URL mà không tải lại trang
-          }
-        </script>
-        <div class="col-span-3">
-          <div class="flex items-center mb-4">
-            <select name="sort" id="sort"
-              class="rounded-lg h-7 bg-gray-200 w-44 text-sm text-gray-600 px-2 border-gray-300 shadow-sm focus:ring-primary focus:border-primary"
-              onchange="updateSort()">
-              <option value="">Default sorting</option>
-              <option value="price-low-to-high" <%=sortBy==='price-low-to-high' ? 'selected' : '' %>>Price low to high
-              </option>
-              <option value="price-high-to-low" <%=sortBy==='price-high-to-low' ? 'selected' : '' %>>Price high to low
-              </option>
-            </select>
-
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
-            <% products.forEach(product=> { %>
-              <div class="bg-white shadow-md flex flex-col h-full rounded-lg">
-                <!-- Phần hình ảnh sản phẩm -->
-                <div class="relative group w-[302px] h-80 flex items-center justify-center">
-                  <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="max-w-full max-h-full" />
-                  <a href="/<%= category %>/<%= product.id %>">
-                    <div
-                    class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
+              <!--region Brand-->
+              <div>
+                <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium mt-3">Brands</h3>
+                <form id="brand-filter-form" method="GET" action="<%= currentCategory %>">
+                  <div class="space-y-2">
+                    <% if (categories && categories.length> 0) { %>
+                      <% categories.forEach(category=> { %>
+                        <div class="flex items-center">
+                          <input type="checkbox" name="brands" value="<%= category.name %>" id="<%= category.id %>"
+                            class="text-primary focus:ring-0 cursor-pointer" <% if (selectedBrands &&
+                            selectedBrands.includes(category.name)) { %>
+                          checked
+                          <% } %>/>
+                            <label for="<%= category.id %>" class="text-gray-600 ml-3 cursor-pointer">
+                              <%= category.name %>
+                            </label>
+                            <div class="ml-auto text-gray-600 text-sm">(<%= category.count %>)</div>
+                        </div>
+                        <% }); %>
+                          <% } else { %>
+                            <p class="text-gray-500">No categories available for this section.</p>
+                            <% } %>
                   </div>
-                  </a>
+                </form>
+              </div>
+              <!--region filter min max value-->
+              <form id="price-filter-form" method="GET" action="<%= currentCategory %>">
+                <div class="pt-4">
+                  <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
+                    Price
+                  </h3>
+                  <div class="mt-4 flex items-center">
+                    <input type="text" name="min" id="min"
+                      class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md"
+                      placeholder="min" value="<%= min %>" />
+                    <span class="mx-3 text-gray-500">-</span>
+                    <input type="text" name="max" id="max"
+                      class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md"
+                      placeholder="max" value="<%= max %>" />
+                  </div>
                 </div>
+              </form>
+              <!--apply filter-->
+              <div class="flex justify-center intems-center">
+                <button type="button" onclick="applyFilters()"
+                  class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Apply Filters</button>
+              </div>
+            </div>
+          </div>
+          <!-- #endregion Sidebar -->
 
-                <!-- Phần nội dung sản phẩm -->
-                <div class="flex-grow pt-4 pb-3 px-4 flex flex-col">
-                  <!-- Tên sản phẩm -->
-                  <a href="/<%= category %>/<%= product.id %>">
-                    <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
-                      <%= product.name %>
-                    </h4>
-                  </a>
+          <!-- #region Products -->
+          <script>
+            function updateSort() {
+              const sortValue = document.getElementById("sort").value;
+              let url = new URL(window.location.href); // Tạo một URL đối tượng từ URL hiện tại
 
-                  <!-- Giá sản phẩm -->
-                  <div class="flex items-baseline mb-1 space-x-2">
-                    <p class="text-xl text-primary font-semibold">
-                      $<%= product.price %>
-                    <!-- </p>
+              if (sortValue) {
+                url.searchParams.set('sortBy', sortValue); // Thêm hoặc cập nhật query parameter 'sortBy'
+              } else {
+                url.searchParams.delete('sortBy'); // Xóa 'sortBy' nếu giá trị là mặc định
+              }
+
+              window.location.href = url.toString(); // Thay đổi URL mà không tải lại trang
+            }
+          </script>
+          <div class="col-span-3">
+            <div class="flex items-center mb-4">
+              <select name="sort" id="sort"
+                class="rounded-lg h-7 bg-gray-200 w-44 text-sm text-gray-600 px-2 border-gray-300 shadow-sm focus:ring-primary focus:border-primary"
+                onchange="updateSort()">
+                <option value="">Default sorting</option>
+                <option value="price-low-to-high" <%=sortBy==='price-low-to-high' ? 'selected' : '' %>>Price low to high
+                </option>
+                <option value="price-high-to-low" <%=sortBy==='price-high-to-low' ? 'selected' : '' %>>Price high to low
+                </option>
+              </select>
+
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
+              <% products.forEach(product=> { %>
+                <div class="bg-white shadow-md flex flex-col h-full rounded-lg">
+                  <!-- Phần hình ảnh sản phẩm -->
+                  <div class="relative group w-[302px] h-80 flex items-center justify-center">
+                    <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="max-w-full max-h-full" />
+                    <a href="/<%= category %>/<%= product.id %>">
+                      <div
+                        class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
+                      </div>
+                    </a>
+                  </div>
+
+                  <!-- Phần nội dung sản phẩm -->
+                  <div class="flex-grow pt-4 pb-3 px-4 flex flex-col">
+                    <!-- Tên sản phẩm -->
+                    <a href="/<%= category %>/<%= product.id %>">
+                      <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+                        <%= product.name %>
+                      </h4>
+                    </a>
+
+                    <!-- Giá sản phẩm -->
+                    <div class="flex items-baseline mb-1 space-x-2">
+                      <p class="text-xl text-primary font-semibold">
+                        $<%= product.price %>
+                          <!-- </p>
                     <p class="text-sm text-gray-400 line-through">
                       <%= product.original_price || 'N/A' %>
                     </p> -->
+                    </div>
+
+                    <!-- Đánh giá -->
+                    <div class="flex items-center mb-3">
+                      <div class="flex gap-1">
+                        <i class="star"></i>
+                        <i class="star"></i>
+                        <i class="star"></i>
+                        <i class="star"></i>
+                        <i class="star"></i>
+                      </div>
+                      <div class="text-xs text-gray-500 ml-3">
+                        (<%= product.reviews || 0 %>)
+                      </div>
+                    </div>
                   </div>
 
-                  <!-- Đánh giá -->
-                  <div class="flex items-center mb-3">
-                    <div class="flex gap-1">
-                      <i class="star"></i>
-                      <i class="star"></i>
-                      <i class="star"></i>
-                      <i class="star"></i>
-                      <i class="star"></i>
-                    </div>
-                    <div class="text-xs text-gray-500 ml-3">
-                      (<%= product.reviews || 0 %>)
-                    </div>
-                  </div>
+                  <!-- Nút Add to Cart -->
+                  <a href="#"
+                    class="block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">
+                    Add to cart
+                  </a>
                 </div>
+                <% }); %>
+            </div>
 
-                <!-- Nút Add to Cart -->
-                <a href="#"
-                  class="block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">
-                  Add to cart
-                </a>
-              </div>
-              <% }); %>
           </div>
-
+          <!-- #endregion Products -->
         </div>
-        <!-- #endregion Products -->
-      </div>
 
-      <!-- #endregion Body -->
-    </main>
+        <!-- #endregion Body -->
+      </main>
 
-    <!-- #region Footer-->
-    <%- include('layouts/footer') %>
+      <!-- #region Footer-->
+      <%- include('layouts/footer') %>
 
-    <!-- #endregion Footer -->
+        <!-- #endregion Footer -->
   </div>
+  <script src="/js/category.js"></script>
+  
 </body>
 
 </html>

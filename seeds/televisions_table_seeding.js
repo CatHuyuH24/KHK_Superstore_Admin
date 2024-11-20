@@ -21,16 +21,19 @@ exports.seed = async function (knex) {
       $$`,
     },
     {
-      name: "LG OLED 4K",
+      name: "LG Electronics 22-inch",
       brand: "LG",
-      price: 1999,
-      imageurl: "https://i.ebayimg.com/images/g/xz4AAOSwr~ZmxX6e/s-l1600.webp",
+      price: 1439,
+      imageurl: "https://th.bing.com/th/id/R.b799af9bf65576d27b756ef1ae1b65a3?rik=AJYwhpghSXELcA&pid=ImgRaw&r=0",
       detail: `$$
-              LG OLED 4K TV with perfect blacks and stunning colors.
+              LG  Electronics TV with perfect blacks and stunning colors.
               Key Features
               4K resolution with OLED technology
               Dolby Vision and Dolby Atmos
               Smart TV with AI ThinQ
+              Full HD IPS display
+              Triple XD Enginge
+              LED Backlighting
               $$`,
     },
     {

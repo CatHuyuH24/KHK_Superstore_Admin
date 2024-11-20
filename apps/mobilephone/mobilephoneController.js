@@ -7,7 +7,7 @@ async function renderMobilephoneCategoryPage(req, res) {
     const search = req.query.search || "";
     const minPrice = req.query.min ? parseInt(req.query.min) : null; // Chuyển min thành số
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
-    const currentCategory = req.params.category; // Lấy category từ URL (vd: /mobilephone)
+    const currentCategory = 'category'; // Lấy category từ URL (vd: /mobilephone)
     // Lấy giá trị selectedBrands từ query (có thể là một chuỗi hoặc mảng)
     let selectedBrands = req.query.brands;
 
@@ -63,7 +63,7 @@ async function renderMobilephoneDetailPage(req, res) {
     );
 
     const relatedMobilephones = await mobilephoneService.getRelatedMobilephones(mobilephoneID, 5);
-    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedMobilephones });
+    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedMobilephones, category: "mobilephones" });
   } catch (error) {
     console.error("Error rendering mobilephone detail page:", error);
     res

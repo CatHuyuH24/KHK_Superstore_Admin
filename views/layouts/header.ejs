@@ -1,4 +1,4 @@
-<header class="bg-slate-900">
+<header class="bg-slate-900 relative">
   <div class="container mx-auto px-6 py-3">
     <div class="flex items-center justify-between">
       <div class="hidden w-full text-gray-600 md:flex md:items-center">
@@ -34,18 +34,31 @@
       class="sm:flex sm:justify-center sm:items-center mt-4"
     >
       <div class="flex flex-col sm:flex-row">
-        <a class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0" href="/"
+        <a class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0" href="#"
           >Home</a
         >
-        <a
-          class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0"
-          href="/mobilephones"
-          >Category</a
-        >
+        <div class="relative inline-block mt-3 sm:mt-0 z-50 group">
+          <!-- Dropdown Trigger -->
+          <a href="/category" class="text-white hover:underline sm:mx-3 sm:mt-0 cursor-pointer">
+            Category
+          </a>
+          
+          <!-- Dropdown Menu -->
+          <div class="dropdown-menu absolute -right-12 mt-0 w-48 bg-white border border-gray-200 rounded-lg shadow-lg hidden group-hover:block">
+            <a href="/computers" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+              Computers
+            </a>
+            <a href="/mobilephones" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+              Mobile Phones
+            </a>
+            <a href="/televisions" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+              Television
+            </a>
+          </div>
+        </div>
+        
+        
         <a class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0" href="#"
-          >Product</a
-        >
-        <a class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0" href="/cart"
           >Cart</a
         >
         <a class="mt-3 text-white hover:underline sm:mx-3 sm:mt-0" href="#"
@@ -57,9 +70,12 @@
       </div>
     </nav>
     <!-- #region Search -->
-    <div class="relative mt-6 max-w-lg mx-auto col-span-4">
+    <div
+      id="search-bar"
+      class="relative mt-6 max-w-lg mx-auto col-span-4"
+    >
       <form method="GET" action="/search/results">
-        <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+        <span class="absolute inset-y-0 left-0 pl-3 flex items-center z-10">
           <i class="gg-search"></i>
         </span>
         <input
@@ -74,3 +90,13 @@
     <!-- #endregion Search -->
   </div>
 </header>
+
+<script>
+  // Lấy URL hiện tại
+  const currentUrl = window.location.pathname;
+
+  // Kiểm tra nếu đang ở trang login hoặc register
+  if (currentUrl.includes('login') || currentUrl.includes('register')) {
+    document.getElementById('search-bar').style.display = 'none';
+  }
+</script>

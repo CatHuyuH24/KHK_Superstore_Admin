@@ -21,6 +21,7 @@ const mobilephoneRouter = require("./apps/mobilephone/mobilephoneRouter");
 const computerRouter = require("./apps/computer/computerRouter");
 const searchRouter = require("./apps/search/searchRouter");
 const registrationRouter = require("./apps/registration/registrationRouter");
+const categoryRouter = require("./apps/category/categoryRouter");
 const loginRouter=require('./apps/login/loginRouter');
 const logoutRouter=require('./apps/logout/logoutRouter')
 
@@ -44,6 +45,7 @@ app.use("/mobilephones", mobilephoneRouter);
 app.use("/computers", computerRouter);
 app.use("/register", registrationRouter);
 app.use("/search", searchRouter);
+app.use("/", categoryRouter);
 app.use("/login",loginRouter);
 app.use("/logout",logoutRouter)
 
