@@ -122,7 +122,7 @@ exports.seed = async function (knex) {
             USB Port: Enables the TV to directly play images and videos from external storage via the TV's USB connection.
             HDMI Port: Quickly connects images and audio between the TV and devices like laptops or DVD players.
             $$`,
-            discount: 0,
+            discount: 35,
     },
   ]);
 };
