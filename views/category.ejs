@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-  <title>Homepage - TailwindCSS Ecommerce Template</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -18,11 +17,11 @@
 </head>
 
 <body>
+  <!-- #region Header -->
+  <%- include('layouts/mainLayout', { content: locals.body }) %>
+  <!-- #endregion Header -->
+  
   <div x-data="{ cartOpen: false , isOpen: false }">
-    <!-- #region Header -->
-    <%- include('layouts/mainLayout', { content: locals.body }) %>
-      <!-- #endregion Header -->
-
       <!-- #region Cart -->
       <div :class="cartOpen ? 'translate-x-0 ease-out' : 'translate-x-full ease-in'"
         class="fixed right-0 top-0 max-w-xs w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300 hidden"
@@ -212,8 +211,7 @@
 
       <!-- #region Footer-->
       <%- include('layouts/footer') %>
-
-        <!-- #endregion Footer -->
+      <!-- #endregion Footer -->
   </div>
   <script src="/js/category.js"></script>
 

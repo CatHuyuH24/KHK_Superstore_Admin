@@ -18,11 +18,10 @@
 
 <body>
     <div x-data="{ cartOpen: false , isOpen: false }">
-        <!-- Header -->
-        <!-- #region Header -->
-        <%- include('layouts/mainLayout', { content: locals.body }) %>
+
+    <!-- #region Header -->
+    <%- include('layouts/mainLayout', { content: locals.body }) %>
     <!-- #endregion Header -->
-        <!-- #endregion Header -->
 
         <!-- Cart -->
         <div :class="cartOpen ? 'translate-x-0 ease-out' : 'translate-x-full ease-in'"
@@ -136,11 +135,8 @@
             <!-- #endregion Body -->
         </main>
         
-     
-        <!-- Footer -->
         <!-- #region Footer-->
         <%- include('layouts/footer') %>
-
         <!-- #endregion Footer -->
     </div>
 </body>

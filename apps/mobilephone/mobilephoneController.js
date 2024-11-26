@@ -40,7 +40,7 @@ async function renderMobilephoneCategoryPage(req, res) {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
     res.render("category", {
-      title: "Mobilephone Category",
+      title: "Mobilephone Category - Superstore - GA05",
       products: products, // Use products directly
       category: "mobilephones",
       sortBy,
