@@ -24,6 +24,7 @@ async function renderCategoryPage(req, res) {
    );
 
    const response = {
+      title: "Category Page",
        error: false,
        total: products.total,
        page: page + 1,
