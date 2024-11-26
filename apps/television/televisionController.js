@@ -38,7 +38,7 @@ async function renderTelevisionCategoryPage(req, res) {
     });
 
     res.render("category", {
-      title: "Television Category",
+      title: "Television Category - Superstore - GA05",
       products: products, // Use products directly
       category: "televisions",
       sortBy,

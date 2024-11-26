@@ -2,6 +2,7 @@ const loginService = require('./loginService');
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
 const validPassword=require('../Utils/passwordUtils').validPassword;
 const utils=require('../Utils/jwtUtils');
+const title = "Login - Supershop - GA05";
 
 async function handleLoginRequest(req, res, next) {
     try{
@@ -10,7 +11,7 @@ async function handleLoginRequest(req, res, next) {
         if(!user){
             message =
                 "Incorrect Email or Password!.";
-            return res.render("login", { message });
+            return res.render("login", { message, title });
         }
         const isValid=await validPassword(password,user.password,user.salt);
 
@@ -27,7 +28,7 @@ async function handleLoginRequest(req, res, next) {
         else {
             message =
                 "Incorrect Email or Password!.";
-            return res.render("login", { message });
+            return res.render("login", { message, title});
         }
     }
     catch(err){
@@ -39,7 +40,7 @@ async function handleLoginRequest(req, res, next) {
 async function renderLoginPage(req, res) {
     try {
         message="";
-        res.render('login');
+        res.render('login', {title});
     } catch (error) {
         console.error('Error handler login:', error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(

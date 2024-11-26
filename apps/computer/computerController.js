@@ -40,7 +40,7 @@ async function renderCompterCategoryPage(req, res) {
     });
 
     res.render("category", {
-      title: "Computer Category",
+      title: "Computer Category - Superstore - GA05",
       products: products, // Use products directly
       category: "computers",
       sortBy,
