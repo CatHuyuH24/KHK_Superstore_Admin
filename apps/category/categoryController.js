@@ -2,87 +2,76 @@ const categoryService = require("./categoryService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 
 async function renderCategoryPage(req, res) {
-  try {
-    const sortBy = req.query.sortBy || "";
-    const search = req.query.search || "";
-    const minPrice = req.query.min ? parseInt(req.query.min) : null;
-    const maxPrice = req.query.max ? parseInt(req.query.max) : null;
-    const currentCategory = req.params.category; // Lấy category từ URL (vd: /mobilephone)
-    let selectedBrands = req.query.brands;
+ try {
+   const page = parseInt(req.query.page)  || 0;
+   const limit = parseInt(req.query.limit) || 6;
+   let sort = req.query.sort || "id";
+   let brand = req.query.brand || "All";
+   const search = req.query.search || "";
+   const minPrice = req.query.min ? parseInt(req.query.min) : null;
+   const maxPrice = req.query.max ? parseInt(req.query.max) : null;
 
-    // Handle selectedBrands if it's not an array
-    if (selectedBrands && !Array.isArray(selectedBrands)) {
-      selectedBrands = [selectedBrands];
-    } else if (!selectedBrands) {
-      selectedBrands = [];
-    }
-    let categories;
+   const selectedBrands = brand === "All" ? [] : brand.split(",");
 
-    // Example categories (you can fetch these from the database if needed)
-    categories = [
-      { id: "cat-1", name: "Apple", count: 15 },
-      { id: "cat-2", name: "Dell", count: 0 },
-      { id: "cat-3", name: "Asus", count: 0 },
-      { id: "cat-4", name: "Acer", count: 0 },
-      { id: "cat-2", name: "Samsung", count: 0 },
-      { id: "cat-3", name: "Oppo", count: 0 },
-      { id: "cat-4", name: "Xiaomi", count: 0 },
-      { id: "cat-5", name: "Vivo", count: 0 },
-      { id: "cat-6", name: "Nokia", count: 0 },
-      { id: "cat-1", name: "Darling", count: 15 },
-      { id: "cat-2", name: "LG", count: 0 },
-    ];
+   const products = await categoryService.getAllProducts(
+       minPrice,
+       maxPrice,
+       page,
+       limit,
+       sort,
+       brand,
+       search,
+   );
 
-    const products = await categoryService.getAllProducts(
-      sortBy,
-      minPrice,
-      maxPrice,
-      selectedBrands,
-      search
-    );
+   const response = {
+       error: false,
+       total: products.total,
+       page: page + 1,
+       totalPages:Math.ceil(products.total / limit),
+       itemsPerPage: limit,
+       products: products.result,
+       brands:products.brands,
+       selectedBrands,
+   };
 
-    res.render("category", {
-      title: "Category Page",
-      products: products,
-      category: "categories",
-      currentCategory,
-      categories,
-      selectedBrands,
-      sortBy,
-      min: minPrice || "",
-      max: maxPrice || "",
-      search,
-    });
-  } catch (error) {
-    console.error("Error rendering category page:", error);
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
+  if (req.xhr) {
+    return res.json(response);
   }
+
+  return res.render('category', response);
+ } catch (error) {
+   console.error("Error rendering category page:", error);
+   res
+     .status(StatusCodes.INTERNAL_SERVER_ERROR)
+     .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
+ }
 }
 
 async function renderProductPage(req, res) {
-  const { category, id } = req.params;
+ const { category, id } = req.params;
 
-  let product;
-  if (category === 'mobilephones') {
-    product = await categoryService.getMobilePhoneById(id);
-  } else if (category === 'computers') {
-    product = await categoryService.getComputerById(id);
-  } else if (category === 'televisions') {
-    product = await categoryService.getTelevisionById(id);
-  } else {
-    return res.status(404).send('Category not found');
-  }
+ let product;
+ if (category === 'mobilephones') {
+   product = await categoryService.getMobilePhoneById(id);
+ } else if (category === 'computers') {
+   product = await categoryService.getComputerById(id);
+ } else if (category === 'televisions') {
+   product = await categoryService.getTelevisionById(id);
+ } else {
+   return res.status(404).send('Category not found');
+ }
 
-  if (!product) {
-    return res.status(404).send('Product not found');
-  }
+ if (!product) {
+   return res.status(404).send('Product not found');
+ }
 
-  res.render('product', { title: 'Product Page', product });
+ res.render('product', { title: 'Product Page', product });
 }
 
 module.exports = {
-  renderCategoryPage,
-  renderProductPage,
+ renderCategoryPage,
+ renderProductPage,
 };
+
+
+
