@@ -1,73 +1,60 @@
 const pool = require("../../config/database");
 
-async function getAllProducts(
-  sortBy,
-  minPrice,
-  maxPrice,
-  selectedBrands,
-  search
-) {
+async function getAllProducts(minPrice, maxPrice, page, limit, sort, brand, search) {
   try {
-    let queryParams = [];
-    let priceFilter = "";
-    let brandFilter = "";
+    // Đảm bảo page không nhỏ hơn 1
+    page = Math.max(1, page);
 
-    // Build price filter
-    if (minPrice !== null) {
-      priceFilter += ` AND price >= $${queryParams.length + 1}`;
-      queryParams.push(minPrice);
-    }
-    if (maxPrice !== null) {
-      priceFilter += ` AND price <= $${queryParams.length + 1}`;
-      queryParams.push(maxPrice);
-    }
+    let brandFilter = brand === "All" ? "" : `AND brand IN (${brand.split(",").map(g => `'${g}'`).join(", ")})`;
+    let searchFilter = search ? `AND name ILIKE '%${search}%'` : "";
+    let priceFilter = ""; // Khởi tạo chuỗi lọc giá
 
-    // Build brand filter
-    if (selectedBrands.length > 0) {
-      const brandPlaceholders = selectedBrands
-        .map((_, index) => `$${queryParams.length + index + 1}`)
-        .join(", ");
-      brandFilter += ` AND brand IN (${brandPlaceholders})`;
-      queryParams.push(...selectedBrands);
+    if (minPrice !== null && maxPrice !== null) {
+      priceFilter = `AND price BETWEEN ${minPrice} AND ${maxPrice}`;
+    } else if (minPrice !== null) {
+      priceFilter = `AND price >= ${minPrice}`;
+    } else if (maxPrice !== null) {
+      priceFilter = `AND price <= ${maxPrice}`;
     }
 
-    // Build query with filters for each subquery
-    let query = `
-      SELECT id, name, price, imageurl, 'mobilephones' AS category 
-      FROM mobilephones 
-      WHERE 1 = 1 ${priceFilter} ${brandFilter}
-      
-      UNION ALL
-      
-      SELECT id, name, price, imageurl, 'computers' AS category 
-      FROM computers 
-      WHERE 1 = 1 ${priceFilter} ${brandFilter}
-      
-      UNION ALL
-      
-      SELECT id, name, price, imageurl, 'televisions' AS category 
-      FROM televisions 
-      WHERE 1 = 1 ${priceFilter} ${brandFilter}
-    `;
+    let sortDirection = sort.split(",")[1] || "ASC";
 
-    // Apply sorting
-    if (sortBy === "price-low-to-high") {
-      query += " ORDER BY price ASC";
-    } else if (sortBy === "price-high-to-low") {
-      query += " ORDER BY price DESC";
-    }
+    const result = await pool.query(
+      `SELECT * FROM products
+       WHERE 1=1
+       ${searchFilter}
+       ${brandFilter}
+       ${priceFilter} -- Thêm bộ lọc giá
+       ORDER BY ${sort.split(",")[0]} ${sortDirection}
+       LIMIT $1 OFFSET $2`,
+      [limit, (page - 1) * limit]
+    );
 
-    console.log("Final query:", query);
-    console.log("Query parameters:", queryParams);
+    const totalResult = await pool.query(
+      `SELECT COUNT(*) FROM products
+       WHERE 1=1
+       ${searchFilter}
+       ${brandFilter}
+       ${priceFilter}` // Thêm bộ lọc giá
+    );
+    const total = parseInt(totalResult.rows[0].count);
 
-    // Execute query
-    const result = await pool.query(query, queryParams);
-    return result.rows;
+    const listBrands = await pool.query(
+      `SELECT DISTINCT(brand) FROM products`
+    );
+
+    const brands = listBrands.rows.map(row => row.brand);
+
+    return { result: result.rows, total, brands };
+
   } catch (error) {
     console.error("Error fetching products:", error.message);
-    return [];
+    return { result: [], total: 0, brands: [] };
   }
 }
+
+
+
 
 async function getMobilePhoneById(id) {
   try {
@@ -108,3 +95,5 @@ module.exports = {
   getComputerById,
   getTelevisionById,
 };
+
+
