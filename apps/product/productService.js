@@ -3,10 +3,19 @@ const prepareFilterStatements = require("../Utils/preparingFilterStatements");
 
 /**
  * Get all products of a specific type with filters applied.
+ * Each record in the result set contains the following fields:
+ * - id
+ * - name
+ * - brand
+ * - price
+ * - imageurl
+ * - discount
+ * - numberofpro (number of products)
+ * - type_name (type of product)
  * 
  * @param {number} minPrice - Minimum price filter.
  * @param {number} maxPrice - Maximum price filter.
- * @param {number} page - Page number for pagination.
+ * @param {number} page - Page number for pagination, expected to be greater than 0.
  * @param {number} limit - Number of items per page.
  * @param {string} sort - Sort order (column, direction). e.g. "id,ASC".
  * @param {string} brand - Brand filter.
@@ -16,8 +25,6 @@ const prepareFilterStatements = require("../Utils/preparingFilterStatements");
  */
 async function getAllProductsOfTypeWithFilter(minPrice, maxPrice, page, limit, sort, brand, search, products_type) {
     try {
-        console.log('offset and page', page, limit, (page - 1) * limit);
-        
         const {
             priceFilter, 
             sortDirection, 
@@ -27,10 +34,9 @@ async function getAllProductsOfTypeWithFilter(minPrice, maxPrice, page, limit, s
             = prepareFilterStatements(
                 minPrice, maxPrice, sort, 
                 brand, search, products_type);
-        console.log('productService',productsTypeFilter);
         
         const result = await pool.query(`
-            SELECT * FROM products
+            SELECT p.id, p.name, p.brand, p.price, p.imageurl, p.detail, p.discount, p.numberofpro, t.type_name FROM products p JOIN types t ON p.type_id = t.id
             WHERE 1=1
             ${productsTypeFilter}
             ${searchFilter}
@@ -39,10 +45,7 @@ async function getAllProductsOfTypeWithFilter(minPrice, maxPrice, page, limit, s
             ORDER BY ${sort.split(",")[0]} ${sortDirection}
             LIMIT $1 OFFSET $2`,
             [limit, (page - 1) * limit]
-        );
-
-        console.log('productService',result.rows);
-        
+        );      
     
         return result.rows;
   
@@ -79,21 +82,33 @@ async function getAllBrandsOfType(products_type) {
  * 
  * @param {number} minPrice - Minimum price filter.
  * @param {number} maxPrice - Maximum price filter.
- * @param {number} page - Page number for pagination.
- * @param {number} limit - Number of items per page.
  * @param {string} sort - Sort order (column, direction). e.g. "id,ASC".
  * @param {string} brand - Brand filter.
  * @param {string} search - Search keyword.
  * @param {string} products_type - Type of products.
  * @returns {Promise<number>} Total count of products.
  */
-async function countAllProductsOfTypeWithFilters(minPrice, maxPrice, page, limit, sort, brand, search, products_type) {
-    let productsTypeFilter = "";
-    if(products_type)
-        productsTypeFilter = `AND type_id = (SELECT id from types where type_name = '${products_type}')`;
+async function countAllProductsOfTypeWithFilters(minPrice, maxPrice, sort, brand, search, products_type) {
+    const {
+        priceFilter, 
+        sortDirection, // not used here
+        brandFilter, 
+        searchFilter, 
+        productsTypeFilter} 
+        = prepareFilterStatements(
+            minPrice, maxPrice, sort, 
+            brand, search, products_type);
 
+    //no need to sort
     const totalResult = await pool.query(
-        `SELECT COUNT(*) FROM products WHERE 1=1 ${productsTypeFilter};`
+        `SELECT COUNT(*) 
+        FROM products 
+        WHERE 1=1 
+        ${productsTypeFilter}
+        ${searchFilter}
+        ${brandFilter}
+        ${priceFilter}
+        ;`
     );
     const total = parseInt(totalResult.rows[0].count);
     return total;

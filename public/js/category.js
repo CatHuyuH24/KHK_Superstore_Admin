@@ -99,30 +99,56 @@ async function changePage(page) {
 function updateProductList(products) {
   const productContainer = document.getElementById('product-list'); // Class container sản phẩm
   productContainer.innerHTML = ''; // Xóa danh sách cũ
-
+  
   // Render danh sách sản phẩm mới
-  products.forEach(product => {
-    const productHTML = `
+  products.forEach((product,index) => {
+    let productHTML = `
       <div class="bg-white shadow-md flex flex-col h-full rounded-lg">
-        <div class="relative group w-[302px] h-80 flex items-center justify-center">
-          <img src="${product.imageurl}" alt="${product.name}" class="max-w-full max-h-full" />
-          <a href="${product.id}">
-            <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition"></div>
-          </a>
-        </div>
-        <div class="flex-grow pt-4 pb-3 px-4 flex flex-col">
-          <a href="${product.id}">
-            <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">${product.name}</h4>
-          </a>
-          <div class="flex items-baseline mb-1 space-x-2">
-            <p class="text-xl text-primary font-semibold">$${product.price}</p>
-          </div>
-        </div>
-        <a href="#"
-          class="block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">
-          Add to cart
-        </a>
-      </div>`;
+                  <div class="relative group w-[302px] h-80 flex items-center justify-center">
+                    <img src="${product.imageurl}" alt="${product.name}" class="max-w-full max-h-full" />
+                    <a href="${product.id}">
+                      <div
+                        class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
+                      </div>
+                    </a>
+                  </div>
+                  <div class="flex-grow pt-4 pb-3 px-4 flex flex-col">
+                    <a href="${product.id}">
+                      <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+                        ${product.name}
+                      </h4>
+                    </a>
+                    <div class="flex items-baseline mb-1 space-x-2">
+                      <p class="text-xl text-primary font-semibold">
+                        $${product.price}
+                      </p>`;
+
+                      if (product.discount > 0) 
+                        {
+                          productHTML += `<p class="text-base text-red-600 font-extrabold">-${product.discount}%</p>`;
+                        }
+                      
+                      productHTML += `
+                    </div>
+                    <div class="flex justify-between mb-1 space-x-2">
+                      <p class="text-xl text-primary font-semibold">
+                        ${product.brand}
+                      </p>
+                      <p class="text-right text-base text-gray-700">In stock: ${product.numberofpro}</p>
+                    </div>
+                  </div> 
+                  <a href="#"
+                    class="block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">
+                    Add to cart
+                  </a>
+                </div>`;
+
+                if(index === 0)
+                {
+                  console.log(productHTML);
+                }
+                
+                
     productContainer.insertAdjacentHTML('beforeend', productHTML);
   });
 }

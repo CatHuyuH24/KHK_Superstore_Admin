@@ -13,7 +13,7 @@ async function getAllProducts(minPrice, maxPrice, page, limit, sort, brand, sear
     //get the total number of products (product_type is not provided)
     const total = 
       await productsService.countAllProductsOfTypeWithFilters
-      (minPrice, maxPrice, brand, search);
+      (minPrice, maxPrice, sort, brand, search);
 
     //get all brands of products (product_type is not provided)
     const brands = await productsService.getAllBrandsOfType();

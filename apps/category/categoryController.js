@@ -34,8 +34,7 @@ async function renderCategoryPage(req, res) {
        brands:products.brands,
        selectedBrands,
    };
-
-   console.log("response", response);
+   
 
   if (req.xhr) {
     return res.json(response);
