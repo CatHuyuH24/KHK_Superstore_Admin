@@ -1,10 +1,36 @@
 
 const pool = require("../../config/database");
-const productService = require("../product/productService");
 const {prepareFilterStatements} = require("../Utils/filterStatementUtils");
-
+/**
+ * Get all discounted products with filters applied and the total number of products.
+ * Each record in the result set contains the following fields:
+ * - id
+ * - name
+ * - brand
+ * - price
+ * - imageurl
+ * - detail
+ * - discount
+ * - numberofpro (number of products)
+ * - type_name (type of product)
+ * - total_count (total number of products matching the filters)
+ * 
+ * @param {number} minPrice - Minimum price filter.
+ * @param {number} maxPrice - Maximum price filter.
+ * @param {number} page - Page number for pagination, expected to be greater than 0.
+ * @param {number} limit - Number of items per page.
+ * @param {string} sort - Sort order (column, direction). e.g. "id,ASC".
+ * @param {string} brand - Brand filter.
+ * @param {string} search - Search keyword.
+ * @returns {Promise<Object>} - An object containing the total count of discounted products and the list of discounted products.
+ * @returns {number} return.totalCount - Total number of discounted products matching the filters.
+ * @returns {Array} return.products - List of discounted products.
+ * @example
+ * const {totalCount, products} = await getAllDiscountedProductsWithFilterAndCount(0, 1000, 1, 10, "price,ASC", "Samsung", "samsung galaxy s8");
+ */
 async function getAllDiscountedProductsWithFilterAndCount(minPrice, maxPrice, page, limit, sort, brand, search) {
-	try {
+    try {
+        page = Math.max(1, page);
         const {
             priceFilter, 
             sortDirection, 
@@ -13,7 +39,7 @@ async function getAllDiscountedProductsWithFilterAndCount(minPrice, maxPrice, pa
             productsTypeFilter
         } = prepareFilterStatements(
             minPrice, maxPrice, sort, 
-            brand, search, products_type
+            brand, search
         );
         
         const result = await pool.query(`
@@ -30,10 +56,12 @@ async function getAllDiscountedProductsWithFilterAndCount(minPrice, maxPrice, pa
             [limit, (page - 1) * limit]
         );
         
-        const totalCount = result.rows.length > 0 ? result.rows[0].total_count : 0;
+        const count = 
+            result.rows[0].total_count ? 
+            parseInt(result.rows[0].total_count) : 0;
         
         return {
-            totalCount,
+            totalCount: count,
             products: result.rows
         };
 
@@ -44,5 +72,5 @@ async function getAllDiscountedProductsWithFilterAndCount(minPrice, maxPrice, pa
 }
 
 module.exports = {
-	getAllDiscountedProductsWithFilterAndCount,
+    getAllDiscountedProductsWithFilterAndCount,
 };

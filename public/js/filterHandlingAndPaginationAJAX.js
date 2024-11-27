@@ -106,14 +106,14 @@ function updateProductList(products) {
       <div class="bg-white shadow-md flex flex-col h-full rounded-lg">
                   <div class="relative group w-[302px] h-80 flex items-center justify-center">
                     <img src="${product.imageurl}" alt="${product.name}" class="max-w-full max-h-full" />
-                    <a href="${product.id}">
+                    <a href="${product.type_name}/${product.id}">
                       <div
                         class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
                       </div>
                     </a>
                   </div>
                   <div class="flex-grow pt-4 pb-3 px-4 flex flex-col">
-                    <a href="${product.id}">
+                    <a href="${product.type_name}/${product.id}">
                       <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
                         ${product.name}
                       </h4>

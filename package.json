@@ -7,7 +7,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"create-db": "node createDatabase.js",
 		"migrate:dev": "knex migrate:latest --env development",
-		"seed:dev": "knex seed:run --specific=types_table_seeding.js --env development --specific=products_table_seeding.js --env development",
+		"seed:dev": "knex seed:run --specific=types_table_seeding.js --env development && knex seed:run --specific=products_table_seeding.js --env development",
 		"setup-db:dev": "npm run create-db && npm run migrate:dev && npm run seed:dev",
 		"start-server:dev": "nodemon server.js --watch ./views --ext ejs,html",
 		"dev": "npm run setup-db:dev && npm run start-server:dev",
