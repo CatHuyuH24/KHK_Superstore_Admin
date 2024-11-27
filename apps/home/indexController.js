@@ -5,7 +5,7 @@ const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 async function renderHomePage(req, res) {
 	try 
 	{
-		const page = parseInt(req.query.page)  || 0;
+		const page = parseInt(req.query.page)  || 1;
 		const limit = parseInt(req.query.limit) || 6;
 		let sort = req.query.sort || "id";
 		let brand = req.query.brand || "All";

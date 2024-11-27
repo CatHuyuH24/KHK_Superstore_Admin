@@ -74,7 +74,7 @@ async function getAllProductsOfTypeWithFilterAndCount(minPrice, maxPrice, page, 
 /**
  * Get all brands of a specific product type.
  * 
- * @param {string} products_type Type of products, e.g. "computers". If not provided, brands of all products will be fetched.
+ * @param {string} products_type Type of products, e.g. "computers". If not provided, brands of all products will be fetched. e.g. "computers". If not provided, brands of all products will be fetched.
  * @returns {Promise<Array>} An array of brands.
  */
 async function getAllBrandsOfType(products_type) {
