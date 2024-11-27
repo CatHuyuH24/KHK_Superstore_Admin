@@ -60,9 +60,11 @@
       <main class="my-8">
         <!-- #region Body -->
         <div class="container grid grid-cols-4 gap-6 pt-4 pb-16 items-start mx-auto">
+          
           <!-- #region Sidebar -->
           <%- include('layouts/filter') %>
           <%- include('layouts/sort_filter') %>
+          <!-- #endregion Sidebar -->
           
           <!-- #region Products -->
           <div class="col-span-3">
@@ -125,6 +127,7 @@
 
             <!-- #region Pagination -->
             <%- include('layouts/paging') %>
+            <!-- #endregion Pagination -->
           </div>
                      
         </div>
