@@ -1,5 +1,7 @@
 const pool = require("../../config/database");
 const productsService = require("../product/productService");
+const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils.js");
+
 async function getAllProducts(minPrice, maxPrice, page, limit, sort, brand, search) {
   try {
     // Đảm bảo page không nhỏ hơn 1
@@ -9,7 +11,10 @@ async function getAllProducts(minPrice, maxPrice, page, limit, sort, brand, sear
     const products = 
       await productsService.getAllProductsOfTypeWithFilter
       (minPrice, maxPrice, page, limit, sort, brand, search);
-
+    products.forEach((product) => {
+      product.price = calculateDiscountedPrice(product.price, product.discount);
+    });
+    
     //get the total number of products (product_type is not provided)
     const total = 
       await productsService.countAllProductsOfTypeWithFilters

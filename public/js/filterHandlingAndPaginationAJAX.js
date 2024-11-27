@@ -101,7 +101,7 @@ function updateProductList(products) {
   productContainer.innerHTML = ''; // Xóa danh sách cũ
   
   // Render danh sách sản phẩm mới
-  products.forEach((product,index) => {
+  products.forEach(product => {
     let productHTML = `
       <div class="bg-white shadow-md flex flex-col h-full rounded-lg">
                   <div class="relative group w-[302px] h-80 flex items-center justify-center">
@@ -141,13 +141,7 @@ function updateProductList(products) {
                     class="block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">
                     Add to cart
                   </a>
-                </div>`;
-
-                if(index === 0)
-                {
-                  console.log(productHTML);
-                }
-                
+                </div>`;                
                 
     productContainer.insertAdjacentHTML('beforeend', productHTML);
   });

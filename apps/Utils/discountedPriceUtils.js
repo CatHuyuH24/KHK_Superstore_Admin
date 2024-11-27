@@ -21,4 +21,4 @@ function calculateDiscountedPrice(originalPrice, discount) {
 
 module.exports = {
   calculateDiscountedPrice,
-};
+}

@@ -38,4 +38,6 @@ function prepareFilterStatements(minPrice, maxPrice, sort, brand, search, produc
     return {priceFilter, sortDirection, brandFilter, searchFilter, productsTypeFilter};
 }
 
-module.exports = prepareFilterStatements;
+module.exports = {
+    prepareFilterStatements,
+};

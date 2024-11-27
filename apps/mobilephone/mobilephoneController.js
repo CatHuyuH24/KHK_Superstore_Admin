@@ -1,6 +1,6 @@
 const mobilephoneService = require("./mobilephoneService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
-const {calculateDiscountedPrice} = require("../Utils/calculateDiscountedPrice");
+const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
 
 async function renderMobilephoneCategoryPage(req, res) {
   try {

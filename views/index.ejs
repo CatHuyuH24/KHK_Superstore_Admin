@@ -56,365 +56,226 @@
   <!-- #region Header -->
   <%- include('layouts/mainLayout', { content: locals.body }) %>
   <!-- #endregion Header -->
-  
+   
   <div x-data="{ cartOpen: false , isOpen: false }">
-    <!-- #region Cart -->
-    <div :class="cartOpen ? 'translate-x-0 ease-out' : 'translate-x-full ease-in'"
-      class="fixed right-0 top-0 max-w-xs w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300 hidden"
-      x-init="() => { $el.classList.remove('hidden'); }">
-      <div class="flex items-center justify-between">
-        <h3 class="text-2xl font-medium text-gray-700">Your cart</h3>
-        <button @click="cartOpen = !cartOpen" class="text-gray-600 focus:outline-none">
-          <i class="gg-close"></i>
-        </button>
-      </div>
-      <hr class="my-3" />
-      <div class="flex justify-between mt-6">
-        <div class="flex">
-          <img class="h-20 w-20 object-cover" src="images/tshirt-front-white-small.png" alt="" />
-          <div class="mx-3">
-            <h3 class="text-sm text-gray-600">T-Shirt</h3>
-            <div class="flex items-center mt-2">
-              <button class="text-gray-500 focus:outline-none focus:text-gray-600">
-                <i class="gg-remove"></i>
-              </button>
-              <span class="text-gray-700 mx-2">2</span>
-              <button class="text-gray-500 focus:outline-none focus:text-gray-600">
-                <i class="gg-add"></i>
-              </button>
-            </div>
-          </div>
+      <div :class="cartOpen ? 'translate-x-0 ease-out' : 'translate-x-full ease-in'"
+        class="fixed right-0 top-0 max-w-xs w-full h-full px-6 py-4 transition duration-300 transform overflow-y-auto bg-white border-l-2 border-gray-300 hidden"
+        x-init="() => { $el.classList.remove('hidden'); }">
+        <div class="flex items-center justify-between">
+          <h3 class="text-2xl font-medium text-gray-700">Your cart</h3>
+          <button @click="cartOpen = !cartOpen" class="text-gray-600 focus:outline-none">
+            <i class="gg-close"></i>
+          </button>
         </div>
-        <span class="text-gray-600">$24.99</span>
-      </div>
-      <a
-        class="flex cursor-pointer items-center justify-center mt-4 px-3 py-2 bg-green-700 text-white text-sm uppercase font-medium hover:bg-green-500 focus:outline-none focus:bg-green-500">
-        <span>Checkout</span>
-        <i class="px-2 gg-arrow-right"></i>
-      </a>
-    </div>
-    <!-- #endregion Cart -->
-    <main class="my-8">
-
-      <!-- #region Body -->
-      <div class="container grid grid-cols-4 gap-6 pt-4 pb-16 items-start mx-auto">
-      <!-- #region Sidebar -->
-        <div class="col-span-1 bg-white px-4 pb-6 shadow overflow-hidden rounded-lg">
-          <div class="divide-y divide-gray-200 space-y-5">
-            <!--region category checkbox-->
-            <div>
-              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium mt-3">
-                Categories
-              </h3>
-              <div class="space-y-2">
-                <div class="flex items-center">
-                  <input onchange="window.location.href='/mobilephones'" type="checkbox" name="cat-2" id="cat-2"
-                    class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="cat-2" class="text-gray-600 ml-3 cusror-pointer">Mobilephones</label>
-                  <div class="ml-auto text-gray-600 text-sm">(10)</div>
-                </div>
-                <div class="flex items-center">
-                  <input onchange="window.location.href='/computers'" type="checkbox" name="cat-3" id="cat-3"
-                    class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="cat-3" class="text-gray-600 ml-3 cusror-pointer">Computers</label>
-                  <div class="ml-auto text-gray-600 text-sm">(9)</div>
-                </div>
-                <div class="flex items-center">
-                  <input onchange="window.location.href='/televisions'" type="checkbox" name="cat-4" id="cat-4"
-                    class="text-primary focus:ring-0 cursor-pointer" />
-                  <label for="cat-4" class="text-gray-600 ml-3 cusror-pointer">Televisions</label>
-                  <div class="ml-auto text-gray-600 text-sm">(8)</div>
-                </div>
-              </div>
-            </div>
-            <!--region Brand-->
-            <div>
-              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium mt-3">Brands</h3>
-                <div class="space-y-2">
-                  <% if (categories && categories.length> 0) { %>
-                    <% categories.forEach(category=> { %>
-                      <div class="flex items-center">
-                        <input type="checkbox" name="brands" value="<%= category.name %>" id="<%= category.id %>"
-                          class="text-primary focus:ring-0 cursor-pointer" <% if (selectedBrands &&
-                          selectedBrands.includes(category.name)) { %>
-                        checked
-                        <% } %>
-                          onchange="document.getElementById('brand-filter-form').submit()"
-                          />
-                          <label for="<%= category.id %>" class="text-gray-600 ml-3 cursor-pointer">
-                            <%= category.name %>
-                          </label>
-                          <div class="ml-auto text-gray-600 text-sm">(<%= category.count %>)</div>
-                      </div>
-                      <% }); %>
-                        <% } else { %>
-                          <p class="text-gray-500">No categories available for this section.</p>
-                          <% } %>
-                </div>
-            </div>
-
-
-            <form id="price-filter-form" method="GET" action="/mobilephones">
-              <div class="pt-4">
-                <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
-                  Price
-                </h3>
-                <div class="mt-4 flex items-center">
-                  <input type="text" name="min" id="min"
-                    class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md"
-                    placeholder="min" value="<%= min %>" />
-                  <span class="mx-3 text-gray-500">-</span>
-                  <input type="text" name="max" id="max"
-                    class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md"
-                    placeholder="max" value="<%= max %>" />
-                </div>
-                <button type="submit" class="mt-4 bg-primary text-white px-4 py-2 rounded-md">
-                  Filter
+        <hr class="my-3" />
+        <div class="flex justify-between mt-6">
+          <div class="flex">
+            <img class="h-20 w-20 object-cover" src="images/tshirt-front-white-small.png" alt="" />
+            <div class="mx-3">
+              <h3 class="text-sm text-gray-600">T-Shirt</h3>
+              <div class="flex items-center mt-2">
+                <button class="text-gray-500 focus:outline-none focus:text-gray-600">
+                  <i class="gg-remove"></i>
+                </button>
+                <span class="text-gray-700 mx-2">2</span>
+                <button class="text-gray-500 focus:outline-none focus:text-gray-600">
+                  <i class="gg-add"></i>
                 </button>
               </div>
-            </form>
-
-            <div class="pt-4">
-              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
-                size
-              </h3>
-              <div class="flex items-center gap-2">
-                <div class="size-selector">
-                  <input type="radio" name="size" id="size-xs" class="hidden" />
-                  <label for="size-xs"
-                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">XS</label>
-                </div>
-                <div class="size-selector">
-                  <input type="radio" name="size" id="size-sm" class="hidden" />
-                  <label for="size-sm"
-                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">S</label>
-                </div>
-                <div class="size-selector">
-                  <input type="radio" name="size" id="size-m" class="hidden" />
-                  <label for="size-m"
-                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">M</label>
-                </div>
-                <div class="size-selector">
-                  <input type="radio" name="size" id="size-l" class="hidden" />
-                  <label for="size-l"
-                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">L</label>
-                </div>
-                <div class="size-selector">
-                  <input type="radio" name="size" id="size-xl" class="hidden" />
-                  <label for="size-xl"
-                    class="rounded-md text-xs border border-gray-200 h-6 w-6 flex items-center justify-center cursor-pointer shadow-sm text-gray-600">XL</label>
-                </div>
-              </div>
             </div>
+          </div>
+          <span class="text-gray-600">$24.99</span>
+        </div>
+        <a
+          class="flex cursor-pointer items-center justify-center mt-4 px-3 py-2 bg-green-700 text-white text-sm uppercase font-medium hover:bg-green-500 focus:outline-none focus:bg-green-500">
+          <span>Checkout</span>
+          <i class="px-2 gg-arrow-right"></i>
+        </a>
+      </div>
+      <!-- #endregion Cart -->
 
-            <div class="pt-4">
-              <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">
-                Color
-              </h3>
-              <div class="flex items-center gap-2">
-                <div class="color-selector">
-                  <input type="radio" name="color" id="black" class="hidden" />
-                  <label for="black" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
-                    style="background-color: #000"></label>
+      <main class="my-8">
+        <!-- #region Body -->
+        <div class="container grid grid-cols-4 gap-6 pt-4 pb-16 items-start mx-auto">
+          <!-- #region Sidebar -->
+          <div class="col-span-1 bg-white px-4 pb-6 shadow overflow-hidden rounded-lg">
+            <div class="divide-y divide-gray-200 space-y-5">
+
+              <!--region Brand-->
+              <div>
+                <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium mt-3">Brands</h3>
+                <form id="brand-filter-form">
+                  <div class="space-y-2">
+                    <% if (brands && brands.length > 0) { %>
+                      <% brands.forEach((brand, index) => { %>
+                        <div class="flex items-center">
+                          <input 
+                            type="checkbox" 
+                            name="brands" 
+                            value="<%= brand %>" 
+                            id="brand-<%= index %>" 
+                            class="text-primary focus:ring-0 cursor-pointer"
+                            <% if (selectedBrands && selectedBrands.includes(brand)) { %>
+                              checked
+                            <% } %> 
+                            onchange="updateFilter()" />
+                          <label for="brand-<%= index %>" class="text-gray-600 ml-3 cursor-pointer">
+                            <%= brand %>
+                          </label>
+                        </div>
+                      <% }); %>
+                    <% } else { %>
+                      <p class="text-gray-500">No brands available for this section.</p>
+                    <% } %>
+                  </div>
+                </form>
+              </div>
+              <!--region filter min max value-->
+              <form id="price-filter-form" method="GET">
+                <div class="pt-4">
+                  <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">Price</h3>
+                  <div class="mt-4 flex items-center">
+                    <input type="text" name="min" id="min" class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md" placeholder="min" value="" />
+                    <span class="mx-3 text-gray-500">-</span>
+                    <input type="text" name="max" id="max" class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md" placeholder="max" value="" />
+                  </div>
                 </div>
-                <div class="color-selector">
-                  <input type="radio" name="color" id="white" class="hidden" />
-                  <label for="white" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
-                    style="background-color: #fff"></label>
-                </div>
-                <div class="color-selector">
-                  <input type="radio" name="color" id="gray" class="hidden" />
-                  <label for="gray" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
-                    style="background-color: #a4a9ad"></label>
-                </div>
-                <div class="color-selector">
-                  <input type="radio" name="color" id="blue" class="hidden" />
-                  <label for="blue" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
-                    style="background-color: #0033cc"></label>
-                </div>
-                <div class="color-selector">
-                  <input type="radio" name="color" id="navy" class="hidden" />
-                  <label for="navy" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
-                    style="background-color: #091740"></label>
-                </div>
-                <div class="color-selector">
-                  <input type="radio" name="color" id="red" class="hidden" />
-                  <label for="red" class="border border-gray-200 h-6 w-6 cursor-pointer shadow-sm block"
-                    style="background-color: #990000"></label>
-                </div>
+              </form>
+              
+              <!-- apply filter -->
+              <div class="flex justify-center items-center">
+                <button type="button" onclick="applyFilters()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Apply Filters</button>
               </div>
             </div>
           </div>
-        </div>
-        <!-- #endregion Sidebar -->
+          <!-- #endregion Sidebar -->
 
-        <!-- #region Products -->
-        <div class="col-span-3">
-          <div class="grid grid-cols-1 gap-6 m-3 md:grid-cols-2 lg:grid-cols-3">
-            <% products.mobilephones.forEach(product => { %>
-              <div class="bg-white shadow-md overflow-hidden grid grid-flow-row grid-rows-2 place-items-stretch">
-                <div class="row-span-2">
-                  <div class="relative group h-full">
-                    <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="w-full h-auto" />
-                    <a href="/mobilephones/<%= product.id %>">
-                    <div
-                      class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
-                    </div>
+          <div class="col-span-3">
+            <div class="flex items-center mb-4">
+              <select name="sort" id="sort"
+                class="rounded-lg h-7 bg-gray-200 w-44 text-sm text-gray-600 px-2 border-gray-300 shadow-sm focus:ring-primary focus:border-primary"
+                onchange="updateSortFilter()">
+                <option value="">Default sorting</option>
+                <option value="price-low-to-high">Price low to high</option>
+                <option value="price-high-to-low">Price high to low</option>
+              </select>
+          </div>
+
+          <!-- #region Products -->
+          <div class="col-span-3">
+            <div class="flex items-center mb-4"></div>
+
+            <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <% products.forEach( product => { %>
+                <div class="bg-white shadow-md flex flex-col h-full rounded-lg">
+                  <!-- Phần hình ảnh sản phẩm -->
+                  <div class="relative group w-[302px] h-80 flex items-center justify-center">
+                    <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="max-w-full max-h-full" />
+                    <a href="<%= product.id %>">
+                      <div
+                        class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
+                      </div>
                     </a>
                   </div>
-                </div>
-                <div class="row-span-1">
-                  <div class="pt-4 pb-3 px-4">
-                    <a href="/mobilephones/<%= product.id %>">
-                      <h4 class="uppercase font-medium text-xl lg:text-2xl mb-2 text-gray-800 hover:text-primary transition text-wrap">
-                        <%= product.name %>
+
+                  <!-- Phần nội dung sản phẩm -->
+                  <div class="flex-grow pt-4 pb-3 px-4 flex flex-col">
+                    <!-- Tên sản phẩm -->
+                    <a href="<%= product.id %>">
+                      <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+                        <%= products.name %>
                       </h4>
                     </a>
-                    <div class="flex items-baseline mb-1 space-x-2 row-span-1">
+
+                    <!-- Giá sản phẩm -->
+                    <div class="flex items-baseline mb-1 space-x-2">
                       <p class="text-xl text-primary font-semibold">
                         $<%= product.price %>
                       </p>
+
                       <% if (product.discount > 0) {%>
-                        <p class="text-sm text-red-600 font-extrabold">-<%= product.discount %>%</p>
+                          <p class="text-base text-red-600 font-extrabold">-<%= product.discount %>%</p>
                       <% } %>
                     </div>
-                  </div>
+
+
+                    <div class="flex justify-between mb-1 space-x-2">
+                      <p class="text-xl text-primary font-semibold">
+                        <%= product.brand %>
+                      </p>
+
+                      <p class="text-right text-base text-gray-700">In stock: <%= product.numberofpro %></p>
+                    </div>
+
+                  </div> 
+
+                  <!-- Nút Add to Cart -->
+                  <a href="#"
+                    class="block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">
+                    Add to cart
+                  </a>
                 </div>
-              <a href="#"
-                class="block w-full py-3 text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition row-span-1">Add
-                to cart
-              </a>
+                <% }); %>
+
             </div>
-              <% }) %>
+            <!-- #endregion Products -->
 
-              <% products.computers.forEach(product => { %>
-                <div class="bg-white shadow-md overflow-hidden grid grid-flow-row grid-rows-2 place-items-stretch">
-                    <div class="row-span-2">
-                      <div class="relative group h-full">
-                        <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="w-full h-auto" />
-                        <a href="/computers/<%= product.id %>">
-                        <div
-                          class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
-                        </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="row-span-1">
-                      <div class="pt-4 pb-3 px-4">
-                        <a href="/computers/<%= product.id %>">
-                          <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition text-wrap">
-                            <%= product.name %>
-                          </h4>
-                        </a>
-                        <div class="flex items-baseline mb-1 space-x-2 row-span-1">
-                          <p class="text-xl text-primary font-semibold">
-                            $<%= product.price %>
-                          </p>
-                          <% if (product.discount > 0) {%>
-                            <p class="text-sm text-red-600 font-extrabold">-<%= product.discount %>%</p>
-                          <% } %>
-                        </div>
-                      </div>
-                    </div>
-                  <a href="#"
-                    class="block w-full py-3 text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition row-span-1">Add
-                    to cart
-                  </a>
-                </div>
-                <% }) %>
-
-                <% products.televisions.forEach(product => { %>
-                  <div class="bg-white shadow-md overflow-hidden grid grid-flow-row grid-rows-2 place-items-stretch">
-                    <div class="row-span-2">
-                      <div class="relative group h-full">
-                        <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="w-full" />
-                        <a href="/televisions/<%= product.id %>">
-                        <div
-                          class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
-                        </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="row-span-1">
-                      <div class="pt-4 pb-3 px-4">
-                        <a href="/televisions/<%= product.id %>">
-                          <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition text-wrap">
-                            <%= product.name %>
-                          </h4>
-                        </a>
-                        <div class="flex items-baseline mb-1 space-x-2 row-span-1">
-                          <p class="text-xl text-primary font-semibold">
-                            $<%= product.price %>
-                          </p>
-                          <% if (product.discount > 0) {%>
-                            <p class="text-sm text-red-600 font-extrabold">-<%= product.discount %>%</p>
-                          <% } %>
-                        </div>
-                      </div>
-                    </div>
-                  <a href="#"
-                    class="block w-full py-3 text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition row-span-1">Add
-                    to cart
-                  </a>
-                </div>
-                  <% }) %>
-          </div>
-        </div>
-        <!-- #endregion Products -->
-
-        <!-- #region Pagination -->
-        <!-- Thay vì các liên kết href cho paging, sử dụng onclick để gọi AJAX -->
-        <div class="flex items-center justify-between bg-white px-6 py-4 sm:px-8">
-          <!-- <div class="flex flex-1 justify-between sm:hidden">
-              <button onclick="changePage(<%= page-1 %>)" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-50">
-                  Previous
-              </button>
-              <button onclick="changePage(<%= page + 1 %>)" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-50">
-                  Next
-              </button>
-          </div> -->
-          <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-center">
-              <div>
-                  <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination" id="Pagination">
-                      <button onclick="changePage(<%= page - 1 %>)" class="relative inline-flex items-center rounded-l-md px-4 py-4 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                          <span class="sr-only">Previous</span>
-                          <svg class="size-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                              <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
-                          </svg>
-                      </button>
-                      <% for (let i = 1; i <= totalPages; i++) { %>
-                          <button onclick="changePage(<%= i %>)" class="relative <%= i === page? 'z-10 text-white bg-slate-800' : 'text-gray-900' %> inline-flex items-center px-6 py-4 text-lg font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                              <%= i %>
+            <!-- #region Pagination -->
+            <!-- Thay vì các liên kết href cho paging, sử dụng onclick để gọi AJAX -->
+            <div class="flex items-center justify-between bg-white px-6 py-4 sm:px-8">
+              <!-- <div class="flex flex-1 justify-between sm:hidden">
+                  <button onclick="changePage(<%= page-1 %>)" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-50">
+                      Previous
+                  </button>
+                  <button onclick="changePage(<%= page + 1 %>)" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-50">
+                      Next
+                  </button>
+              </div> -->
+              <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-center">
+                  <div>
+                      <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination" id="Pagination">
+                          <button onclick="changePage(<%= page - 1 %>)" class="relative inline-flex items-center rounded-l-md px-4 py-4 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                              <span class="sr-only">Previous</span>
+                              <svg class="size-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                  <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                              </svg>
                           </button>
-                      <% } %>
+                          <% for (let i = 1; i <= totalPages; i++) { %>
+                              <button onclick="changePage(<%= i %>)" class="relative <%= i === page? 'z-10 text-white bg-slate-800' : 'text-gray-900' %> inline-flex items-center px-6 py-4 text-lg font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                  <%= i %>
+                              </button>
+                          <% } %>
 
-                      <button onclick="changePage(<%= page + 1 %>)" class="relative inline-flex items-center rounded-r-md px-4 py-4 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-                          <span class="sr-only">Next</span>
-                          <svg class="size-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                              <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                          </svg>
-                      </button>
-                  </nav>
+                          <button onclick="changePage(<%= page + 1 %>)" class="relative inline-flex items-center rounded-r-md px-4 py-4 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                              <span class="sr-only">Next</span>
+                              <svg class="size-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                  <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                              </svg>
+                          </button>
+                      </nav>
+                  </div>
               </div>
+            </div>
+            <!-- #endregion Pagination -->
+
+                        
+                        
+
           </div>
+                     
         </div>
-        <!-- #endregion Pagination -->
-
-      </div>
-      <!-- #endregion Body -->
+      </main>                  
+    </div>
 
 
-
-    </main>
-
-    <!-- #region Footer -->
-    <%- include('layouts/footer') %>
-    <!-- #endregion Footer -->
-    
+      <!-- #region Footer-->
+      <%- include('layouts/footer') %>
+      <!-- #endregion Footer -->
+       
   </div>
 
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="/js/category.js"></script>
+  <script src="/js/filterHandlingAndPaginationAJAX.js"></script>
 </body>
 
 </html>

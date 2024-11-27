@@ -1,6 +1,5 @@
 const pool = require("../../config/database");
-const prepareFilterStatements = require("../Utils/preparingFilterStatements");
-
+const {prepareFilterStatements} = require("../Utils/filterStatementUtils");
 /**
  * Get all products of a specific type with filters applied.
  * Each record in the result set contains the following fields:
@@ -45,8 +44,8 @@ async function getAllProductsOfTypeWithFilter(minPrice, maxPrice, page, limit, s
             ORDER BY ${sort.split(",")[0]} ${sortDirection}
             LIMIT $1 OFFSET $2`,
             [limit, (page - 1) * limit]
-        );      
-    
+        );     
+        
         return result.rows;
   
     } catch (error) {

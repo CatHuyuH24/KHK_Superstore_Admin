@@ -1,6 +1,6 @@
 const televisionService = require("./televisionService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
-const {calculateDiscountedPrice} = require("../Utils/calculateDiscountedPrice");
+const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
 
 async function renderTelevisionCategoryPage(req, res) {
   try {
