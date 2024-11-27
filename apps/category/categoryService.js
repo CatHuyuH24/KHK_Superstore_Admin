@@ -7,24 +7,19 @@ async function getAllProducts(minPrice, maxPrice, page, limit, sort, brand, sear
     // Đảm bảo page không nhỏ hơn 1
     page = Math.max(1, page);
 
-    //product_type is not provided, which means we want to get all products
-    const products = 
-      await productsService.getAllProductsOfTypeWithFilter
+    // product_type is not provided, which means 
+    // we want to get all products 
+    // and the total number of products 
+    const {totalCount, products} = 
+      await productsService.getAllProductsOfTypeWithFilterAndCount
       (minPrice, maxPrice, page, limit, sort, brand, search);
     products.forEach((product) => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
-    
-    //get the total number of products (product_type is not provided)
-    const total = 
-      await productsService.countAllProductsOfTypeWithFilters
-      (minPrice, maxPrice, sort, brand, search);
 
     //get all brands of products (product_type is not provided)
-    const brands = await productsService.getAllBrandsOfType();
-
-    return { result: products, total, brands };
-
+    const brandsArray = await productsService.getAllBrandsOfType();
+    return { result: products, total: totalCount, brands: brandsArray };
   } catch (error) {
     console.error("Error fetching products:", error.message);
     return { result: [], total: 0, brands: [] };

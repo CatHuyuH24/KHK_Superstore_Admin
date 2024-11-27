@@ -1,67 +1,48 @@
+
 const pool = require("../../config/database");
-const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils.js");
+const productService = require("../product/productService");
+const {prepareFilterStatements} = require("../Utils/filterStatementUtils");
 
-/**
- * 
- * @param {*} sortBy 
- * @param {*} minPrice 
- * @param {*} maxPrice 
- * @param {*} selectedBrands 
- * @param {*} search 
- * @returns an object containing all products categorized by type (access by key: computers, mobilephones, televisions)
- * 
- * @example
- * const products = await getAllProductsAsObject(sortBy, minPrice, maxPrice, selectedBrands, search);
- * console.log(products.computers);// print out the array of 'computer' objects
- */
-async function getAllProductsAsObject(sortBy, minPrice, maxPrice, selectedBrands, search) {
+async function getAllDiscountedProductsWithFilterAndCount(minPrice, maxPrice, page, limit, sort, brand, search) {
 	try {
-		// const products = await 
-		// return products;
-		console.log("getAllProducts in indexService.js");
-		
-	} catch (err) {
-		console.error("Error fetching products:", err);
-		throw err;
-	}
-}
+        const {
+            priceFilter, 
+            sortDirection, 
+            brandFilter, 
+            searchFilter, 
+            productsTypeFilter
+        } = prepareFilterStatements(
+            minPrice, maxPrice, sort, 
+            brand, search, products_type
+        );
+        
+        const result = await pool.query(`
+            SELECT p.id, p.name, p.brand, p.price, p.imageurl, p.detail, p.discount, p.numberofpro, t.type_name, count(*) over() as total_count 
+            FROM products p 
+            JOIN types t ON p.type_id = t.id
+            WHERE discount > 0
+            ${productsTypeFilter}
+            ${searchFilter}
+            ${brandFilter}
+            ${priceFilter}
+            ORDER BY ${sort.split(",")[0]} ${sortDirection}
+            LIMIT $1 OFFSET $2`,
+            [limit, (page - 1) * limit]
+        );
+        
+        const totalCount = result.rows.length > 0 ? result.rows[0].total_count : 0;
+        
+        return {
+            totalCount,
+            products: result.rows
+        };
 
-async function getAllDiscountedProductsAsObject(minPrice,
-	maxPrice,
-	page,
-	limit,
-	sort,
-	brand,
-	search) {
-	try {
-		let computersQueryRows = await computerService.getAllDiscountedComputers(sortBy, minPrice, maxPrice, selectedBrands, search);
-		computersQueryRows.forEach((product) => {
-			product.price = calculateDiscountedPrice(product.price, product.discount);
-		});
-
-		let mobilephonesQueryRows = await mobilephoneService.getAllDiscountedMobilephones(sortBy, minPrice, maxPrice, selectedBrands, search);
-		mobilephonesQueryRows.forEach((product) => {
-			product.price = calculateDiscountedPrice(product.price, product.discount);
-		});
-
-		let televisionsQueryRows = await televisionService.getAllDiscountedTelevisions(sortBy, minPrice, maxPrice, selectedBrands, search);
-		televisionsQueryRows.forEach((product) => {
-			product.price = calculateDiscountedPrice(product.price, product.discount);
-		});
-
-		let products = {
-			computers: computersQueryRows,
-			mobilephones: mobilephonesQueryRows,
-			televisions: televisionsQueryRows,
-		};
-		return products;
-	} catch (err) {
-		console.error("Error fetching products:", err);
-		throw err;
-	}
+    } catch (error) {
+        console.error(`Error fetching all discounted products:`, error.message);
+        return { totalCount: 0, products: [] };
+    }
 }
 
 module.exports = {
-	getAllProductsAsObject,
-	getAllDiscountedProductsAsObject,
+	getAllDiscountedProductsWithFilterAndCount,
 };

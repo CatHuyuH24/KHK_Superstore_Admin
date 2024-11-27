@@ -1,16 +1,19 @@
 const pool = require("../../config/database");
 const {prepareFilterStatements} = require("../Utils/filterStatementUtils");
+
 /**
- * Get all products of a specific type with filters applied.
+ * Get all products of a specific type with filters applied and the total number of products.
  * Each record in the result set contains the following fields:
  * - id
  * - name
  * - brand
  * - price
  * - imageurl
+ * - detail
  * - discount
  * - numberofpro (number of products)
  * - type_name (type of product)
+ * - total_count (total number of products matching the filters)
  * 
  * @param {number} minPrice - Minimum price filter.
  * @param {number} maxPrice - Maximum price filter.
@@ -20,22 +23,30 @@ const {prepareFilterStatements} = require("../Utils/filterStatementUtils");
  * @param {string} brand - Brand filter.
  * @param {string} search - Search keyword.
  * @param {string} products_type - Type of products. e.g. "computers". If not provided, all products will be fetched.
- * @returns {Promise<Array>} - List of products.
+ * @returns {Promise<Object>} An object containing the total count of products and the array of products.
+ * @returns {number} return.totalCount - Total number of products matching the filters.
+ * @returns {Array} return.products - Array of products.
+ * @example
+ * const {totalCount, products} = await getAllProductsOfTypeWithFilterAndCount(0, 1000, 1, 10, "price,ASC", "Apple", "macbook", "computers");
  */
-async function getAllProductsOfTypeWithFilter(minPrice, maxPrice, page, limit, sort, brand, search, products_type) {
+async function getAllProductsOfTypeWithFilterAndCount(minPrice, maxPrice, page, limit, sort, brand, search, products_type) {
     try {
+        
         const {
             priceFilter, 
             sortDirection, 
             brandFilter, 
             searchFilter, 
-            productsTypeFilter} 
-            = prepareFilterStatements(
-                minPrice, maxPrice, sort, 
-                brand, search, products_type);
+            productsTypeFilter
+        } = prepareFilterStatements(
+            minPrice, maxPrice, sort, 
+            brand, search, products_type
+        );
         
         const result = await pool.query(`
-            SELECT p.id, p.name, p.brand, p.price, p.imageurl, p.detail, p.discount, p.numberofpro, t.type_name FROM products p JOIN types t ON p.type_id = t.id
+            SELECT p.id, p.name, p.brand, p.price, p.imageurl, p.detail, p.discount, p.numberofpro, t.type_name, count(*) over() as total_count 
+            FROM products p 
+            JOIN types t ON p.type_id = t.id
             WHERE 1=1
             ${productsTypeFilter}
             ${searchFilter}
@@ -44,13 +55,19 @@ async function getAllProductsOfTypeWithFilter(minPrice, maxPrice, page, limit, s
             ORDER BY ${sort.split(",")[0]} ${sortDirection}
             LIMIT $1 OFFSET $2`,
             [limit, (page - 1) * limit]
-        );     
+        );
+
+        const count = result.rows[0].total_count ? 
+        parseInt(result.rows[0].total_count) : 0;
         
-        return result.rows;
-  
+        return {
+            totalCount: count,
+            products: result.rows
+        };
+
     } catch (error) {
         console.error(`Error fetching ${products_type} products:`, error.message);
-        return { result: [], total: 0, brands: [] };
+        return { totalCount: 0, products: [] };
     }
 }
 
@@ -58,7 +75,7 @@ async function getAllProductsOfTypeWithFilter(minPrice, maxPrice, page, limit, s
  * Get all brands of a specific product type.
  * 
  * @param {string} products_type Type of products.
- * @returns {Promise<Array>} List of brands.
+ * @returns {Promise<Array>} An array of brands.
  */
 async function getAllBrandsOfType(products_type) {
     let productsTypeFilter = "";
@@ -114,7 +131,7 @@ async function countAllProductsOfTypeWithFilters(minPrice, maxPrice, sort, brand
 }
 
 module.exports = {
-    getAllProductsOfTypeWithFilter,
+    getAllProductsOfTypeWithFilterAndCount,
     getAllBrandsOfType,
     countAllProductsOfTypeWithFilters,
 }
