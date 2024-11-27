@@ -40,7 +40,7 @@ async function renderHomePage(req, res) {
 		// { id: "cat-23", name: "Samsung", count: 0 },
 		// ];
 
-	const products = await indexService.getAllProducts(
+	const products = await indexService.get(
 		minPrice,
 		maxPrice,
 		page,
