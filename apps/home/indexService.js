@@ -37,7 +37,13 @@ async function getAllProductsAsObject(sortBy, minPrice, maxPrice, selectedBrands
 	}
 }
 
-async function getAllDiscountedProductsAsObject(sortBy, minPrice, maxPrice, selectedBrands, search) {
+async function getAllDiscountedProductsAsObject(minPrice,
+	maxPrice,
+	page,
+	limit,
+	sort,
+	brand,
+	search) {
 	try {
 		let computersQueryRows = await computerService.getAllDiscountedComputers(sortBy, minPrice, maxPrice, selectedBrands, search);
 		computersQueryRows.forEach((product) => {

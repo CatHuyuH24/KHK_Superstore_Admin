@@ -24,7 +24,7 @@ async function renderCategoryPage(req, res) {
    );
 
    const response = {
-      title: "Category Page",
+      title: "Category Page - Superstore - GA05",
        error: false,
        total: products.total,
        page: page + 1,
@@ -34,6 +34,8 @@ async function renderCategoryPage(req, res) {
        brands:products.brands,
        selectedBrands,
    };
+
+   console.log("response", response);
 
   if (req.xhr) {
     return res.json(response);

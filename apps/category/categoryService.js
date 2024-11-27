@@ -1,51 +1,24 @@
 const pool = require("../../config/database");
-
+const productsService = require("../product/productService");
 async function getAllProducts(minPrice, maxPrice, page, limit, sort, brand, search) {
   try {
     // Đảm bảo page không nhỏ hơn 1
     page = Math.max(1, page);
 
-    let brandFilter = brand === "All" ? "" : `AND brand IN (${brand.split(",").map(g => `'${g}'`).join(", ")})`;
-    let searchFilter = search ? `AND name ILIKE '%${search}%'` : "";
-    let priceFilter = ""; // Khởi tạo chuỗi lọc giá
+    //product_type is not provided, which means we want to get all products
+    const products = 
+      await productsService.getAllProductsOfTypeWithFilter
+      (minPrice, maxPrice, page, limit, sort, brand, search);
 
-    if (minPrice !== null && maxPrice !== null) {
-      priceFilter = `AND price BETWEEN ${minPrice} AND ${maxPrice}`;
-    } else if (minPrice !== null) {
-      priceFilter = `AND price >= ${minPrice}`;
-    } else if (maxPrice !== null) {
-      priceFilter = `AND price <= ${maxPrice}`;
-    }
+    //get the total number of products (product_type is not provided)
+    const total = 
+      await productsService.countAllProductsOfTypeWithFilters
+      (minPrice, maxPrice, brand, search);
 
-    let sortDirection = sort.split(",")[1] || "ASC";
+    //get all brands of products (product_type is not provided)
+    const brands = await productsService.getAllBrandsOfType();
 
-    const result = await pool.query(
-      `SELECT * FROM products
-       WHERE 1=1
-       ${searchFilter}
-       ${brandFilter}
-       ${priceFilter} -- Thêm bộ lọc giá
-       ORDER BY ${sort.split(",")[0]} ${sortDirection}
-       LIMIT $1 OFFSET $2`,
-      [limit, (page - 1) * limit]
-    );
-
-    const totalResult = await pool.query(
-      `SELECT COUNT(*) FROM products
-       WHERE 1=1
-       ${searchFilter}
-       ${brandFilter}
-       ${priceFilter}` // Thêm bộ lọc giá
-    );
-    const total = parseInt(totalResult.rows[0].count);
-
-    const listBrands = await pool.query(
-      `SELECT DISTINCT(brand) FROM products`
-    );
-
-    const brands = listBrands.rows.map(row => row.brand);
-
-    return { result: result.rows, total, brands };
+    return { result: products, total, brands };
 
   } catch (error) {
     console.error("Error fetching products:", error.message);

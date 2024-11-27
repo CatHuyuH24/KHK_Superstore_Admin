@@ -3,7 +3,7 @@ const pool = require("../../config/database");
 async function getAllMobilephones(sortBy, minPrice, maxPrice, selectedBrands) {
   try {
     // Xây dựng câu truy vấn cơ bản
-    let query = "SELECT * FROM mobilephones WHERE 1 = 1";
+    let query = "SELECT * FROM products WHERE 1 = 1";
 
     // Lọc theo giá nếu có minPrice và maxPrice
     if (minPrice !== null) {
@@ -37,7 +37,7 @@ async function getAllMobilephones(sortBy, minPrice, maxPrice, selectedBrands) {
 async function getMobilephoneByID(id) {
   try {
     const result = await pool.query(
-      "SELECT * FROM mobilephones WHERE ID = $1",
+      "SELECT * FROM products WHERE ID = $1",
       [id]
     );
     return result;

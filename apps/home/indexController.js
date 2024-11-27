@@ -4,12 +4,16 @@ const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 async function renderHomePage(req, res) {
 	try 
 	{
-	const sortBy = "";
-    const search = "";
-    const minPrice = null;
-    const maxPrice = null;
-    const selectedBrands = [];
+		
+	const page = parseInt(req.query.page)  || 0;
+	const limit = parseInt(req.query.limit) || 6;
+	let sort = req.query.sort || "id";
+	let brand = req.query.brand || "All";
+	const search = req.query.search || "";
+	const minPrice = req.query.min ? parseInt(req.query.min) : null;
+	const maxPrice = req.query.max ? parseInt(req.query.max) : null;
 
+	const selectedBrands = brand === "All" ? [] : brand.split(",");
 	const currentCategory = "home";
 
     let categories;
@@ -36,8 +40,20 @@ async function renderHomePage(req, res) {
       { id: "cat-22", name: "LG", count: 0 },
       { id: "cat-23", name: "Samsung", count: 0 },
     ];
+
+	const products = await categoryService.getAllProducts(
+		minPrice,
+		maxPrice,
+		page,
+		limit,
+		sort,
+		brand,
+		search,
+	);
+	
 	const productsObject =
-		await indexService.getAllDiscountedProductsAsObject(sortBy, minPrice, maxPrice, selectedBrands, search);
+		await indexService.getAllDiscountedProductsAsObject
+		(sort, minPrice, maxPrice, selectedBrands, search);
 
 	res.render("index", 
 		{ 

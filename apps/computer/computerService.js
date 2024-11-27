@@ -3,7 +3,11 @@ const pool = require('../../config/database');
 async function getAllComputers (sortBy, minPrice, maxPrice, selectedBrands, search, limit = 20) {
     try {
         // Xây dựng câu truy vấn cơ bản
-        let query = "SELECT * FROM computers WHERE 1 = 1";
+        const query = `
+        SELECT * 
+        FROM products
+        WHERE type_id = (SELECT id from types where type_name = 'computers') AND 1 = 1
+        `;
     
         if (search) {
             query += " AND (name ILIKE $1 OR description ILIKE $1)";
@@ -41,7 +45,12 @@ async function getAllComputers (sortBy, minPrice, maxPrice, selectedBrands, sear
 
 async function getComputerByID(id) {
     try {
-        const result = await pool.query('SELECT * FROM computers WHERE ID = $1', [id]);
+        const query = `
+        SELECT * 
+        FROM products 
+        WHERE type_id = (SELECT id from types where type_name = 'computers') AND id = $1
+        `;
+        const result = await pool.query(query, [id]);
         return result;
     } catch (error) {
         console.error('Error fetching computer by ID', error);
@@ -52,10 +61,12 @@ async function getComputerByID(id) {
 async function getRelatedComputers(currentId, limit = 3) {
   try {
       const query = `
-          SELECT * FROM computers 
-          WHERE ID != $1 
-          ORDER BY RANDOM() 
-          LIMIT $2
+      SELECT * 
+      FROM products 
+      WHERE type_id = (SELECT id from types where type_name = 'computers')
+      AND id <> $1
+      ORDER BY RANDOM() 
+      LIMIT $2
       `;
       const result = await pool.query(query, [currentId, limit]);
       return result.rows;
@@ -67,8 +78,13 @@ async function getRelatedComputers(currentId, limit = 3) {
 
 async function getAllDiscountedComputers (sortBy, minPrice, maxPrice, selectedBrands, search, limit = 20) {
   try {
-      // Xây dựng câu truy vấn cơ bản
-      let query = "SELECT * FROM computers WHERE discount > 0 AND 1 = 1";
+      const query = `
+      SELECT *
+      FROM products
+      WHERE type_id = (SELECT id from types where type_name = 'computers')
+      AND discount > 0 AND 1 = 1
+      `;
+      let queryParams = [];
   
       if (search) {
           query += " AND (name ILIKE $1 OR description ILIKE $1)";
@@ -94,14 +110,26 @@ async function getAllDiscountedComputers (sortBy, minPrice, maxPrice, selectedBr
       } else if (sortBy === "price-high-to-low") {
         query += " ORDER BY price DESC";
       }
+
+      query += ` LIMIT ${limit}`;
   
       // Thực hiện truy vấn
-      const result = await pool.query(query);
+      const result = await pool.query(query, queryParams);
       return result.rows;
   } catch (error) {
-      console.error('Error fetching all computers', error);
+      console.error('Error fetching all discounted computers', error);
       return [];
   }
+}
+
+async function getAllBrands() {
+  const query =`
+  SELECT DISTINCT brand
+  FROM products
+  WHERE type_id = (SELECT id from types where type_name = 'computers')
+  `;
+  const result = await pool.query(query);
+  return result.rows;
 }
 
 module.exports = {

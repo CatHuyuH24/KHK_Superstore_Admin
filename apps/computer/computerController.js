@@ -5,6 +5,8 @@ const { query } = require("express");
 
 async function renderCompterCategoryPage(req, res) {
   try {
+    
+
     const sortBy = req.query.sortBy || "";
     const search = req.query.search || "";
     const minPrice = req.query.min ? parseInt(req.query.min) : null; // Chuyển min thành số
@@ -39,17 +41,20 @@ async function renderCompterCategoryPage(req, res) {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
+    brands = products.map((product) => product.brand);
+
     res.render("category", {
       title: "Computer Category - Superstore - GA05",
-      products: products, // Use products directly
+      products: products,
       category: "computers",
       sortBy,
       search,
       min: minPrice || "",
       max: maxPrice || "",
-      categories, // Truyền danh sách categories
+      categories,
       currentCategory,
       selectedBrands,
+      brands,
     });
   } catch (error) {
     console.error("Error rendering computer category page:", error);

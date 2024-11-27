@@ -15,8 +15,8 @@
   <link id="favicon" rel="icon" type="image/png" href="/images/shop_icon.ico">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="/js/category.js"></script>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="/js/category.js" defer></script>
 </head>
 
 <body>
@@ -132,12 +132,12 @@
             <div class="flex items-center mb-4"></div>
 
             <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              <% products.forEach(products=> { %>
+              <% products.forEach( product => { %>
                 <div class="bg-white shadow-md flex flex-col h-full rounded-lg">
                   <!-- Phần hình ảnh sản phẩm -->
                   <div class="relative group w-[302px] h-80 flex items-center justify-center">
-                    <img src="<%= products.imageurl %>" alt="<%= products.name %>" class="max-w-full max-h-full" />
-                    <a href="<%= products.id %>">
+                    <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="max-w-full max-h-full" />
+                    <a href="<%= product.id %>">
                       <div
                         class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
                       </div>
@@ -147,7 +147,7 @@
                   <!-- Phần nội dung sản phẩm -->
                   <div class="flex-grow pt-4 pb-3 px-4 flex flex-col">
                     <!-- Tên sản phẩm -->
-                    <a href="<%= products.id %>">
+                    <a href="<%= product.id %>">
                       <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
                         <%= products.name %>
                       </h4>
@@ -167,7 +167,7 @@
 
                     <div class="flex items-baseline mb-1 space-x-2">
                       <p class="text-xl text-primary font-semibold">
-                        <%= products.brand %>
+                        <%= product.brand %>
                     </div>
 
                   </div> 
@@ -181,7 +181,9 @@
                 <% }); %>
 
             </div>
-            <!-- paging -->
+            <!-- #endregion Products -->
+
+            <!-- #region Pagination -->
             <!-- Thay vì các liên kết href cho paging, sử dụng onclick để gọi AJAX -->
             <div class="flex items-center justify-between bg-white px-6 py-4 sm:px-8">
               <!-- <div class="flex flex-1 justify-between sm:hidden">
@@ -216,7 +218,8 @@
                       </nav>
                   </div>
               </div>
-          </div>
+            </div>
+            <!-- #endregion Pagination -->
 
                         
                         
