@@ -74,12 +74,12 @@ async function getAllProductsOfTypeWithFilterAndCount(minPrice, maxPrice, page, 
 /**
  * Get all brands of a specific product type.
  * 
- * @param {string} products_type Type of products.
+ * @param {string} products_type Type of products, e.g. "computers". If not provided, brands of all products will be fetched.
  * @returns {Promise<Array>} An array of brands.
  */
 async function getAllBrandsOfType(products_type) {
     let productsTypeFilter = "";
-    if(products_type)
+    if(products_type != null)
         productsTypeFilter = `WHERE type_id = (SELECT id from types where type_name = '${products_type}')`;
 
     const brandsList = await pool.query(`

@@ -13,7 +13,7 @@ async function renderCategoryPage(req, res) {
 
    const selectedBrands = brand === "All" ? [] : brand.split(",");
 
-   const products = await categoryService.getAllProducts(
+   const {products, total, brands} = await categoryService.getAllProductsWithFiltersAndCountAndBrands(
        minPrice,
        maxPrice,
        page,
@@ -26,12 +26,12 @@ async function renderCategoryPage(req, res) {
    const response = {
       title: "Category Page - Superstore - GA05",
        error: false,
-       total: products.total,
+       total: total,
        page: page + 1,
-       totalPages:Math.ceil(products.total / limit),
+       totalPages:Math.ceil(total / limit),
        itemsPerPage: limit,
-       products: products.result,
-       brands:products.brands,
+       products: products,
+       brands: brands,
        selectedBrands,
    };
    
