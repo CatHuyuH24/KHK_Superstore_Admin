@@ -40,10 +40,7 @@ async function getAllProductsWithFiltersAndCountAndBrands(minPrice, maxPrice, pa
     const {totalCount, products} = 
       await productsService.getAllProductsOfTypeWithFilterAndCount
       (minPrice, maxPrice, page, limit, sort, brand, search);
-    products.forEach((product) => {
-      product.price = calculateDiscountedPrice(product.price, product.discount);
-    });
-
+      
     // Get all brands of all products (product_type is not provided)
     const brandsArray = await productsService.getAllBrandsOfType();
 
