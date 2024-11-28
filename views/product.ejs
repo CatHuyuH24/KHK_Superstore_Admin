@@ -90,9 +90,14 @@
                         <div class="text-xs text-gray-500 ml-3">(150 Reviews)</div>
                     </div>
                     <div class="space-y-2">
-                        <p class="text-gray-800 font-semibold space-x-2">
-                            <span>Availability: </span>
-                            <span class="text-green-600">In Stock</span>
+                        <p class="font-semibold space-x-2">
+                            <span class="text-gray-800">Availability: </span>
+                            <% if (product.numberofpro > 0) { %>
+                                <span class="text-green-600">In Stock (<%= product.numberofpro %>)</span>
+                            <% }else{ %>
+                                <span class="text-red-600">Currently out of stock</span>
+                            <% } %>
+                            
                         </p>
                         <p class="space-x-2">
                             <span class="text-gray-800 font-semibold">Brand: </span>
@@ -257,7 +262,6 @@
                                         <i class="star"></i>
                                         <i class="star"></i>
                                     </div>
-                                    <div class="text-xs text-gray-500 ml-3">(150)</div>
                                 </div>
                                     
                                 <a href="#"
