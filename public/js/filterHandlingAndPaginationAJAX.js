@@ -104,7 +104,7 @@ function updateProductList(products) {
   products.forEach(product => {
     let productHTML = `
       <div class="bg-white shadow-md flex flex-col h-full rounded-lg">
-        <div class="relative group w-[302px] h-80 flex items-center justify-center">
+        <div class="relative group w-full h-80 flex items-center justify-center">
           <img src="${product.imageurl}" alt="${product.name}" class="max-w-full max-h-full" />
           <a href="/category/${product.type_name}/${product.id}">
                       <div
