@@ -22,6 +22,7 @@ exports.seed = async function(knex) {
         \nADVANCED CAMERA AND AUDIO - Look sharp and sound great with a 1080p FaceTime HD camera, three-mic array and four-speaker sound system with Spatial Audio.
         $$`,
       discount: 0,
+      numberofpro: 0,
     },
     {
       name: "Macbook Pro 14 M2",
@@ -39,6 +40,7 @@ exports.seed = async function(knex) {
         \nBattery capacity exceeds 80% capacity relative to its new equivalent.
         $$`,
       discount: 10,
+      numberofpro: 0,
     },
     {
       name: "Macbook Pro 16 M2 (16/256)",
@@ -73,6 +75,7 @@ exports.seed = async function(knex) {
         \nConfigure To Order {Factory Upgraded from Base Spec}
         $$`,
       discount: 30,
+      numberofpro: 5,
     },
     {
       name: "Macbook M2",
@@ -107,6 +110,7 @@ exports.seed = async function(knex) {
         \nConfigure To Order {Factory Upgraded from Base Spec}
         $$`,
       discount: 0,
+      numberofpro: 985,
     },
     {
       name: "Macbook Pro 16 M1 Max",
@@ -141,6 +145,7 @@ exports.seed = async function(knex) {
         \nConfigure To Order {Factory Upgraded from Base Spec}
         $$`,
       discount: 0,
+      numberofpro: 554,
     },
     {
       name: "Macbook Pro 13",
@@ -175,6 +180,7 @@ exports.seed = async function(knex) {
         \nConfigure To Order {Factory Upgraded from Base Spec}
         $$`,
         discount: 10,
+        numberofpro: 677,
     },
     {
       name: "Macbook Air M3",
@@ -209,6 +215,7 @@ exports.seed = async function(knex) {
         \nConfigure To Order {Factory Upgraded from Base Spec}
         $$`,
         discount: 12,
+        numberofpro: 714,
     },
     {
       name: "Laptop Dell XPS 13 9340 ",
@@ -227,6 +234,7 @@ exports.seed = async function(knex) {
         \nAdvanced Connectivity: Equipped with Wi-Fi 7, Bluetooth 5.4, and two Thunderbolt 4 ports, ensuring fast data transfer and connectivity.
         $$`,
         discount: 0,
+        numberofpro: 105,
     },
     {
       name: "Laptop Dell XPS 13 Plus 9320-5CG56",
@@ -245,6 +253,7 @@ exports.seed = async function(knex) {
         \nAdvanced Connectivity: Equipped with Wi-Fi 7, Bluetooth 5.4, and two Thunderbolt 4 ports, ensuring fast data transfer and connectivity.
         $$`,
         discount: 0,
+        numberofpro: 245,
     },
     {
       name: "Laptop Acer Nitro 5 Tiger",
@@ -263,6 +272,7 @@ exports.seed = async function(knex) {
         \nAdvanced Connectivity: Equipped with Wi-Fi 7, Bluetooth 5.4, and two Thunderbolt 4 ports, ensuring fast data transfer and connectivity.
         $$`,
         discount: 0,
+        numberofpro: 19,
     },
     {
       name: "iPhone 14 Pro Max",
@@ -293,6 +303,7 @@ exports.seed = async function(knex) {
         \nSome features may not be available for all countries or all areas.
         $$`,
         discount: 10,
+        numberofpro: 87,
     },
     {
       name: "iPhone 16",
@@ -322,6 +333,7 @@ exports.seed = async function(knex) {
         \nSome features may not be available for all countries or all areas.
         $$`,
         discount: 10,
+        numberofpro: 281,
     },
     {
       name: "iPhone 16 Plus",
@@ -351,6 +363,7 @@ exports.seed = async function(knex) {
         \nSome features may not be available for all countries or all areas.
         $$`,
         discount: 10,
+        numberofpro: 420,
     },
     {
       name: "iPhone 16 Pro",
@@ -370,6 +383,7 @@ exports.seed = async function(knex) {
         \nTo activate this device, a Straight Talk Wireless plan is required. Shop for the iPhone 16 Pro online or at your local Walmart.
         $$`,
         discount: 0,
+        numberofpro: 323,
     },
     {
       name: "iPhone 16 Pro Max",
@@ -389,6 +403,7 @@ exports.seed = async function(knex) {
         \nTo activate this device, a Straight Talk Wireless plan is required. Shop for the iPhone 16 Pro Max online or at your local Walmart.
         $$`,
         discount: 0,
+        numberofpro: 496,
     },
     {
       name: "iPhone 15",
@@ -418,6 +433,7 @@ exports.seed = async function(knex) {
         \nThe included USB‑C Charge Cable is compatible with AirPods Pro (2nd generation) with MagSafe Charging Case (USB‑C).
         $$`,
         discount: 0,
+        numberofpro: 554,
     },
     {
       name: "iPhone 15 Plus",
@@ -446,6 +462,7 @@ exports.seed = async function(knex) {
         \nAll battery claims depend on network configuration and many other factors; actual results will vary. Battery has limited recharge cycles and may eventually need to be replaced. Battery life and charge cycles vary by use and settings. See apple.com/batteries and apple.com/iphone/battery.html for more information.
         $$`,
         discount: 0,
+        numberofpro: 122,
     },
     {
       name: "iPhone 15 Pro",
@@ -479,6 +496,7 @@ exports.seed = async function(knex) {
         \nWeight: 7.81 ounces (221 grams)
         $$`,
         discount: 0,
+        numberofpro: 215,
     },
     {
       name: "iPhone 15 Pro Max",
@@ -512,6 +530,7 @@ exports.seed = async function(knex) {
       \nWeight: 7.81 ounces (221 grams)
       \n$$`,
         discount: 50,
+        numberofpro: 375,
     },
     {
       name: "Samsung Galaxy S24 Ultra",
@@ -536,6 +555,7 @@ exports.seed = async function(knex) {
         \nBattery life may vary depending on usage patterns and software settings. For optimum battery health, follow the manufacturer's charging guidelines.
       $$`,
       discount: 0,
+      numberofpro: 135,
     },
     {
       name: "Samsung Galaxy S24",
@@ -560,6 +580,7 @@ exports.seed = async function(knex) {
         \nBattery life is subject to change based on usage patterns, apps, and settings. Refer to the manufacturer's guide for optimal charging and battery care.
         $$`,
         discount: 0,
+        numberofpro: 111,
     },
     {
       name: "Samsung QLED 8K",
@@ -576,6 +597,7 @@ exports.seed = async function(knex) {
               \nSmart TV features with voice control
       $$`,
       discount: 10,
+      numberofpro: 98,
     },
     {
       name: "LG Electronics 22-inch",
@@ -594,6 +616,7 @@ exports.seed = async function(knex) {
               \nLED Backlighting
               $$`,
               discount: 0,
+              numberofpro: 67,
     },
     {
       name: "LG OLED 4K",
@@ -609,6 +632,7 @@ exports.seed = async function(knex) {
               \nSmart TV with AI ThinQ
               $$`,
               discount: 0,
+              numberofpro: 46,
     },
     {
       name: "Smart Tivi 32 inch Darling 32HD946T2",
@@ -631,6 +655,7 @@ exports.seed = async function(knex) {
         \nWARRANTY - Includes a one-year warranty for peace of mind and reliable customer support.
         $$`,
           discount: 0,
+          numberofpro: 32,
     },
     {
       name: "Smart Tivi Darling 43 Inch 43FH960S",
@@ -647,6 +672,7 @@ exports.seed = async function(knex) {
           \nHDMI Port: Quickly connects images and audio between the TV and devices like laptops or DVD players.
           $$`,
           discount: 0,
+          numberofpro: 38,
     },
     {
       name: "Tivi Led 40 inch Darling 40HD957T2",
@@ -663,6 +689,7 @@ exports.seed = async function(knex) {
           \nHDMI Port: Quickly connects images and audio between the TV and devices like laptops or DVD players.
           $$`,
           discount: 28,
+          numberofpro: 182,
     },
     {
       name: "Tivi Led 32 inch Darling 32HD955T2",
@@ -679,6 +706,7 @@ exports.seed = async function(knex) {
           \nHDMI Port: Quickly connects images and audio between the TV and devices like laptops or DVD players.
           $$`,
           discount: 10,
+          numberofpro: 95,
     },
     {
       name: "Tivi Led Darling 32HD957T2 32 inch",
@@ -695,6 +723,7 @@ exports.seed = async function(knex) {
             \nHDMI Port: Quickly connects images and audio between the TV and devices like laptops or DVD players.
             $$`,
             discount: 35,
+            numberofpro: 76,
     },
   ]);
 };

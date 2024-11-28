@@ -19,7 +19,7 @@ const {prepareFilterStatements} = require("../Utils/filterStatementUtils");
  * @param {number} maxPrice - Maximum price filter.
  * @param {number} page - Page number for pagination, expected to be greater than 0.
  * @param {number} limit - Number of items per page.
- * @param {string} sort - Sort order (column, direction). e.g. "id,ASC".
+ * @param {string} sort- Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
  * @param {string} brand - Brand filter.
  * @param {string} search - Search keyword.
  * @param {string} products_type - Type of products. e.g. "computers". If not provided, all products will be fetched.
@@ -34,9 +34,9 @@ async function getAllProductsOfTypeWithFilterAndCount(minPrice, maxPrice, page, 
         
         const {
             priceFilter, 
-            sortDirection, 
             brandFilter, 
-            searchFilter, 
+            searchFilter,
+            sortFilter, 
             productsTypeFilter
         } = prepareFilterStatements(
             minPrice, maxPrice, sort, 
@@ -52,7 +52,7 @@ async function getAllProductsOfTypeWithFilterAndCount(minPrice, maxPrice, page, 
             ${searchFilter}
             ${brandFilter}
             ${priceFilter}
-            ORDER BY ${sort.split(",")[0]} ${sortDirection}
+            ${sortFilter}
             LIMIT $1 OFFSET $2`,
             [limit, (page - 1) * limit]
         );
@@ -98,7 +98,7 @@ async function getAllBrandsOfType(products_type) {
  * 
  * @param {number} minPrice - Minimum price filter.
  * @param {number} maxPrice - Maximum price filter.
- * @param {string} sort - Sort order (column, direction). e.g. "id,ASC".
+ * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
  * @param {string} brand - Brand filter.
  * @param {string} search - Search keyword.
  * @param {string} products_type - Type of products.
@@ -107,9 +107,9 @@ async function getAllBrandsOfType(products_type) {
 async function countAllProductsOfTypeWithFilters(minPrice, maxPrice, sort, brand, search, products_type) {
     const {
         priceFilter, 
-        sortDirection, // not used here
         brandFilter, 
-        searchFilter, 
+        searchFilter,
+        sortFilter,// no need to used here because we are counting
         productsTypeFilter} 
         = prepareFilterStatements(
             minPrice, maxPrice, sort, 

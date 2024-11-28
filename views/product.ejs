@@ -87,12 +87,16 @@
                             <i class="star"></i>
                             <i class="star"></i>
                         </div>
-                        <div class="text-xs text-gray-500 ml-3">(150 Reviews)</div>
                     </div>
                     <div class="space-y-2">
-                        <p class="text-gray-800 font-semibold space-x-2">
-                            <span>Availability: </span>
-                            <span class="text-green-600">In Stock</span>
+                        <p class="font-semibold space-x-2">
+                            <span class="text-gray-800">Availability: </span>
+                            <% if (product.numberofpro > 0) { %>
+                                <span class="text-green-600">In Stock (<%= product.numberofpro %>)</span>
+                            <% }else{ %>
+                                <span class="text-red-600">Currently out of stock</span>
+                            <% } %>
+                            
                         </p>
                         <p class="space-x-2">
                             <span class="text-gray-800 font-semibold">Brand: </span>
@@ -179,9 +183,13 @@
                 <h3 class="border-b border-gray-200 font-roboto text-gray-800 pb-3 font-medium">
                     <%= product.name %>
                 </h3>
+                <hr>
                 <div class="w-full p-6 text-wrap">
-                    <div class="text-gray-600">
-                            <%= product.detail.slice(2, product.detail.length - 2) %>
+                    <div class="text-gray-600 lg:text-xl xl:text-2xl">
+                            <% let detail = product.detail.slice(2, product.detail.length - 2).split('\n') %>
+                            <% detail.forEach( line => { %>
+                                <p><%= line %></p>
+                            <% }); %>
                     </div>
                        
                         <!-- <p class="py-4">The standout feature of this t-shirt is undoubtedly the bold and eye-catching
@@ -229,7 +237,7 @@
                         <div class="flex flex-col justify-around my-5 items-center">
                             <div class="relative group w-[302px] h-80 flex items-center justify-center">
                                 <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="max-w-full max-h-full" />
-                                <a href="/<%= category %>/<%= product.id %>">
+                                <a href="/category/<%= product.type_name %>/<%= product.id %>">
                                     <div
                                     class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
                                 </div>
@@ -237,7 +245,7 @@
                             </div>
 
                             <div>
-                                <a href="/<%= category %>/<%= product.id %>">
+                                <a href="/category/<%= product.type_name %>/<%= product.id %>">
                                     <h4
                                     class="text-wrap uppercase font-medium text-base lg:text-xl mb-2 text-gray-800 hover:text-primary transition">
                                     <%= product.name %></h4>
@@ -249,7 +257,7 @@
                                     <% } %>
                                 </div>
                             </div>
-                                <div class="flex items-center p-3">
+                                <div class="flex p-3">
                                     <div class="flex gap-1">
                                         <i class="star"></i>
                                         <i class="star"></i>
@@ -257,7 +265,6 @@
                                         <i class="star"></i>
                                         <i class="star"></i>
                                     </div>
-                                    <div class="text-xs text-gray-500 ml-3">(150)</div>
                                 </div>
                                     
                                 <a href="#"
@@ -268,138 +275,8 @@
                 </div>
             </div>
             <!-- ./related product -->
-<!--                     
-                    <div class="bg-white shadow-md overflow-hidden">
-                        <div class="relative group">
-                            <img src="images/tshirt-front-grey-small.png" alt="product 1" class="w-full">
-                            <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center 
-                            justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
-                                <a href="#"
-                                    class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
-                                    title="view product">
-                                    <i class="gg-search"></i>
-                                </a>
-                                <a href="#"
-                                    class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
-                                    title="add to wishlist">
-                                    <i class="gg-heart"></i>
-                                </a>
-                            </div>
-                        </div> -->
 
-<!--                         
-                        <div class="pt-4 pb-3 px-4">
-                            <a href="#">
-                                <h4
-                                    class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
-                                    Shirt</h4>
-                            </a>
-                            <div class="flex items-baseline mb-1 space-x-2">
-                                <p class="text-xl text-primary font-semibold">$9.99</p>
-                                <p class="text-sm text-gray-400 line-through">$19.99</p>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="flex gap-1">
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                </div>
-                                <div class="text-xs text-gray-500 ml-3">(150)</div>
-                            </div>
-                        </div>
-                        <a href="#"
-                            class="block w-full py-3 text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">Add
-                            to cart</a>
-                    </div>
-                    <div class="bg-white shadow-md overflow-hidden">
-                        <div class="relative group">
-                            <img src="images/tshirt-front-blue-small.png" alt="product 1" class="w-full">
-                            <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center 
-                            justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
-                                <a href="#"
-                                    class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
-                                    title="view product">
-                                    <i class="gg-search"></i>
-                                </a>
-                                <a href="#"
-                                    class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
-                                    title="add to wishlist">
-                                    <i class="gg-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="pt-4 pb-3 px-4">
-                            <a href="#">
-                                <h4
-                                    class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
-                                    Shirt</h4>
-                            </a>
-                            <div class="flex items-baseline mb-1 space-x-2">
-                                <p class="text-xl text-primary font-semibold">$9.99</p>
-                                <p class="text-sm text-gray-400 line-through">$19.99</p>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="flex gap-1">
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                </div>
-                                <div class="text-xs text-gray-500 ml-3">(150)</div>
-                            </div>
-                        </div>
-                        <a href="#"
-                            class="block w-full py-3 text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">Add
-                            to cart</a>
-                    </div>
-                    <div class="bg-white shadow-md overflow-hidden">
-                        <div class="relative group">
-                            <img src="images/tshirt-front-white-small.png" alt="product 1" class="w-full">
-                            <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center 
-                            justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
-                                <a href="#"
-                                    class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
-                                    title="view product">
-                                    <i class="gg-search"></i>
-                                </a>
-                                <a href="#"
-                                    class="text-white text-lg w-9 h-8 bg-primary flex items-center justify-center hover:bg-gray-800 transition"
-                                    title="add to wishlist">
-                                    <i class="gg-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="pt-4 pb-3 px-4">
-                            <a href="#">
-                                <h4
-                                    class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
-                                    Shirt</h4>
-                            </a>
-                            <div class="flex items-baseline mb-1 space-x-2">
-                                <p class="text-xl text-primary font-semibold">$9.99</p>
-                                <p class="text-sm text-gray-400 line-through">$19.99</p>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="flex gap-1">
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                </div>
-                                <div class="text-xs text-gray-500 ml-3">(150)</div>
-                            </div>
-                        </div>
-                        <a href="#"
-                            class="block w-full py-3 text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">Add
-                            to cart</a>
-                    </div>
-                </div>
-            </div> -->
-
+            
             <!-- #endregion Body -->
         </main>
 
