@@ -30,9 +30,6 @@ app.use(session({
 
 
 const indexRouter = require("./apps/home/indexRouter");
-const televisionRouter = require("./apps/television/televisionRouter");
-const mobilephoneRouter = require("./apps/mobilephone/mobilephoneRouter");
-const computerRouter = require("./apps/computer/computerRouter");
 const searchRouter = require("./apps/search/searchRouter");
 const registrationRouter = require("./apps/registration/registrationRouter");
 const categoryRouter = require("./apps/category/categoryRouter");
@@ -54,12 +51,12 @@ app.use("/dist", express.static("dist"));
 
 
 app.use("/", indexRouter);
-app.use("/televisions", televisionRouter);
-app.use("/mobilephones", mobilephoneRouter);
-app.use("/computers", computerRouter);
+// app.use("/televisions", televisionRouter);
+// app.use("/mobilephones", mobilephoneRouter);
+// app.use("/computers", computerRouter);
 app.use("/register", registrationRouter);
 app.use("/search", searchRouter);
-app.use("/", categoryRouter);
+app.use("/category", categoryRouter);
 app.use("/login",loginRouter);
 app.use("/logout",logoutRouter)
 

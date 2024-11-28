@@ -22,7 +22,7 @@ exports.seed = async function(knex) {
         \nADVANCED CAMERA AND AUDIO - Look sharp and sound great with a 1080p FaceTime HD camera, three-mic array and four-speaker sound system with Spatial Audio.
         $$`,
       discount: 0,
-      numberofpro: 125,
+      numberofpro: 0,
     },
     {
       name: "Macbook Pro 14 M2",
@@ -40,7 +40,7 @@ exports.seed = async function(knex) {
         \nBattery capacity exceeds 80% capacity relative to its new equivalent.
         $$`,
       discount: 10,
-      numberofpro: 1235,
+      numberofpro: 0,
     },
     {
       name: "Macbook Pro 16 M2 (16/256)",

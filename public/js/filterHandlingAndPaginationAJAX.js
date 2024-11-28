@@ -104,39 +104,54 @@ function updateProductList(products) {
   products.forEach(product => {
     let productHTML = `
       <div class="bg-white shadow-md flex flex-col h-full rounded-lg">
-                  <div class="relative group w-[302px] h-80 flex items-center justify-center">
-                    <img src="${product.imageurl}" alt="${product.name}" class="max-w-full max-h-full" />
-                    <a href="${product.type_name}/${product.id}">
+        <div class="relative group w-[302px] h-80 flex items-center justify-center">
+          <img src="${product.imageurl}" alt="${product.name}" class="max-w-full max-h-full" />
+          <a href="/category/${product.type_name}/${product.id}">
                       <div
                         class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
                       </div>
                     </a>
                   </div>
+
                   <div class="flex-grow pt-4 pb-3 px-4 flex flex-col">
-                    <a href="${product.type_name}/${product.id}">
+                    <a href="/category/${product.type_name}/${product.id}">
                       <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
                         ${product.name}
                       </h4>
                     </a>
+
+                    <div class="flex justify-between mb-1 space-x-2">
+                      <p class="text-xl text-primary font-semibold">
+                        ${product.brand}
+                      </p>`;
+                    if (product.numberofpro > 0) {
+                        productHTML += `<p class="text-right text-base text-green-600">In stock</p>`;
+                      }else{
+                        productHTML += `<p class="text-right text-base text-red-600">Out of stock</p>`;
+                    }
+                    productHTML += `
+                    </div>
                     <div class="flex items-baseline mb-1 space-x-2">
                       <p class="text-xl text-primary font-semibold">
                         $${product.price}
                       </p>`;
 
-                      if (product.discount > 0) 
-                        {
+                    if (product.discount > 0) {
                           productHTML += `<p class="text-base text-red-600 font-extrabold">-${product.discount}%</p>`;
-                        }
-                      
-                      productHTML += `
+                    }
+                    productHTML += `
                     </div>
-                    <div class="flex justify-between mb-1 space-x-2">
-                      <p class="text-xl text-primary font-semibold">
-                        ${product.brand}
-                      </p>
-                      <p class="text-right text-base text-gray-700">In stock: ${product.numberofpro}</p>
+                    
+                    <div class="flex gap-1 text-sm text-yellow-400">
+                      <i class="star"></i>
+                      <i class="star"></i>
+                      <i class="star"></i>
+                      <i class="star"></i>
+                      <i class="star"></i>
                     </div>
                   </div> 
+
+                  <!-- Nút Add to Cart -->
                   <a href="#"
                     class="block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">
                     Add to cart

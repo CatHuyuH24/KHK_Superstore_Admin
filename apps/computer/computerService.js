@@ -61,10 +61,10 @@ async function getComputerByID(id) {
 async function getRelatedComputers(currentId, limit = 3) {
   try {
       const query = `
-      SELECT * 
-      FROM products 
+      SELECT p.id, p.name, p.brand, p.price, p.imageurl, p.discount, p.numberofpro, t.type_name
+      FROM products p JOIN types t ON p.type_id = t.id
       WHERE type_id = (SELECT id from types where type_name = 'computers')
-      AND id <> $1
+      AND p.id <> $1
       ORDER BY RANDOM() 
       LIMIT $2
       `;
