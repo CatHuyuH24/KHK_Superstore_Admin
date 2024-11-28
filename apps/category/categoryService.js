@@ -19,8 +19,7 @@ const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils.js");
  * @param {number} maxPrice - Maximum price filter.
  * @param {number} page - Page number for pagination, expected to be greater than 0.
  * @param {number} limit - Number of items per page.
- * @param {string} sort - Sort order (column, direction). e.g. "id,ASC".
- * @param {string} brand - Brand filter.
+ * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
  * @param {string} search - Search keyword.
  * @returns {Promise<Object>} - An object containing the total count of products, the list of products, and the list of brands.
  * @returns {Array} return.products - List of products with discounted prices.

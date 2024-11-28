@@ -4,51 +4,43 @@ const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
 
 async function renderTelevisionCategoryPage(req, res) {
   try {
-    const sortBy = req.query.sortBy || "";
+    const page = parseInt(req.query.page)  || 1;
+    const limit = parseInt(req.query.limit) || 6;
+    let sort = req.query.sort || "id";
+    let brand = req.query.brand || "All";
     const search = req.query.search || "";
-    const minPrice = req.query.min ? parseInt(req.query.min) : null; // Chuyển min thành số
+    const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
-    const currentCategory = req.params.category; // Lấy category từ URL (vd: /mobilephone)
-    // Lấy giá trị selectedBrands từ query (có thể là một chuỗi hoặc mảng)
-    let selectedBrands = req.query.brands;
+    const selectedBrands = brand === "All" ? [] : brand.split(",");
 
-    // Kiểm tra và xử lý nếu selectedBrands không phải là mảng
-    if (selectedBrands && !Array.isArray(selectedBrands)) {
-      selectedBrands = [selectedBrands]; // Nếu là chuỗi, chuyển thành mảng
-    } else if (!selectedBrands) {
-      selectedBrands = []; // Nếu không có giá trị, khởi tạo mảng rỗng
-    }
-    let categories;
+    const {totalCount, products} = 
+    await televisionService.getAllTelevisionsWithFilterAndCount
+    (minPrice, maxPrice, page, 
+      limit, sort, brand, search);
 
-    categories = [
-      { id: "cat-1", name: "Darling", count: 15 },
-      { id: "cat-2", name: "LG", count: 0 },
-      { id: "cat-3", name: "Samsung", count: 0 },
-    ];
-
-    const products = await televisionService.getAllTelevisions(
-      sortBy,
-      minPrice,
-      maxPrice,
-      selectedBrands,
-      search
-    );
-    products.forEach((product) => {
+    products.forEach(product => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    res.render("category", {
-      title: "Television Category - Superstore - GA05",
-      products: products, // Use products directly
-      category: "televisions",
-      sortBy,
-      search,
-      min: minPrice || "",
-      max: maxPrice || "",
-      categories, // Truyền danh sách categories
-      currentCategory,
+    const brandsList = await televisionService.getAllTelevisionBrands();
+
+    const response = {
+      title: "Televisions - Superstore - GA05",
+      error: false,
+      total: totalCount,
+      page: page,
+      totalPages: Math.ceil(totalCount / limit),
+      itemsPerPage: limit,
+      products: products,
+      brands: brandsList,
       selectedBrands,
-    });
+    };
+
+    if (req.xhr) {
+      return res.json(response);
+    }
+
+    return res.render("category", response);
   } catch (error) {
     console.error("Error rendering television category page:", error);
     res
@@ -60,13 +52,17 @@ async function renderTelevisionCategoryPage(req, res) {
 async function renderTelevisionDetailPage(req, res) {
   try {
     const televisionID = req.params.id;
-    const queryResult = await televisionService.getTelevisionByID(televisionID);
-    const relatedTelevisions = await televisionService.getRelatedTelevisions(televisionID, 5);
-    relatedTelevisions.forEach((product) => {
+    const television = await televisionService.getTelevisionByID(televisionID);
+    television.price = calculateDiscountedPrice(television.price, television.discount);
+
+    const relatedComputers = await televisionService.getRelatedTelevisions(televisionID, 5);
+    relatedComputers.forEach((product) => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedTelevisions, category: "televisions", title: queryResult.rows[0].name });
+    const TITLE = television.name + " - Superstore - GA05";
+
+    res.render("product", { product: television, relatedProducts: relatedComputers, title: TITLE });
   } catch (error) {
     console.error("Error rendering television detail page:", error);
     res
