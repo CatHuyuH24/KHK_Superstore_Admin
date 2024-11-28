@@ -30,23 +30,37 @@ function issueJWT(user){
     }
 }
 
-function authMiddleware(options = {}) {
-    return (req, res, next) => {
-        try {
-            const token = req.cookies.token; 
-            if (token && token.match(/\S+\.\S+\.\S+/) !== null) {
-                const verification = jsonwebtoken.verify(token, PUB_KEY, { algorithms: ['RS256'] });
-                req.jwt = verification;
-                return next();
-            }
+// function authMiddleware(options = {}) {
+//     return (req, res, next) => {
+//         try {
+//             const token = req.cookies.token; 
+//             if (token && token.match(/\S+\.\S+\.\S+/) !== null) {
+//                 const verification = jsonwebtoken.verify(token, PUB_KEY, { algorithms: ['RS256'] });
+//                 req.jwt = verification;
+//                 return next();
+//             }
             
-            return res.redirect('/login');
-        } catch (err) {
-            console.error("Authorization error:", err.message);
-            return res.redirect('/login');
+//             return res.redirect('/login');
+//         } catch (err) {
+//             console.error("Authorization error:", err.message);
+//             return res.redirect('/login');
+//         }
+//     };
+// }
+
+function authMiddleware(options = { session: true }) {
+    return (req, res, next) => {
+      if (options.session) {
+        if (req.isAuthenticated()) {
+          return next();
+        } else {
+          res.redirect('/login'); 
         }
+      } else {
+        return next();
+      }
     };
-}
+  }
 
 module.exports.issueJWT=issueJWT;
 module.exports.authMiddleware=authMiddleware;

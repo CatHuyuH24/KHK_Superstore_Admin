@@ -3,6 +3,8 @@ const path =require('path');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const utils=require('./apps/Utils/jwtUtils');
+const passport = require('passport');
+require("dotenv").config();
 
 const {ConnectSessionKnexStore} = require('connect-session-knex'); 
 const knexConstructor= require('knex') ;
@@ -16,9 +18,6 @@ const store = new ConnectSessionKnexStore({
 });
 
 
-require("dotenv").config();
-
-
 const app = express();
 app.use(session({
   secret: 'keyboard cat',
@@ -28,6 +27,9 @@ app.use(session({
   cookie: { maxAge: 1000000 },
 }));
 
+require('./apps/login/passport.js');
+app.use(passport.initialize())
+app.use(passport.session())
 
 const indexRouter = require("./apps/home/indexRouter");
 const televisionRouter = require("./apps/television/televisionRouter");
@@ -43,6 +45,15 @@ const logoutRouter=require('./apps/logout/logoutRouter')
 app.set("view engine", "ejs");
 app.set("views", "views");
 
+app.use((req, res, next) => {
+  if (req.isAuthenticated()) {
+    res.locals.user = req.user;
+  }
+  else{
+    res.locals.user=null;
+  }
+  next();
+});
 
 // Middleware
 app.use(cookieParser());
@@ -63,7 +74,7 @@ app.use("/", categoryRouter);
 app.use("/login",loginRouter);
 app.use("/logout",logoutRouter)
 
-app.get("/cart",utils.authMiddleware({session:false}),(req,res)=>{
+app.get("/cart",utils.authMiddleware({session:true}),(req,res)=>{
   res.render('cart',{
     title: 'Your Cart',
     body: '<p></p>' 
@@ -78,6 +89,9 @@ app.listen(PORT, () => {
 
 
 
-
-
+setInterval(() => {
+  store.clear().then((length) => {
+    console.log(`Cleared ${JSON.stringify(length)} sessions`);
+  });
+}, 1000000);
 

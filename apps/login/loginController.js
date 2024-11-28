@@ -40,7 +40,11 @@ async function handleLoginRequest(req, res, next) {
 async function renderLoginPage(req, res) {
     try {
         message="";
-        res.render('login', {title});
+        const user = req.session.user || null;
+        res.render('login', {
+            title,
+            user: user,
+        });
     } catch (error) {
         console.error('Error handler login:', error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(
