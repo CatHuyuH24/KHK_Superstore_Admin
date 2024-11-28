@@ -3,7 +3,7 @@ const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 
 async function renderCategoryPage(req, res) {
  try {
-   const page = parseInt(req.query.page)  || 0;
+   const page = parseInt(req.query.page)  || 1;
    const limit = parseInt(req.query.limit) || 6;
    let sort = req.query.sort || "id";
    let brand = req.query.brand || "All";
@@ -27,7 +27,7 @@ async function renderCategoryPage(req, res) {
       title: "Category Page - Superstore - GA05",
        error: false,
        total: total,
-       page: page + 1,
+       page: page,
        totalPages:Math.ceil(total / limit),
        itemsPerPage: limit,
        products: products,

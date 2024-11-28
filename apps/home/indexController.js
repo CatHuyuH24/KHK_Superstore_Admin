@@ -32,7 +32,7 @@ async function renderHomePage(req, res) {
 			title: "Homepage - Superstore - GA05",
 			error: false,
 			total: totalCount,
-			page: page + 1,
+			page: page,
 			totalPages:Math.ceil(totalCount / limit),
 			itemsPerPage: limit,
 			products: products,

@@ -4,6 +4,18 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const utils=require('./apps/Utils/jwtUtils');
 
+const {ConnectSessionKnexStore} = require('connect-session-knex'); 
+const knexConstructor= require('knex') ;
+const knexConfig =require('./knexfile.js');
+
+const knex = knexConstructor(knexConfig[process.env.NODE_ENV || "development"]);
+
+const store = new ConnectSessionKnexStore({
+  knex,
+  tablename: "sessions",
+});
+
+
 require("dotenv").config();
 
 
@@ -12,6 +24,8 @@ app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false,
+  store,
+  cookie: { maxAge: 1000000 },
 }));
 
 
