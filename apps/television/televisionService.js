@@ -36,7 +36,7 @@ async function getAllTelevisions(sortBy, minPrice, maxPrice, selectedBrands) {
 
 async function getTelevisionByID(id) {
   try {
-    const result = await pool.query("SELECT * FROM televisions WHERE ID = $1", [
+    const result = await pool.query("SELECT * FROM products WHERE ID = $1", [
       id,
     ]);
     return result;

@@ -8,17 +8,9 @@ async function searchAllProducts(query) {
     }
 
     const sqlQuery = `
-      SELECT id, name, price, imageurl, 'mobilephones' AS category 
-      FROM mobilephones 
-      WHERE name ILIKE $1
-      UNION ALL
-      SELECT id, name, price, imageurl, 'computers' AS category 
-      FROM computers 
-      WHERE name ILIKE $1
-      UNION ALL
-      SELECT id, name, price, imageurl, 'televisions' AS category 
-      FROM televisions 
-      WHERE name ILIKE $1
+      SELECT * 
+      FROM products
+      WHERE name ILIKE $1 AND detail ILIKE $1
     `;
     const queryParams = [`%${query}%`];
     

@@ -49,6 +49,7 @@ async function renderCompterCategoryPage(req, res) {
       category: "computers",
       sortBy,
       search,
+      page,
       min: minPrice || "",
       max: maxPrice || "",
       categories,
