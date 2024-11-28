@@ -1,61 +1,46 @@
 const computerService = require("./computerService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
-const { query } = require("express");
 
-async function renderCompterCategoryPage(req, res) {
+async function renderComputerCategoryPage(req, res) {
   try {
-    
-
-    const sortBy = req.query.sortBy || "";
+    const page = parseInt(req.query.page)  || 1;
+    const limit = parseInt(req.query.limit) || 6;
+    let sort = req.query.sort || "id";
+    let brand = req.query.brand || "All";
     const search = req.query.search || "";
-    const minPrice = req.query.min ? parseInt(req.query.min) : null; // Chuyển min thành số
+    const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
-    const currentCategory = req.params.category; // Lấy category từ URL (vd: /mobilephone)
-    // Lấy giá trị selectedBrands từ query (có thể là một chuỗi hoặc mảng)
-    let selectedBrands = req.query.brands;
+    const selectedBrands = brand === "All" ? [] : brand.split(",");
 
-    // Kiểm tra và xử lý nếu selectedBrands không phải là mảng
-    if (selectedBrands && !Array.isArray(selectedBrands)) {
-      selectedBrands = [selectedBrands]; // Nếu là chuỗi, chuyển thành mảng
-    } else if (!selectedBrands) {
-      selectedBrands = []; // Nếu không có giá trị, khởi tạo mảng rỗng
-    }
-    let categories;
+    const {totalCount, products} = 
+    await computerService.getAllComputersWithFilterAndCount
+    (minPrice, maxPrice, page, 
+      limit, sort, brand, search);
 
-    categories = [
-      { id: "cat-1", name: "Apple", count: 15 },
-      { id: "cat-2", name: "Dell", count: 0 },
-      { id: "cat-3", name: "Asus", count: 0 },
-      { id: "cat-4", name: "Acer", count: 0 },
-    ];
-
-    const products = await computerService.getAllComputers(
-      sortBy,
-      minPrice,
-      maxPrice,
-      selectedBrands,
-      search
-    );
-    products.forEach((product) => {
+    products.forEach(product => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    brands = products.map((product) => product.brand);
+    const brandsList = await computerService.getAllComputerBrands();
 
-    res.render("category", {
-      title: "Computer Category - Superstore - GA05",
+    const response = {
+      title: "Computers - Superstore - GA05",
+      error: false,
+      total: totalCount,
+      page: page,
+      totalPages: Math.ceil(totalCount / limit),
+      itemsPerPage: limit,
       products: products,
-      category: "computers",
-      sortBy,
-      search,
-      min: minPrice || "",
-      max: maxPrice || "",
-      categories,
-      currentCategory,
+      brands: brandsList,
       selectedBrands,
-      brands,
-    });
+    };
+
+    if (req.xhr) {
+      return res.json(response);
+    }
+
+    return res.render("category", response);
   } catch (error) {
     console.error("Error rendering computer category page:", error);
     res
@@ -67,14 +52,17 @@ async function renderCompterCategoryPage(req, res) {
 async function renderComputerDetailPage(req, res) {
   try {
     const computerID = req.params.id;
-    const queryResult = await computerService.getComputerByID(computerID);
+    const computer = await computerService.getComputerByID(computerID);
+    computer.price = calculateDiscountedPrice(computer.price, computer.discount);
 
     const relatedComputers = await computerService.getRelatedComputers(computerID, 5);
     relatedComputers.forEach((product) => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    res.render("product", { product: queryResult.rows[0], relatedProducts: relatedComputers, category: "computers",title: queryResult.rows[0].name, });
+    const TITLE = computer.name + " - Superstore - GA05";
+
+    res.render("product", { product: computer, relatedProducts: relatedComputers, title: TITLE });
   } catch (error) {
     console.error("Error rendering computer detail page:", error);
     res
@@ -84,6 +72,6 @@ async function renderComputerDetailPage(req, res) {
 }
 
 module.exports = {
-  renderCompterCategoryPage,
+  renderComputerCategoryPage,
   renderComputerDetailPage,
 };

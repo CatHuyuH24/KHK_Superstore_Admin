@@ -19,12 +19,12 @@ const {prepareFilterStatements} = require("../Utils/filterStatementUtils");
  * @param {number} maxPrice - Maximum price filter.
  * @param {number} page - Page number for pagination, expected to be greater than 0.
  * @param {number} limit - Number of items per page.
- * @param {string} sort - Sort order (column, direction). e.g. "id,ASC".
+ * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
  * @param {string} brand - Brand filter.
  * @param {string} search - Search keyword.
  * @returns {Promise<Object>} - An object containing the total count of discounted products and the list of discounted products.
  * @returns {number} return.totalCount - Total number of discounted products matching the filters.
- * @returns {Array} return.products - List of discounted products.
+ * @returns {Array} return.products - Array of discounted products in random order.
  * @example
  * const {totalCount, products} = await getAllDiscountedProductsWithFilterAndCount(0, 1000, 1, 10, "price,ASC", "Samsung", "samsung galaxy s8");
  */
@@ -32,10 +32,10 @@ async function getAllDiscountedProductsWithFilterAndCount(minPrice, maxPrice, pa
     try {
         page = Math.max(1, page);
         const {
-            priceFilter, 
-            sortDirection, 
+            priceFilter,
             brandFilter, 
-            searchFilter, 
+            searchFilter,
+            sortFilter,
             productsTypeFilter
         } = prepareFilterStatements(
             minPrice, maxPrice, sort, 
@@ -51,7 +51,7 @@ async function getAllDiscountedProductsWithFilterAndCount(minPrice, maxPrice, pa
             ${searchFilter}
             ${brandFilter}
             ${priceFilter}
-            ORDER BY ${sort.split(",")[0]} ${sortDirection}
+            ${sortFilter}
             LIMIT $1 OFFSET $2`,
             [limit, (page - 1) * limit]
         );

@@ -1,5 +1,6 @@
 const categoryService = require("./categoryService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
+const {calculateDiscountedPrice} = require('../Utils/discountedPriceUtils');
 
 async function renderCategoryPage(req, res) {
  try {
@@ -22,6 +23,10 @@ async function renderCategoryPage(req, res) {
        brand,
        search,
    );
+
+   products.forEach(product => {
+      product.price = calculateDiscountedPrice(product.price, product.discount);
+   });
 
    const response = {
       title: "Category Page - Superstore - GA05",
