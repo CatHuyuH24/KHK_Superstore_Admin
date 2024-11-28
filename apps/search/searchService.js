@@ -8,9 +8,10 @@ async function searchAllProducts(query) {
     }
 
     const sqlQuery = `
-      SELECT * 
-      FROM products
-      WHERE name ILIKE $1 AND detail ILIKE $1
+      SELECT p.*, t.type_name
+      FROM products p
+      JOIN types t ON p.type_id = t.id
+      WHERE p.name ILIKE $1 OR p.detail ILIKE $1
     `;
     const queryParams = [`%${query}%`];
     

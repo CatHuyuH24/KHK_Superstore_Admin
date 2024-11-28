@@ -18,7 +18,7 @@
                     <% if (selectedBrands && selectedBrands.includes(brand)) { %>
                       checked
                     <% } %> 
-                    onchange="updateFilter()" />
+                     />
                   <label for="brand-<%= index %>" class="text-gray-600 ml-3 cursor-pointer">
                     <%= brand %>
                   </label>
@@ -43,7 +43,7 @@
       </form>
 
       <div class="flex justify-center items-center">
-        <button type="button" onclick="applyFilters()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Apply Filters</button>
+        <button type="button" onclick="applyAndUpdateFilters()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Apply Filters</button>
       </div>
     </div>
   </div>
