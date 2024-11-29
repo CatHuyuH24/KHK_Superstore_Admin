@@ -4,6 +4,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const utils=require('./apps/Utils/jwtUtils');
 const passport = require('passport');
+const flash = require('connect-flash');
 require("dotenv").config();
 
 const {ConnectSessionKnexStore} = require('connect-session-knex'); 
@@ -26,6 +27,11 @@ app.use(session({
   store,
   cookie: { maxAge: 1000000 },
 }));
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.message = req.flash('error');
+    next();
+});
 
 require('./apps/login/passport.js');
 app.use(passport.initialize())
