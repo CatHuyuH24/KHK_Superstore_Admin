@@ -5,7 +5,7 @@ require('./passport.js');
 
 router.post("/",passport.authenticate('local',{
     failureRedirect: '/login',
-    successRedirect: '/category',
+    successRedirect: '/',
     failureFlash: true,
 }));
 
