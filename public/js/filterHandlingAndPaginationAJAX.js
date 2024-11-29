@@ -52,6 +52,11 @@ async function applyFilters() {
   await fetchAndRender(newURL);
 }
 
+function applyAndUpdateFilters() {
+  applyFilters();
+  updateFilter();
+}
+
 async function updateSortFilter() {
   const selectElement = document.getElementById('sort');
   const selectedSort = selectElement.value;
