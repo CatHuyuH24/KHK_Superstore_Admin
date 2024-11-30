@@ -3,8 +3,9 @@ require("dotenv").config();
 
 let pool;
 
-if (process.env.NODE_ENV === "PROD") 
+if (process.env.NODE_ENV === "production") 
 {
+    console.log("production used")
     // Production Pool
     pool = new Pool({
         connectionString: process.env.DB_CONNECTION_STRING,

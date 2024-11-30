@@ -3,8 +3,9 @@ const { Client } = require("pg");
 
 async function createDatabase() {
 	let client;
-	if(process.env.NODE_ENV === "PROD")
+	if(process.env.NODE_ENV === "production")
 	{
+		
 		//production
 		client = new Client({
 			connectionString: process.env.DB_CONNECTION_STRING,
