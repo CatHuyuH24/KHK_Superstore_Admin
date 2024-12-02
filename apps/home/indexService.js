@@ -43,9 +43,9 @@ async function getAllDiscountedProductsWithFilterAndCount(minPrice, maxPrice, pa
         );
         
         const result = await pool.query(`
-            SELECT p.id, p.name, p.brand, p.price, p.imageurl, p.detail, p.discount, p.numberofpro, t.type_name, count(*) over() as total_count 
+            SELECT p.id, p.name, p.brand, p.price, p.imageurl, p.detail, p.discount, p.numberofpro, t.category_name, count(*) over() as total_count 
             FROM products p 
-            JOIN types t ON p.type_id = t.id
+            JOIN categories t ON p.type_id = t.id
             WHERE discount > 0
             ${productsTypeFilter}
             ${searchFilter}

@@ -44,9 +44,9 @@ async function getAllProductsOfTypeWithFilterAndCount(minPrice, maxPrice, page, 
         );
         
         const result = await pool.query(`
-            SELECT p.id, p.name, p.brand, p.price, p.imageurl, p.detail, p.discount, p.numberofpro, t.type_name, count(*) over() as total_count 
+            SELECT p.id, p.name, p.brand, p.price, p.imageurl, p.detail, p.discount, p.numberofpro, t.category_name, count(*) over() as total_count 
             FROM products p 
-            JOIN types t ON p.type_id = t.id
+            JOIN categories t ON p.type_id = t.id
             WHERE 1=1
             ${productsTypeFilter}
             ${searchFilter}
@@ -80,7 +80,7 @@ async function getAllProductsOfTypeWithFilterAndCount(minPrice, maxPrice, page, 
 async function getAllBrandsOfType(products_type) {
     let productsTypeFilter = "";
     if(products_type != null)
-        productsTypeFilter = `WHERE type_id = (SELECT id from types where type_name = '${products_type}')`;
+        productsTypeFilter = `WHERE type_id = (SELECT id from categories where category_name = '${products_type}')`;
 
     const brandsList = await pool.query(`
         SELECT DISTINCT(brand) 
