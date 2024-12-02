@@ -27,26 +27,6 @@ const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
  * @example
  * const {totalCount, products} = await getAllDiscountedProductsWithFilterAndCount(0, 1000, 1, 10, "price,ASC", "Samsung", "samsung galaxy s8");
  */
-<<<<<<< HEAD
-async function getAllDiscountedProductsWithFilterAndCount(minPrice, maxPrice, page, limit, sort, brand, search) {
-    try {
-        page = Math.max(1, page);
-        const {
-            priceFilter,
-            brandFilter, 
-            searchFilter,
-            sortFilter,
-            productsTypeFilter
-        } = prepareFilterStatements(
-            minPrice, maxPrice, sort, 
-            brand, search
-        );
-        
-        const result = await pool.query(`
-            SELECT p.id, p.name, p.brand, p.price, p.imageurl, p.detail, p.discount, p.numberofpro, t.category_name, count(*) over() as total_count 
-            FROM products p 
-            JOIN categories t ON p.type_id = t.id
-=======
 async function getAllDiscountedProductsWithFilterAndCount(
   minPrice,
   maxPrice,
@@ -72,7 +52,6 @@ async function getAllDiscountedProductsWithFilterAndCount(
             FROM products p 
             JOIN categories c on p.category_id = c.id
             JOIN manufacturers m ON p.manufacturer_id = m.id
->>>>>>> 618288471fb4135257356048225f83c92779f45d
             WHERE discount > 0
             ${productsCategoryFilter}
             ${searchFilter}
