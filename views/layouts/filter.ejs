@@ -3,19 +3,19 @@
 
       <!--region Brand-->
       <div>
-        <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium mt-3">Brands</h3>
+        <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium mt-3">Manufacturers</h3>
         <form id="brand-filter-form">
           <div class="space-y-2">
-            <% if (brands && brands.length > 0) { %>
-              <% brands.forEach((brand, index) => { %>
+            <% if (manufacturers && manufacturers.length > 0) { %>
+              <% manufacturers.forEach((brand, index) => { %>
                 <div class="flex items-center">
                   <input 
                     type="checkbox" 
-                    name="brands" 
+                    name="manufacturers" 
                     value="<%= brand %>" 
                     id="brand-<%= index %>" 
                     class="text-primary focus:ring-0 cursor-pointer"
-                    <% if (selectedBrands && selectedBrands.includes(brand)) { %>
+                    <% if (selectedManufacturers && selectedManufacturers.includes(brand)) { %>
                       checked
                     <% } %> 
                      />
@@ -25,7 +25,7 @@
                 </div>
               <% }); %>
             <% } else { %>
-              <p class="text-gray-500">No brands available for this section.</p>
+              <p class="text-gray-500">No rands available for this section.</p>
             <% } %>
           </div>
         </form>

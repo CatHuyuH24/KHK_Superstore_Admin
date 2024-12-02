@@ -12,7 +12,7 @@ exports.up = async function (knex) {
     price INT NOT NULL,
     image_url VARCHAR NOT NULL,
     detail TEXT NOT NULL,
-    discount_percent REAL DEFAULT 0,
+    discount REAL DEFAULT 0,
     number INT DEFAULT 0,
     last_modified timestamp without time zone DEFAULT NOW(),
     fps_hz INT,
