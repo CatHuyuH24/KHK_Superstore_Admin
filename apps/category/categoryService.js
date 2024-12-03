@@ -1,5 +1,5 @@
 const pool = require("../../config/database");
-const productsService = require("../product/productService");
+const productService = require("../product/productService");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils.js");
 
 /**
@@ -37,11 +37,11 @@ async function getAllProductsWithFiltersAndCountAndmanufacturers(minPrice, maxPr
     // we want to get all products 
     // and the total number of products 
     const {totalCount, products} = 
-      await productsService.getAllProductsOfManufacturerWithFilterAndCount
+      await productService.getAllProductsOfCategoryWithFilterAndCount
       (minPrice, maxPrice, page, limit, sort, manufacturer, search);
       
     // Get all manufacturers of all products (product_type is not provided)
-    const manufacturersArray = await productsService.getAllManufacturersOfCategory();
+    const manufacturersArray = await productService.getAllManufacturersOfCategory();
 
     return { products: products, total: totalCount, manufacturers: manufacturersArray };
   } catch (error) {

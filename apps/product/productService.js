@@ -2,7 +2,7 @@ const pool = require('../../config/database');
 const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
 
 /**
- * Get all products of a specific manufacturer with filters applied and the total number of products.
+ * Get all products of a specific category with filters applied and the total number of products.
  * Each record in the result set contains the following fields:
  * - id
  * - name
@@ -11,8 +11,8 @@ const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
  * - imageurl
  * - detail
  * - discount
- * - numberofpro (number of products)
- * - manufacturer_name (manufacturer of product)
+ * - number (number of products)
+ * - category_name
  * - total_count (total number of products matching the filters)
  *
  * @param {number} minPrice - Minimum price filter.
@@ -22,14 +22,14 @@ const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
  * @param {string} sort- Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
  * @param {string} manufacturer - manufacturer filter.
  * @param {string} search - Search keyword.
- * @param {string} products_manufacturer - manufacturer of products. e.g. "computers". If not provided, all products will be fetched.
+ * @param {string} products_category - category of products. e.g. "computers". If not provided, all products will be fetched.
  * @returns {Promise<Object>} An object containing the total count of products and the array of products.
  * @returns {number} return.totalCount - Total number of products matching the filters.
  * @returns {Array} return.products - Array of products.
  * @example
  * const {totalCount, products} = await getAllProductsOfmanufacturerWithFilterAndCount(0, 1000, 1, 10, "price,ASC", "Apple", "macbook", "computers");
  */
-async function getAllProductsOfManufacturerWithFilterAndCount(
+async function getAllProductsOfCategoryWithFilterAndCount(
   minPrice,
   maxPrice,
   page,
@@ -37,32 +37,32 @@ async function getAllProductsOfManufacturerWithFilterAndCount(
   sort,
   manufacturer,
   search,
-  products_manufacturer
+  products_category
 ) {
   try {
     const {
-      priceFilter,
-      manufacturerFilter,
-      searchFilter,
-      sortFilter,
-      productsManufacturerFilter,
+      priceFilter, 
+      manufacturerFilter, 
+      searchFilter, 
+      sortFilter, 
+      productsCategoryFilter,
     } = prepareFilterStatements(
       minPrice,
       maxPrice,
       sort,
       manufacturer,
       search,
-      products_manufacturer
+      products_category
     );
 
     const result = await pool.query(
       `
-            SELECT p.*, m.manufacturer_name, b.manufacturer_name, count(*) over() as total_count 
+            SELECT p.*, m.manufacturer_name, c.category_name, count(*) over() as total_count 
             FROM products p 
-            JOIN manufacturers b ON p.manufacturer_id = b.id
+            JOIN categories c ON p.category_id = c.id
             JOIN manufacturers m ON p.manufacturer_id = m.id
             WHERE 1=1
-            ${productsManufacturerFilter}
+            ${productsCategoryFilter}
             ${searchFilter}
             ${manufacturerFilter}
             ${priceFilter}
@@ -71,9 +71,10 @@ async function getAllProductsOfManufacturerWithFilterAndCount(
       [limit, (page - 1) * limit]
     );
 
-    const count = result.rows[0].total_count
-      ? parseInt(result.rows[0].total_count)
-      : 0;
+    const count = 0;
+    if(result.rows.length > 0){
+      count = parseInt(result.rows[0].total_count);
+    }
 
     return {
       totalCount: count,
@@ -81,7 +82,7 @@ async function getAllProductsOfManufacturerWithFilterAndCount(
     };
   } catch (error) {
     console.error(
-      `Error fetching ${products_manufacturer} products:`,
+      `Error fetching ${products_category} products with filter and count:`,
       error.message
     );
     return { totalCount: 0, products: [] };
@@ -89,78 +90,28 @@ async function getAllProductsOfManufacturerWithFilterAndCount(
 }
 
 /**
- * Get all manufacturers of a specific product manufacturer.
+ * Get all manufacturers of a specific product category.
  *
- * @param {string} products_category manufacturer of products, e.g. "computers". If not provided, manufacturers of all products will be fetched. e.g. "computers". If not provided, manufacturers of all products will be fetched.
+ * @param {string} products_category category of products, e.g. "computers". If not provided, categories of all products will be fetched. e.g. "computers".
  * @returns {Promise<Array>} An array of manufacturers.
  */
 async function getAllManufacturersOfCategory(products_category) {
-  let productsManufacturerFilter = '';
+  let productsCategoryFilter = '';
   if (products_category != null)
-    productsManufacturerFilter = `WHERE manufacturer_id = (SELECT id from categories where category_name = '${products_category}')`;
+    productsCategoryFilter = `WHERE category_id = (SELECT id from categories where category_name = '${products_category}')`;
 
   const manufacturersList = await pool.query(`
         SELECT DISTINCT(m.manufacturer_name) 
         FROM products p
         JOIN manufacturers m ON p.manufacturer_id = m.id
-        ${productsManufacturerFilter}
+        ${productsCategoryFilter}
         `);
 
   const manufacturers = manufacturersList.rows.map((row) => row.manufacturer);
   return manufacturers;
 }
 
-/**
- * Count all products of a specific manufacturer with filters applied.
- *
- * @param {number} minPrice - Minimum price filter.
- * @param {number} maxPrice - Maximum price filter.
- * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
- * @param {string} manufacturer - manufacturer filter.
- * @param {string} search - Search keyword.
- * @param {string} products_manufacturer - manufacturer of products.
- * @returns {Promise<number>} Total count of products.
- */
-async function countAllProductsOfManufacturerWithFilters(
-  minPrice,
-  maxPrice,
-  sort,
-  manufacturer,
-  search,
-  products_manufacturer
-) {
-  const {
-    priceFilter,
-    manufacturerFilter,
-    searchFilter,
-    sortFilter, // no need to used here because we are counting
-    productsManufacturerFilter,
-  } = prepareFilterStatements(
-    minPrice,
-    maxPrice,
-    sort,
-    manufacturer,
-    search,
-    products_manufacturer
-  );
-
-  //no need to sort
-  const totalResult = await pool.query(
-    `SELECT COUNT(*) 
-        FROM products 
-        WHERE 1=1 
-        ${productsManufacturerFilter}
-        ${searchFilter}
-        ${manufacturerFilter}
-        ${priceFilter}
-        ;`
-  );
-  const total = parseInt(totalResult.rows[0].count);
-  return total;
-}
-
 module.exports = {
-  getAllProductsOfManufacturerWithFilterAndCount,
+  getAllProductsOfCategoryWithFilterAndCount,
   getAllManufacturersOfCategory,
-  countAllProductsOfManufacturerWithFilters,
 };

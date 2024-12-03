@@ -63,7 +63,7 @@ async function getAllDiscountedProductsWithFilterAndCount(
     );
 
     const count = 0;
-    if(result.rows.length > 0 && result.rows[0].total_count != null){
+    if(result.rows.length > 0){
       count = parseInt(result.rows[0].total_count);
     }
 
