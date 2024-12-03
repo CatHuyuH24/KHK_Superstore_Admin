@@ -7,22 +7,22 @@ async function renderComputerCategoryPage(req, res) {
     const page = parseInt(req.query.page)  || 1;
     const limit = parseInt(req.query.limit) || 6;
     let sort = req.query.sort || "id";
-    let brand = req.query.brand || "All";
+    let manufacturer = req.query.manufacturer || "All";
     const search = req.query.search || "";
     const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
-    const selectedBrands = brand === "All" ? [] : brand.split(",");
+    const selectedManufacturers = manufacturer === "All" ? [] : manufacturer.split(",");
 
     const {totalCount, products} = 
     await computerService.getAllComputersWithFilterAndCount
     (minPrice, maxPrice, page, 
-      limit, sort, brand, search);
+      limit, sort, manufacturer, search);
 
     products.forEach(product => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    const brandsList = await computerService.getAllComputerBrands();
+    const manufacturersList = await computerService.getAllComputerBrands();
 
     const response = {
       title: "Computers - Superstore - GA05",
@@ -32,8 +32,8 @@ async function renderComputerCategoryPage(req, res) {
       totalPages: Math.ceil(totalCount / limit),
       itemsPerPage: limit,
       products: products,
-      brands: brandsList,
-      selectedBrands,
+      manufacturers: manufacturersList,
+      selectedManufacturers,
     };
 
     if (req.xhr) {

@@ -28,11 +28,11 @@ const productService = require('../product/productService');
  * @example
  * const { totalCount, products } = await getAllComputersWithFilterAndCount(0, 1000, 1, 10, "price,ASC", "Apple", "macbook");
  */
-async function getAllComputersWithFilterAndCount(minPrice, maxPrice, page, limit, sort, brand, search) {
+async function getAllComputersWithFilterAndCount(minPrice, maxPrice, page, limit, sort, manufacturer, search) {
   try {
       page = Math.max(1, page);
-      const { totalCount, products } = await productService.getAllProductsOfTypeWithFilterAndCount(
-          minPrice, maxPrice, page, limit, sort, brand, search, 'computers'
+      const { totalCount, products } = await productService.getAllProductsOfManufacturerWithFilterAndCount(
+          minPrice, maxPrice, page, limit, sort, manufacturer, search, 'computers'
       );
       
       return { totalCount, products };
@@ -77,9 +77,10 @@ async function getComputerByID(id) {
 async function getRelatedComputers(currentId, limit = 3) {
   try {
       const query = `
-      SELECT p.id, p.name, p.brand, p.price, p.imageurl, p.discount, p.numberofpro, t.type_name
-      FROM products p JOIN types t ON p.type_id = t.id
-      WHERE type_id = (SELECT id from types where type_name = 'computers')
+      SELECT p.id, p.name, m.manufacturer_name, p.price, p.imageurl, p.discount, p.numberofpro, t.category_name
+      FROM products p JOIN categories t ON p.category_id = t.id
+      JOIN manufacturers m ON p.manufacturer_id = m.id
+      WHERE category_id = (SELECT id from categories where category_name = 'computers')
       AND p.id <> $1
       ORDER BY RANDOM() 
       LIMIT $2
@@ -93,7 +94,7 @@ async function getRelatedComputers(currentId, limit = 3) {
 }
 
 async function getAllComputerBrands() {
-  const brands = productService.getAllBrandsOfType('computers');
+  const brands = productService.getAllManufacturersOfCategory('computers');
   return brands;
 }
 

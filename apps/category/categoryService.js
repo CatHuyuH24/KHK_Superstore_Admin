@@ -28,7 +28,7 @@ const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils.js");
  * @example
  * const { products, total, brands } = await getAllProductsWithFiltersAndCountAndBrands(0, 1000, 1, 10, "price,ASC", "Apple", "macbook");
  */
-async function getAllProductsWithFiltersAndCountAndBrands(minPrice, maxPrice, page, limit, sort, brand, search) {
+async function getAllProductsWithFiltersAndCountAndmanufacturers(minPrice, maxPrice, page, limit, sort, manufacturer, search) {
   try {
     // Ensure page is not less than 1
     page = Math.max(1, page);
@@ -37,16 +37,16 @@ async function getAllProductsWithFiltersAndCountAndBrands(minPrice, maxPrice, pa
     // we want to get all products 
     // and the total number of products 
     const {totalCount, products} = 
-      await productsService.getAllProductsOfTypeWithFilterAndCount
-      (minPrice, maxPrice, page, limit, sort, brand, search);
+      await productsService.getAllProductsOfManufacturerWithFilterAndCount
+      (minPrice, maxPrice, page, limit, sort, manufacturer, search);
       
-    // Get all brands of all products (product_type is not provided)
-    const brandsArray = await productsService.getAllBrandsOfType();
+    // Get all manufacturers of all products (product_type is not provided)
+    const manufacturersArray = await productsService.getAllManufacturersOfCategory();
 
-    return { products: products, total: totalCount, brands: brandsArray };
+    return { products: products, total: totalCount, manufacturers: manufacturersArray };
   } catch (error) {
     console.error("Error fetching products of all categories:", error.message);
-    return { result: [], total: 0, brands: [] };
+    return { result: [], total: 0, manufacturers: [] };
   }
 }
 
@@ -54,7 +54,7 @@ async function getAllProductsWithFiltersAndCountAndBrands(minPrice, maxPrice, pa
 
 async function getMobilePhoneById(id) {
   try {
-    const query = 'SELECT * FROM mobilephones WHERE id = $1';
+    const query = 'SELECT * FROM products p JOIN categories t ON p.category_id =t.id WHERE id = $1 AND t.category_name = \'mobilephones\'';
     const result = await pool.query(query, [id]);
     return result.rows[0];
   } catch (error) {
@@ -65,7 +65,7 @@ async function getMobilePhoneById(id) {
 
 async function getComputerById(id) {
   try {
-    const query = 'SELECT * FROM computers WHERE id = $1';
+    const query = 'SELECT * FROM products p JOIN categories t ON p.category_id =t.id WHERE id = $1 AND t.category_name = \'computers\'';
     const result = await pool.query(query, [id]);
     return result.rows[0];
   } catch (error) {
@@ -76,7 +76,7 @@ async function getComputerById(id) {
 
 async function getTelevisionById(id) {
   try {
-    const query = 'SELECT * FROM televisions WHERE id = $1';
+    const query = 'SELECT * FROM products p JOIN categories t ON p.category_id =t.id WHERE id = $1 AND t.category_name = \'televisions\'';
     const result = await pool.query(query, [id]);
     return result.rows[0];
   } catch (error) {
@@ -86,7 +86,7 @@ async function getTelevisionById(id) {
 }
 
 module.exports = {
-  getAllProductsWithFiltersAndCountAndBrands,
+  getAllProductsWithFiltersAndCountAndmanufacturers,
   getMobilePhoneById,
   getComputerById,
   getTelevisionById,

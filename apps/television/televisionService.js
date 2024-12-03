@@ -31,7 +31,7 @@ const productService = require('../product/productService');
 async function getAllTelevisionsWithFilterAndCount(minPrice, maxPrice, page, limit, sort, brand, search) {
   try {
       page = Math.max(1, page);
-      const { totalCount, products } = await productService.getAllProductsOfTypeWithFilterAndCount(
+      const { totalCount, products } = await productService.getAllProductsOfManufacturerWithFilterAndCount(
           minPrice, maxPrice, page, limit, sort, brand, search, 'televisions'
       );
       
@@ -77,9 +77,10 @@ async function getTelevisionByID(id) {
 async function getRelatedTelevisions(currentId, limit = 3) {
   try {
       const query = `
-      SELECT p.id, p.name, p.brand, p.price, p.imageurl, p.discount, p.numberofpro, t.type_name
-      FROM products p JOIN types t ON p.type_id = t.id
-      WHERE type_id = (SELECT id from types where type_name = 'televisions')
+      SELECT p.id, p.name, m.manufacturer_name, p.price, p.imageurl, p.discount, p.numberofpro, t.category_name
+      FROM products p JOIN categories t ON p.category_id = t.id
+      JOIN manufacturers m ON p.manufacturer_id = m.id
+      WHERE category_id = (SELECT id from categories where category_name = 'televisions')
       AND p.id <> $1
       ORDER BY RANDOM() 
       LIMIT $2
@@ -93,7 +94,7 @@ async function getRelatedTelevisions(currentId, limit = 3) {
 }
 
 async function getAllTelevisionBrands() {
-  const brands = productService.getAllBrandsOfType('televisions');
+  const brands = productService.getAllManufacturersOfCategory('televisions');
   return brands;
 }
 
