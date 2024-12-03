@@ -62,7 +62,7 @@ async function getAllDiscountedProductsWithFilterAndCount(
       [limit, (page - 1) * limit]
     );
 
-    const count = 0;
+    let count = 0;
     if(result.rows.length > 0){
       count = parseInt(result.rows[0].total_count);
     }

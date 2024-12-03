@@ -29,7 +29,7 @@
                 suggestionItem.classList.add('p-2', 'hover:bg-gray-200', 'cursor-pointer');
                 suggestionItem.innerHTML = `
                               <div class="flex items-center">
-                                  <img src="${product.imageurl}" alt="${product.name}" class="h-10 w-10 object-cover mr-2">
+                                  <img src="${product.image_url}" alt="${product.name}" class="h-10 w-10 object-cover mr-2">
                                   <div>
                                       <p class="text-sm font-medium">${product.name}</p>
                                       <p class="text-xs text-gray-500">${product.price}</p>
@@ -112,7 +112,7 @@
                 <div class="bg-white shadow-md flex flex-col h-full rounded-lg">
                   <!-- Phần hình ảnh sản phẩm -->
                   <div class="relative group w-full h-80 flex items-center justify-center">
-                    <img src="<%= product.imageurl %>" alt="<%= product.name %>" class="max-w-full max-h-full" />
+                    <img src="<%= product.image_url %>" alt="<%= product.name %>" class="max-w-full max-h-full" />
                     <a href="/category/<%= product.type_name %>/<%= product.id %>">
                       <div
                         class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
@@ -132,7 +132,7 @@
                       <p class="text-xl text-primary font-semibold">
                         <%= product.manufacturer %>
                       </p>
-                      <% if (product.numberofpro > 0) {%>
+                      <% if (product.number > 0) {%>
                         <p class="text-right text-base text-green-600">In stock</p>
                       <% }else{ %>
                         <p class="text-right text-base text-red-600">Out of stock</p>

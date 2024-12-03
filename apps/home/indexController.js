@@ -12,7 +12,7 @@ async function renderHomePage(req, res) {
     const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
 
-    const selectedmanufacturers =
+    const selectedManufacturers =
       manufacturer === 'All' ? [] : manufacturer.split(',');
 
     const { totalCount, products } =
@@ -39,7 +39,7 @@ async function renderHomePage(req, res) {
       itemsPerPage: limit,
       products: products,
       manufacturers: allmanufacturers,
-      selectedmanufacturers,
+      selectedManufacturers,
     };
 
     if (req.xhr) {
