@@ -72,7 +72,7 @@ async function getTelevisionByID(id) {
 async function getRelatedTelevisions(currentId, limit = 3) {
   try {
       const query = `
-      SELECT p.*, t.category_name, m.manufacturer_name
+      SELECT p.*, c.category_name, m.manufacturer_name
       FROM products p JOIN categories c ON p.category_id = c.id
       JOIN manufacturers m ON p.manufacturer_id = m.id
       WHERE category_id = (SELECT id from categories where category_name = 'televisions')

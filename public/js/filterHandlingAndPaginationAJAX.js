@@ -3,13 +3,13 @@ async function updateFilter() {
   const formData = new FormData(form);
 
   // Lấy danh sách các thương hiệu (nhà sản xuất) đã được chọn
-  const selectedmanufacturers = formData.getAll('manufacturers');
+  const selectedManufacturers = formData.getAll('manufacturers');
 
   // Tạo URL mới với các tham số
   const params = new URLSearchParams(window.location.search);
   params.set('page', 1);
-  if (selectedmanufacturers.length > 0) {
-    params.set('manufacturer', selectedmanufacturers.join(','));
+  if (selectedManufacturers.length > 0) {
+    params.set('manufacturer', selectedManufacturers.join(','));
   } else {
     params.delete('manufacturer');
   }
@@ -81,12 +81,12 @@ async function updateSortFilter() {
 async function changePage(page) {
   const form = document.getElementById('manufacturer-filter-form');
   const formData = new FormData(form);
-  const selectedmanufacturers = formData.getAll('manufacturers');
+  const selectedManufacturers = formData.getAll('manufacturers');
 
   const params = new URLSearchParams(window.location.search);
   params.set('page', page);
-  if (selectedmanufacturers.length > 0) {
-    params.set('manufacturer', selectedmanufacturers.join(','));
+  if (selectedManufacturers.length > 0) {
+    params.set('manufacturer', selectedManufacturers.join(','));
   } else {
     params.delete('manufacturer');
   }
