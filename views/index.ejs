@@ -160,7 +160,9 @@
 
                   <!-- Nút Add to Cart -->
                   <a href="#"
-                    class="block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition">
+                    class="add-to-cart-btn block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition"
+                    data-product-id="<%= product.id %>"
+                    data-product-price="<%= product.price %>">
                     Add to cart
                   </a>
                 </div>
@@ -184,7 +186,7 @@
       <!-- #endregion Footer -->
        
   </div>
-
+  <script src="/js/cart.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/js/filterHandlingAndPaginationAJAX.js"></script>
 </body>

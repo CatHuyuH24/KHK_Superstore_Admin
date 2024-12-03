@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const utils=require('./apps/Utils/jwtUtils');
 const passport = require('passport');
 const flash = require('connect-flash');
+const cartRouter = require('./apps/cart/cartRouter');
 require("dotenv").config();
 
 const {ConnectSessionKnexStore} = require('connect-session-knex'); 
@@ -76,6 +77,7 @@ app.use("/search", searchRouter);
 app.use("/category", categoryRouter);
 app.use("/login",loginRouter);
 app.use("/logout",logoutRouter)
+app.use("/cart",cartRouter);
 
 app.get("/cart",utils.authMiddleware({session:true}),(req,res)=>{
   res.render('cart',{
