@@ -22,7 +22,7 @@ async function renderTelevisionCategoryPage(req, res) {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    const manufacturersList = await televisionService.getAllTelevisionBrands();
+    const manufacturersList = await televisionService.getAllTelevisionManufacturers();
 
     const response = {
       title: "Televisions - Superstore - GA05",

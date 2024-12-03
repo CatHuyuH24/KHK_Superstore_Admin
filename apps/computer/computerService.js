@@ -6,7 +6,7 @@ const productService = require('../product/productService');
  * Each record in the result set contains the following fields:
  * - id
  * - name
- * - brand
+ * - manufacturer_name
  * - price
  * - image_url
  * - detail
@@ -20,7 +20,7 @@ const productService = require('../product/productService');
  * @param {number} page - Page number for pagination, expected to be greater than 0.
  * @param {number} limit - Number of items per page.
  * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
- * @param {string} brand - Brand filter.
+ * @param {string} manufacturer - Manufacturer filter.
  * @param {string} search - Search keyword.
  * @returns {Promise<Object>} - An object containing the total count of computers and the list of computers.
  * @returns {number} return.totalCount - Total number of computers matching the filters.
@@ -88,15 +88,15 @@ async function getRelatedComputers(currentId, limit = 3) {
   }
 }
 
-async function getAllComputerBrands() {
-  const brands = productService.getAllManufacturersOfCategory('computers');
-  return brands;
+async function getAllComputerManufacturers() {
+  const manufacturers = productService.getAllManufacturersOfCategory('computers');
+  return manufacturers;
 }
 
 module.exports = {
     getAllComputersWithFilterAndCount,
     getComputerByID,
     getRelatedComputers,
-    getAllComputerBrands,
+    getAllComputerManufacturers,
 };
     

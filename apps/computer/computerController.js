@@ -22,7 +22,7 @@ async function renderComputerCategoryPage(req, res) {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    const manufacturersList = await computerService.getAllComputerBrands();
+    const manufacturersList = await computerService.getAllComputerManufacturers();
 
     const response = {
       title: "Computers - Superstore - GA05",

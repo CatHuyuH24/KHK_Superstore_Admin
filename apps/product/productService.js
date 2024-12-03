@@ -107,7 +107,7 @@ async function getAllManufacturersOfCategory(products_category) {
         ${productsCategoryFilter}
         `);
 
-  const manufacturers = manufacturersList.rows.map((row) => row.manufacturer);
+  const manufacturers = manufacturersList.rows.map((row) => row.manufacturer_name);
   return manufacturers;
 }
 

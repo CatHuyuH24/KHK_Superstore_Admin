@@ -6,7 +6,7 @@ const productService = require('../product/productService');
  * Each record in the result set contains the following fields:
  * - id
  * - name
- * - brand
+ * - manufacturer_name
  * - price
  * - imageurl
  * - detail
@@ -20,7 +20,7 @@ const productService = require('../product/productService');
  * @param {number} page - Page number for pagination, expected to be greater than 0.
  * @param {number} limit - Number of items per page.
  * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
- * @param {string} brand - Brand filter.
+ * @param {string} manufacturer - Manufacturer filter.
  * @param {string} search - Search keyword.
  * @returns {Promise<Object>} - An object containing the total count of televisions and the list of televisions.
  * @returns {number} return.totalCount - Total number of televisions matching the filters.
@@ -28,11 +28,11 @@ const productService = require('../product/productService');
  * @example
  * const { totalCount, products } = await getAllComputersWithFilterAndCount(0, 1000, 1, 10, "price,ASC", "Apple", "macbook");
  */
-async function getAllTelevisionsWithFilterAndCount(minPrice, maxPrice, page, limit, sort, brand, search) {
+async function getAllTelevisionsWithFilterAndCount(minPrice, maxPrice, page, limit, sort, manufacturer, search) {
   try {
       page = Math.max(1, page);
       const { totalCount, products } = await productService.getAllProductsOfCategoriesWithFilterAndCount(
-          minPrice, maxPrice, page, limit, sort, brand, search, 'televisions'
+          minPrice, maxPrice, page, limit, sort, manufacturer, search, 'televisions'
       );
       
       return { totalCount, products };
@@ -88,15 +88,15 @@ async function getRelatedTelevisions(currentId, limit = 3) {
   }
 }
 
-async function getAllTelevisionBrands() {
-  const brands = productService.getAllManufacturersOfCategory('televisions');
-  return brands;
+async function getAllTelevisionManufacturers() {
+  const manufacturers = productService.getAllManufacturersOfCategory('televisions');
+  return manufacturers;
 }
 
 module.exports = {
   getAllTelevisionsWithFilterAndCount,
   getTelevisionByID,
   getRelatedTelevisions,
-  getAllTelevisionBrands,
+  getAllTelevisionManufacturers,
 };
     

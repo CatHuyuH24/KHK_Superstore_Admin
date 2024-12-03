@@ -3,11 +3,11 @@ const productService = require("../product/productService");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils.js");
 
 /**
- * Get all products with filters applied, the total number of products, and the list of brands.
+ * Get all products with filters applied, the total number of products, and the list of manufacturers.
  * Each record in the result set contains the following fields:
  * - id
  * - name
- * - brand
+ * - manufacturer_name
  * - price (discounted price)
  * - image_url
  * - detail
@@ -21,12 +21,12 @@ const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils.js");
  * @param {number} limit - Number of items per page.
  * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
  * @param {string} search - Search keyword.
- * @returns {Promise<Object>} - An object containing the total count of products, the list of products, and the list of brands.
+ * @returns {Promise<Object>} - An object containing the total count of products, the list of products, and the list of manufacturers.
  * @returns {Array} return.products - List of products with discounted prices.
  * @returns {number} return.total - Total number of products matching the filters.
- * @returns {Array} return.brands - List of brands.
+ * @returns {Array} return.manufacturers - List of manufacturers.
  * @example
- * const { products, total, brands } = await getAllProductsWithFiltersAndCountAndBrands(0, 1000, 1, 10, "price,ASC", "Apple", "macbook");
+ * const { products, total, manufacturers } = await getAllProductsWithFiltersAndCountAndManufacturers(0, 1000, 1, 10, "price,ASC", "Apple", "macbook");
  */
 async function getAllProductsWithFiltersAndCountAndmanufacturers(minPrice, maxPrice, page, limit, sort, manufacturer, search) {
   try {

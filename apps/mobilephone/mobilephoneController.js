@@ -22,7 +22,7 @@ async function renderMobilephoneCategoryPage(req, res) {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    const manufacturersList = await mobilephoneService.getAllMobilephoneBrands();
+    const manufacturersList = await mobilephoneService.getAllMobilephoneManufacturers();
 
     const response = {
       title: "Mobilephones - Superstore - GA05",
