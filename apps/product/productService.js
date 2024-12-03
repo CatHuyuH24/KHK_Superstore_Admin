@@ -111,7 +111,70 @@ async function getAllManufacturersOfCategory(products_category) {
   return manufacturers;
 }
 
+/**
+ * Fetches a product by its ID from the database.
+ * 
+ * @param {number} id - The ID of the product to fetch.
+ * @returns {Promise<Object>} - A promise that resolves to the product object if found, or an empty array if not found.
+ * @returns {Object} return - The product object.
+ * @returns {number} return.id - Product ID.
+ * @returns {string} return.name - Product name.
+ * @returns {number} return.category_id - Category ID.
+ * @returns {number} return.manufacturer_id - Manufacturer ID.
+ * @returns {number} return.price - Product price.
+ * @returns {string} return.image_url - URL of the product image.
+ * @returns {string} return.detail - Product details.
+ * @returns {number} return.discount - Discount on the product.
+ * @returns {number} return.number - Number of products.
+ * @returns {Date} return.last_modified - Last modified timestamp.
+ * @returns {number} return.fps_hz - FPS (Hz).
+ * @returns {number} return.screen_width_inches - Screen width in inches.
+ * @returns {string} return.status - Product status.
+ * @returns {number} return.total_purchased - Total number of products purchased.
+ * @returns {string} return.manufacturer_name - Manufacturer name.
+ * @returns {string} return.category_name - Category name.
+ * @throws {Error} - Throws an error if there is an issue with the database query.
+ * @example
+ * const product = await getProductById(1);
+ * console.log(product);
+ * // {
+ * //   id: 1,
+ * //   name: 'Product Name',
+ * //   category_id: 2,
+ * //   manufacturer_id: 3,
+ * //   price: 100,
+ * //   image_url: 'http://example.com/image.jpg',
+ * //   detail: 'Product details',
+ * //   discount: 10,
+ * //   number: 50,
+ * //   last_modified: '2023-10-01T00:00:00.000Z',
+ * //   fps_hz: 60,
+ * //   screen_width_inches: 15.6,
+ * //   status: 'on stock',
+ * //   total_purchased: 200,
+ * //   manufacturer_name: 'Manufacturer Name',
+ * //   category_name: 'Category Name'
+ * // }
+ */
+async function getProductById(id) {
+  try {
+    const query = `
+    SELECT p.*, m.manufacturer_name, c.category_name
+    FROM products p
+    JOIN manufacturers m ON p.manufacturer_id = m.id
+    JOIN categories c ON p.category_id = c.id
+    WHERE p.id = $1
+    `;
+    const result = await pool.query(query, [id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error fetching product by ID', error);
+    return [];
+  }
+}
+
 module.exports = {
     getAllProductsOfCategoriesWithFilterAndCount,
   getAllManufacturersOfCategory,
+  getProductById,
 };

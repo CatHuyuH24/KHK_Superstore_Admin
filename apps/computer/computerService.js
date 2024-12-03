@@ -52,13 +52,8 @@ async function getAllComputersWithFilterAndCount(minPrice, maxPrice, page, limit
  */
 async function getComputerByID(id) {
   try {
-      const query = `
-      SELECT * 
-      FROM products 
-      WHERE id = $1
-      `;
-      const result = await pool.query(query, [id]);
-      return result.rows[0];
+      const computer = productService.getProductById(id);
+      return computer;
   } catch (error) {
       console.error('Error fetching computer by ID', error);
       return [];

@@ -52,13 +52,8 @@ async function getAllMobilephonesWithFilterAndCount(minPrice, maxPrice, page, li
  */
 async function getMobilephoneByID(id) {
   try {
-      const query = `
-      SELECT * 
-      FROM products 
-      WHERE id = $1
-      `;
-      const result = await pool.query(query, [id]);
-      return result.rows[0];
+      const mobilephone = productService.getProductById(id);
+      return mobilephone;
   } catch (error) {
       console.error('Error fetching mobilephone by ID', error);
       return [];

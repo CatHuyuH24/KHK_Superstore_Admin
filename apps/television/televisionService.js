@@ -52,13 +52,8 @@ async function getAllTelevisionsWithFilterAndCount(minPrice, maxPrice, page, lim
  */
 async function getTelevisionByID(id) {
   try {
-      const query = `
-      SELECT * 
-      FROM products 
-      WHERE id = $1
-      `;
-      const result = await pool.query(query, [id]);
-      return result.rows[0];
+      const television = productService.getProductById(id);
+      return television;
   } catch (error) {
       console.error('Error fetching television by ID', error);
       return [];
