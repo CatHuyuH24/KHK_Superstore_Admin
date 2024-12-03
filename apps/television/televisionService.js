@@ -31,7 +31,7 @@ const productService = require('../product/productService');
 async function getAllTelevisionsWithFilterAndCount(minPrice, maxPrice, page, limit, sort, brand, search) {
   try {
       page = Math.max(1, page);
-      const { totalCount, products } = await productService.getAllProductsOfManufacturerWithFilterAndCount(
+      const { totalCount, products } = await productService.getAllProductsOfCategoriesWithFilterAndCount(
           minPrice, maxPrice, page, limit, sort, brand, search, 'televisions'
       );
       

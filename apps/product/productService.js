@@ -29,7 +29,7 @@ const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
  * @example
  * const {totalCount, products} = await getAllProductsOfmanufacturerWithFilterAndCount(0, 1000, 1, 10, "price,ASC", "Apple", "macbook", "computers");
  */
-async function getAllProductsOfCategoryWithFilterAndCount(
+async function getAllProductsOfCategoriesWithFilterAndCount(
   minPrice,
   maxPrice,
   page,
@@ -112,6 +112,6 @@ async function getAllManufacturersOfCategory(products_category) {
 }
 
 module.exports = {
-  getAllProductsOfCategoryWithFilterAndCount,
+    getAllProductsOfCategoriesWithFilterAndCount,
   getAllManufacturersOfCategory,
 };

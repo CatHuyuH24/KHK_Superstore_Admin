@@ -37,7 +37,7 @@ async function getAllProductsWithFiltersAndCountAndmanufacturers(minPrice, maxPr
     // we want to get all products 
     // and the total number of products 
     const {totalCount, products} = 
-      await productService.getAllProductsOfCategoryWithFilterAndCount
+      await productService.getAllProductsOfCategoriesWithFilterAndCount
       (minPrice, maxPrice, page, limit, sort, manufacturer, search);
       
     // Get all manufacturers of all products (product_type is not provided)
@@ -91,5 +91,3 @@ module.exports = {
   getComputerById,
   getTelevisionById,
 };
-
-
