@@ -9,7 +9,7 @@ const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils.js");
  * - name
  * - brand
  * - price (discounted price)
- * - imageurl
+ * - image_url
  * - detail
  * - discount
  * - numberofpro (number of products)
@@ -54,7 +54,7 @@ async function getAllProductsWithFiltersAndCountAndmanufacturers(minPrice, maxPr
 
 async function getMobilePhoneById(id) {
   try {
-    const query = 'SELECT * FROM products p JOIN categories t ON p.category_id =t.id WHERE id = $1 AND t.category_name = \'mobilephones\'';
+    const query = 'SELECT * FROM products p JOIN categories c ON p.category_id =c.id WHERE id = $1 AND c.category_name = \'mobilephones\'';
     const result = await pool.query(query, [id]);
     return result.rows[0];
   } catch (error) {

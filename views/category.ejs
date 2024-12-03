@@ -77,7 +77,7 @@
                   <!-- Phần hình ảnh sản phẩm -->
                   <div class="relative group w-full h-80 flex items-center justify-center">
                     <img src="<%= product.image_url %>" alt="<%= product.name %>" class="max-w-full max-h-full" />
-                    <a href="/category/<%= product.type_name %>/<%= product.id %>">
+                    <a href="/category/<%= product.category_name %>/<%= product.id %>">
                       <div
                         class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
                       </div>
@@ -86,7 +86,7 @@
 
                   <div class="flex-grow pt-4 pb-3 px-4 flex flex-col">
                     <!-- Tên sản phẩm -->
-                    <a href="/category/<%= product.type_name %>/<%= product.id %>">
+                    <a href="/category/<%= product.category_name %>/<%= product.id %>">
                       <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
                         <%= product.name %>
                       </h4>
@@ -94,7 +94,7 @@
 
                     <div class="flex justify-between mb-1 space-x-2">
                       <p class="text-xl text-primary font-semibold">
-                        <%= product.manufacturer %>
+                        <%= product.manufacturer_name %>
                       </p>
                       <% if (product.number > 0) {%>
                         <p class="text-right text-base text-green-600">In stock</p>

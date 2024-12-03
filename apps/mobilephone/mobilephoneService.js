@@ -8,7 +8,7 @@ const productService = require('../product/productService');
  * - name
  * - brand
  * - price
- * - imageurl
+ * - image_url
  * - detail
  * - discount
  * - numberofpro (number of products)
@@ -77,8 +77,8 @@ async function getMobilephoneByID(id) {
 async function getRelatedMobilephones(currentId, limit = 3) {
   try {
       const query = `
-      SELECT p.id, p.name, m.manufacturer_name, p.price, p.imageurl, p.discount, p.numberofpro, t.category_name
-      FROM products p JOIN categories t ON p.category_id = t.id
+      SELECT p.*, c.category_name, m.manufacturer_name
+      FROM products p JOIN categories c ON p.category_id = c.id
       JOIN manufacturers m ON p.manufacturer_id = m.id
       WHERE category_id = (SELECT id from categories where category_name = 'mobilephones')
       AND p.id <> $1

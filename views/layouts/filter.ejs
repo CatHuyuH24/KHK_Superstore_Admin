@@ -1,26 +1,26 @@
 <div class="col-span-1 bg-white px-4 pb-6 shadow overflow-hidden rounded-lg">
     <div class="divide-y divide-gray-200 space-y-5">
 
-      <!--region Brand-->
+      <!--region Manufacturer-->
       <div>
         <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium mt-3">Manufacturers</h3>
-        <form id="brand-filter-form">
+        <form id="manufacturer-filter-form">
           <div class="space-y-2">
             <% if (manufacturers && manufacturers.length > 0) { %>
-              <% manufacturers.forEach((brand, index) => { %>
+              <% manufacturers.forEach((manufacturer, index) => { %>
                 <div class="flex items-center">
                   <input 
                     type="checkbox" 
                     name="manufacturers" 
-                    value="<%= brand %>" 
-                    id="brand-<%= index %>" 
+                    value="<%= manufacturer %>" 
+                    id="manufacturer-<%= index %>" 
                     class="text-primary focus:ring-0 cursor-pointer"
-                    <% if (selectedManufacturers && selectedManufacturers.includes(brand)) { %>
+                    <% if (selectedManufacturers && selectedManufacturers.includes(manufacturer)) { %>
                       checked
                     <% } %> 
                      />
-                  <label for="brand-<%= index %>" class="text-gray-600 ml-3 cursor-pointer">
-                    <%= brand %>
+                  <label for="manufacturer-<%= index %>" class="text-gray-600 ml-3 cursor-pointer">
+                    <%= manufacturer %>
                   </label>
                 </div>
               <% }); %>
