@@ -124,7 +124,7 @@ function updateProductList(products) {
 
                     <div class="flex justify-between mb-1 space-x-2">
                       <p class="text-xl text-primary font-semibold">
-                        ${product.manufacturer}
+                        ${product.manufacturer_name}
                       </p>`;
     if (product.number > 0) {
       productHTML += `<p class="text-right text-base text-green-600">In stock</p>`;

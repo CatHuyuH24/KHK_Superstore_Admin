@@ -22,7 +22,7 @@ function prepareFilterStatements(minPrice, maxPrice, sort, manufacturer, search,
         productsCategoryFilter = `AND category_id = (SELECT id from categories where category_name = '${products_category}')`;
 
     // initialize filters
-    let manufacturerFilter = manufacturer === "All" ? "" : `AND manufacturer IN (${manufacturer.split(",").map(g => `'${g}'`).join(", ")})`;
+    let manufacturerFilter = manufacturer === "All" ? "" : `AND manufacturer_name IN (${manufacturer.split(",").map(g => `'${g}'`).join(", ")})`;
     let searchFilter = search ? `AND name ILIKE '%${search}%'` : "";
     let priceFilter = ""; 
 

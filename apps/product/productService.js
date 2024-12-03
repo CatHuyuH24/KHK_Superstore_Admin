@@ -20,7 +20,7 @@ const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
  * @param {number} page - Page number for pagination, expected to be greater than 0.
  * @param {number} limit - Number of items per page.
  * @param {string} sort- Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
- * @param {string} manufacturer - manufacturer filter.
+ * @param {string} manufacturer - manufacturer filter. e.g ["Apple", "Samsung",...].
  * @param {string} search - Search keyword.
  * @param {string} products_category - category of products. e.g. "computers". If not provided, all products will be fetched.
  * @returns {Promise<Object>} An object containing the total count of products and the array of products.
@@ -82,7 +82,7 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
     };
   } catch (error) {
     console.error(
-      `Error fetching ${products_category} products with filter and count:`,
+      `Error fetching ${products_category} products from productService:`,
       error.message
     );
     return { totalCount: 0, products: [] };
