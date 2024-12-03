@@ -130,7 +130,9 @@
 
                     <div class="mt-6 flex gap-3 border-b border-gray-200 pb-5 pt-5">
                         <a href="#"
-                            class="bg-green-700 border border-primary text-white px-8 py-2 font-medium uppercase flex items-center gap-2 hover:bg-green-500 transition">
+                            class="add-to-cart-btn block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition"
+                            data-product-id="<%= product.id %>"
+                            data-product-price="<%= product.price %>">
                             Add to cart
                         </a>
                         <a href="#"
@@ -215,6 +217,7 @@
         <%- include('layouts/footer') %>
         <!-- #endregion Footer -->
     </div>
+    <script src="/js/cart.js"></script>
 </body>
 
 </html>
