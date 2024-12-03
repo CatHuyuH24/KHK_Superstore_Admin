@@ -12,7 +12,7 @@ const verifyCallback=async (email, password, done)=>{
         if(!user){
             return done(null,false, { message, title });
         }
-        const isValid=await validPassword(password,user.password,user.salt);
+        const isValid=await validPassword(password,user.hashed_password,user.salt);
 
         if(isValid){
             return done(null,user,{title});
