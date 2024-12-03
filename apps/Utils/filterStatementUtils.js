@@ -19,7 +19,7 @@
 function prepareFilterStatements(minPrice, maxPrice, sort, manufacturer, search, products_category) {
     let productsCategoryFilter = "";
     if(products_category != null)
-        productsCategoryFilter = `AND category_id = (SELECT id from categorys where category_name = '${products_category}')`;
+        productsCategoryFilter = `AND category_id = (SELECT id from categories where category_name = '${products_category}')`;
 
     // initialize filters
     let manufacturerFilter = manufacturer === "All" ? "" : `AND manufacturer IN (${manufacturer.split(",").map(g => `'${g}'`).join(", ")})`;

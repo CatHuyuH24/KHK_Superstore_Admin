@@ -31,7 +31,7 @@ const productService = require('../product/productService');
 async function getAllMobilephonesWithFilterAndCount(minPrice, maxPrice, page, limit, sort, manufacturer, search) {
   try {
       page = Math.max(1, page);
-      const { totalCount, products } = await productService.getAllProductsOfManufacturerWithFilterAndCount(
+      const { totalCount, products } = await productService.getAllProductsOfCategoriesWithFilterAndCount(
           minPrice, maxPrice, page, limit, sort, manufacturer, search, 'mobilephones'
       );
       
