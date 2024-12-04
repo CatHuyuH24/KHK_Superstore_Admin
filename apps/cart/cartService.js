@@ -28,7 +28,7 @@ const getProductInCartByUserId = async(user_id)=>{
         const result=await pool.query(`
         SELECT p.image_url, c.quantity, c.price,
         c.quantity * p.price AS total, p.name,
-        p.price*p.discount/100 AS discount_price, p.id
+        p.price*p.discount/100 AS discount_price, p.id, p.number
         FROM carts c
         JOIN products p ON c.product_id=p.id
         WHERE c.user_id=$1

@@ -74,10 +74,12 @@ const deleteProductInCart = async (req, res) => {
     try {
         const {productId, userId} = req.body;
         const success = await cartService.deleteProductInCart(productId, userId);
-        if(success)        
+        if(success){
             return res.status(StatusCodes.OK).json({message: 'Product deleted successfully'});
-        else
+        }
+        else{
             throw new Error('Failed to delete product');
+        }
     } catch (error) {
         console.error('Error deleting product in cart:', error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error deleting product in cart' });

@@ -2,6 +2,7 @@ let cartList = document.querySelector("#cart-list");
 let totalSumElement = document.querySelector("#total-sum");
 let totalDiscountElement = document.querySelector("#total-discount");
 let totalPayElement = document.querySelector("#total-pay");
+const userId = document.querySelector("#user-id").value;
 
 async function updateCartList(products){
   cartList.innerHTML = "";
@@ -16,7 +17,7 @@ async function updateCartList(products){
               <button class="text-gray-700 hover:text-gray-900 p-2">
                   <i class="gg-math-minus"></i>
               </button>
-              <input id="quantity-modifier" class="mx-2 w-8 text-center" type="number" value="${product.quantity}">
+              <input id="quantity-modifier" class="mx-2 w-8 text-center" type="number" value="${product.quantity}" max="${product.number}" min="1">
               <button class="text-gray-700 hover:text-gray-900 p-2">
                   <i class="gg-math-plus"></i>
               </button>
@@ -103,7 +104,6 @@ async function fetchAndRender(newURL) {
 
 async function attachListeners(){
   const quantityInputs = document.querySelectorAll('input[type="number"]');
-  const userId = document.querySelector("#user-id").value;
 
   const deleteButtons = document.querySelectorAll('.delete-btn');
   deleteButtons.forEach(button => {
@@ -133,7 +133,18 @@ async function attachListeners(){
   quantityInputs.forEach(input => {
     input.addEventListener('change', async (event) => {
     const productId = event.target.closest('tr').querySelector('.delete-btn').getAttribute("product-id");
-    const newQuantity = event.target.value;
+    let newQuantity = parseInt(event.target.value);
+    const maxQuantity = parseInt(event.target.getAttribute("max"));
+
+    if (newQuantity > maxQuantity) {
+      event.target.value = maxQuantity;
+      newQuantity = maxQuantity;
+    }
+    else if(newQuantity < 1){
+      event.target.value = 1;
+      newQuantity = 1;
+    }
+
     try {
       const response = await fetch('/cart/update-quantity', {
         method: 'POST',

@@ -87,7 +87,7 @@
                                         <button class="text-gray-700 hover:text-gray-900 p-2">
                                             <i class="gg-math-minus"></i>
                                         </button>
-                                        <input id="quantity-modifier" class="mx-2 w-8 text-center" type="number" value="<%= product.quantity %>">
+                                        <input id="quantity-modifier" class="mx-2 w-8 text-center" type="number" value="<%= product.quantity %>" max="<%= product.number %>" min="1">
                                         <button class="text-gray-700 hover:text-gray-900 p-2">
                                             <i class="gg-math-plus"></i>
                                         </button>
