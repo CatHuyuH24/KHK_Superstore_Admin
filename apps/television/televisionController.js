@@ -1,6 +1,7 @@
 const televisionService = require("./televisionService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
+const { user } = require("pg/lib/defaults");
 
 async function renderTelevisionCategoryPage(req, res) {
   try {
@@ -12,6 +13,7 @@ async function renderTelevisionCategoryPage(req, res) {
     const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
     const selectedManufacturers = manufacturer === "All" ? [] : manufacturer.split(",");
+    const userID = req.user ? req.user.id : null;
 
     const {totalCount, products} = 
     await televisionService.getAllTelevisionsWithFilterAndCount
@@ -34,6 +36,7 @@ async function renderTelevisionCategoryPage(req, res) {
       products: products,
       manufacturers: manufacturersList,
       selectedManufacturers,
+      user_id: userID,
     };
 
     if (req.xhr) {
@@ -53,6 +56,7 @@ async function renderTelevisionDetailPage(req, res) {
   try {
     const televisionID = req.params.id;
     const television = await televisionService.getTelevisionByID(televisionID);
+    const userID = req.user ? req.user.id : null;
     television.price = calculateDiscountedPrice(television.price, television.discount);
 
     const relatedComputers = await televisionService.getRelatedTelevisions(televisionID, 5);
@@ -62,7 +66,7 @@ async function renderTelevisionDetailPage(req, res) {
 
     const TITLE = television.name + " - Superstore - GA05";
 
-    res.render("product", { product: television, relatedProducts: relatedComputers, title: TITLE });
+    res.render("product", { product: television, relatedProducts: relatedComputers, title: TITLE, user_id: userID });
   } catch (error) {
     console.error("Error rendering television detail page:", error);
     res

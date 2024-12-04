@@ -1,6 +1,8 @@
 const computerService = require("./computerService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
+const { user } = require("pg/lib/defaults");
+const { use } = require("passport");
 
 async function renderComputerCategoryPage(req, res) {
   try {
@@ -12,6 +14,7 @@ async function renderComputerCategoryPage(req, res) {
     const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
     const selectedManufacturers = manufacturer === "All" ? [] : manufacturer.split(",");
+    const userID = req.user ? req.user.id : null;
 
     const {totalCount, products} = 
     await computerService.getAllComputersWithFilterAndCount
@@ -34,6 +37,7 @@ async function renderComputerCategoryPage(req, res) {
       products: products,
       manufacturers: manufacturersList,
       selectedManufacturers,
+      user_id: userID,
     };
 
     if (req.xhr) {
@@ -62,7 +66,7 @@ async function renderComputerDetailPage(req, res) {
 
     const TITLE = computer.name + " - Superstore - GA05";
 
-    res.render("product", { product: computer, relatedProducts: relatedComputers, title: TITLE });
+    res.render("product", { product: computer, relatedProducts: relatedComputers, title: TITLE});
   } catch (error) {
     console.error("Error rendering computer detail page:", error);
     res

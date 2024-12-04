@@ -20,6 +20,8 @@
 
     <!-- #region Header -->
     <%- include('layouts/mainLayout', { content: locals.body }) %>
+    <!--region get user_id to put into cart-->
+    <input type="hidden" id="user-id" value="<%= user_id %>">
     <!-- #endregion Header -->
 
       <main class="my-8">

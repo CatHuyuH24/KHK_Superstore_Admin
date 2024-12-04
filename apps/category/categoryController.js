@@ -1,6 +1,7 @@
 const categoryService = require('./categoryService');
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
 const { calculateDiscountedPrice } = require('../Utils/discountedPriceUtils');
+const { user } = require('pg/lib/defaults');
 
 async function renderCategoryPage(req, res) {
   try {
@@ -11,6 +12,7 @@ async function renderCategoryPage(req, res) {
     const search = req.query.search || '';
     const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
+    const userID = req.user ? req.user.id : null;
 
     const selectedManufacturers =
       manufacturer === 'All' ? [] : manufacturer.split(',');
@@ -40,6 +42,7 @@ async function renderCategoryPage(req, res) {
       products: products,
       manufacturers: manufacturers,
       selectedManufacturers,
+      user_id: userID,
     };
 
     if (req.xhr) {
