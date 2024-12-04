@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (response.ok) {
           alert(result.message); // Success message
         } else {
-          alert(`Error: ${result.error}`); // Use backticks for template strings
+          alert(result.message); // Use backticks for template strings
         }
       } catch (error) {
         console.error("Error adding product to cart:", error);

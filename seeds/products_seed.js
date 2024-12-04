@@ -23,6 +23,7 @@ exports.seed = async function(knex) {
         $$`,
       discount: 0,
       number: 0,
+      status: "out of stock",
     },
     {
       name: "Macbook Pro 14 M2",
@@ -41,6 +42,7 @@ exports.seed = async function(knex) {
         $$`,
       discount: 10,
       number: 0,
+      status: "out of stock"
     },
     {
       name: "Macbook Pro 16 M2 (16/256)",
