@@ -38,7 +38,8 @@ const getProductInCartByUserId= async(user_id)=>{
         return {
             products: result.rows,
             totalSum: parseFloat(totalSum.toFixed(2)),
-            totalDiscount: parseFloat(totalDiscount.toFixed(2))
+            totalDiscount: parseFloat(totalDiscount.toFixed(2)),
+            totalPay: parseFloat((totalSum-totalDiscount).toFixed(2))
         };
     }catch(error){
         console.error('Error fetching product in cart by user id', error);

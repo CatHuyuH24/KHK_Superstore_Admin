@@ -29,7 +29,7 @@ const addToCart = async (req, res) => {
 const renderCartPage=async (req,res)=>{
     try{
         const user_id = res.locals.user ? res.locals.user.id : null;
-        const {products, totalSum, totalDiscount}=await cartService.getProductInCartByUserId(user_id);
+        const {products, totalSum, totalDiscount, totalPay}=await cartService.getProductInCartByUserId(user_id);
 
         const response = {
             title: 'Cart Page - Superstore - GA05',
@@ -37,7 +37,8 @@ const renderCartPage=async (req,res)=>{
             products: products,
             totalSum: totalSum,
             totalDiscount: totalDiscount,
-            user_id:user_id
+            user_id:user_id,
+            totalPay: totalPay
           };
 
         
