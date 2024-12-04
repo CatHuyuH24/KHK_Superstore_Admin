@@ -13,7 +13,7 @@ async function renderMobilephoneCategoryPage(req, res) {
     const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
     const selectedManufacturers = manufacturer === "All" ? [] : manufacturer.split(",");
-    const userID = req.user ? req.user.id : null;
+    const userID = res.locals.user ? res.locals.user.id : null;
 
     const {totalCount, products} = 
     await mobilephoneService.getAllMobilephonesWithFilterAndCount
@@ -56,7 +56,7 @@ async function renderMobilephoneDetailPage(req, res) {
   try {
     const mobilephoneID = req.params.id;
     const mobilephone = await mobilephoneService.getMobilephoneByID(mobilephoneID);
-    const userID = req.user ? req.user : null;
+    const userID = res.locals.user ? res.locals.user.id : null;
     mobilephone.price = calculateDiscountedPrice(mobilephone.price, mobilephone.discount);
 
     const relatedComputers = await mobilephoneService.getRelatedMobilephones(mobilephoneID, 5);

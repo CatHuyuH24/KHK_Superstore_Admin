@@ -12,7 +12,7 @@ async function renderCategoryPage(req, res) {
     const search = req.query.search || '';
     const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
-    const userID = req.user ? req.user.id : null;
+    const userID = res.locals.user ? res.locals.user.id : null;
 
     const selectedManufacturers =
       manufacturer === 'All' ? [] : manufacturer.split(',');

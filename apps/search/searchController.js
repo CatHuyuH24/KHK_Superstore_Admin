@@ -3,7 +3,7 @@ const searchService = require('./searchService');
 exports.renderSearchResultsPage = async (req, res) => {
   try {
     const query = req.query.search || '';
-    const userID = req.user ? req.user.id : null;
+    const userID = res.locals.user ? res.locals.user.id : null;
     if (!query) {
       console.error("Query is empty or undefined in controller");
     }

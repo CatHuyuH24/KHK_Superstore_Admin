@@ -14,7 +14,7 @@ async function renderComputerCategoryPage(req, res) {
     const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
     const selectedManufacturers = manufacturer === "All" ? [] : manufacturer.split(",");
-    const userID = req.user ? req.user.id : null;
+    const userID = res.locals.user ? res.locals.user.id : null;
 
     const {totalCount, products} = 
     await computerService.getAllComputersWithFilterAndCount
@@ -57,6 +57,7 @@ async function renderComputerDetailPage(req, res) {
   try {
     const computerID = req.params.id;
     const computer = await computerService.getComputerByID(computerID);
+    const userID = res.locals.user ? res.locals.user.id : null;
     computer.price = calculateDiscountedPrice(computer.price, computer.discount);
 
     const relatedComputers = await computerService.getRelatedComputers(computerID, 5);
@@ -66,7 +67,7 @@ async function renderComputerDetailPage(req, res) {
 
     const TITLE = computer.name + " - Superstore - GA05";
 
-    res.render("product", { product: computer, relatedProducts: relatedComputers, title: TITLE});
+    res.render("product", { product: computer, relatedProducts: relatedComputers, title: TITLE, user_id:userID});
   } catch (error) {
     console.error("Error rendering computer detail page:", error);
     res

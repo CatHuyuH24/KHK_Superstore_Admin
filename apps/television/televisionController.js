@@ -13,7 +13,7 @@ async function renderTelevisionCategoryPage(req, res) {
     const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
     const selectedManufacturers = manufacturer === "All" ? [] : manufacturer.split(",");
-    const userID = req.user ? req.user.id : null;
+    const userID = res.locals.user ? res.locals.user.id : null;
 
     const {totalCount, products} = 
     await televisionService.getAllTelevisionsWithFilterAndCount
@@ -56,7 +56,7 @@ async function renderTelevisionDetailPage(req, res) {
   try {
     const televisionID = req.params.id;
     const television = await televisionService.getTelevisionByID(televisionID);
-    const userID = req.user ? req.user.id : null;
+    const userID = res.locals.user ? res.locals.user.id : null;
     television.price = calculateDiscountedPrice(television.price, television.discount);
 
     const relatedComputers = await televisionService.getRelatedTelevisions(televisionID, 5);
