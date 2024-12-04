@@ -65,7 +65,7 @@
                     <table class="w-full text-gray-700 shadow-md bg-blue-950">
                         <thead>
                             <tr class="border-b">
-                                <th class="py-4 px-6 text-white text-left font-medium uppercase">Select</th>
+                                
                                 <th class="py-4 px-6 text-white text-left font-medium uppercase">Product</th>
                                 <th class="py-4 px-6 text-white text-left font-medium uppercase">Name</th>
                                 <th class="py-4 px-6 text-white text-left font-medium uppercase">Quantity</th>
@@ -78,9 +78,7 @@
                             <!-- Lặp qua các sản phẩm trong bảng -->
                             <% products.forEach(product => { %>
                             <tr class="border-b bg-white">
-                                <td class="py-4 px-10">
-                                    <input type="checkbox" id="selectAll" class="select-all-checkbox" />
-                                </td>
+                                
                                 <td><img class="ml-8 max-w-xs w-12 rounded-md" src="<%= product.image_url %>" alt="Product image" /></td>
                                 <td class="py-4 px-6 text-left"><%= product.name %></td>
                                 <td class="py-4 px-6 text-left">
