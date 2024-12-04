@@ -159,7 +159,7 @@ async function getAllManufacturersOfCategory(products_category) {
 async function getProductById(id) {
   try {
     const query = `
-    SELECT p.*, m.manufacturer_name, c.category_name
+    SELECT p.*, m.manufacturer_name, c.category_name, p.status
     FROM products p
     JOIN manufacturers m ON p.manufacturer_id = m.id
     JOIN categories c ON p.category_id = c.id

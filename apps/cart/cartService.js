@@ -1,6 +1,8 @@
 const { user } = require('pg/lib/defaults');
 const pool = require('../../config/database');
 
+
+
 const addToCart = async (user_id, product_id, quantity, price) => {
     try {
         const query = `

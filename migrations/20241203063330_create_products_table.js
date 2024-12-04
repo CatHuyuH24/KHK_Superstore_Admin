@@ -21,7 +21,10 @@ exports.up = async function (knex) {
       total_purcharsed INT DEFAULT 0,
       FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
       FOREIGN KEY (manufacturer_id) REFERENCES manufacturers(id) ON DELETE CASCADE,
-      CONSTRAINT check_status CHECK (status IN ('on stock', 'out of stock', 'suspended'))
+      CONSTRAINT check_status CHECK (status IN ('on stock', 'out of stock', 'suspended')),
+      CONSTRAINT check_number_status CHECK (
+          (number = 0 AND status = 'out of stock') OR (number > 0 AND status != 'out of stock')
+      )
   );`);
   };
   
