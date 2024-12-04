@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
 
       const productId = button.getAttribute("data-product-id");
-      const quantity = 1;
+      const quantityElement = document.getElementById('quantity');
+      const quantity = quantityElement ? quantityElement.innerText : 1;
       const price = button.getAttribute("data-product-price");
       try {
         const response = await fetch("/cart/add", {
