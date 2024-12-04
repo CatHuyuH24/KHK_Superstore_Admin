@@ -110,7 +110,7 @@
                     <table class="w-full text-gray-700">
                         <tbody>
                             <tr class="border-b">
-                                <td class="py-4 px-6 text-left font-medium">Subtotal</td>
+                                <td class="py-4 px-6 text-left font-medium">Total</td>
                                 <td class="py-4 px-6 text-right">$<%= totalSum %></td>
                             </tr>
                             <tr class="border-b">
@@ -118,15 +118,15 @@
                                 <td class="py-4 px-6 text-right">-$<%= totalDiscount %></td>
                             </tr>
                             <tr class="border-b">
-                                <td class="py-4 px-6 text-left font-medium">Total</td>
+                                <td class="py-4 px-6 text-left font-medium">Final Amount</td>
                                 <td class="py-4 px-6 text-right">$<%= totalPay %></td>
                             </tr>
                             
                         </tbody>
                     </table>
-                    <tr class="mb-8">  
-                        <button class="bg-green-700  text-white rounded-md px-6 py-2 mt-4 w-full">Place Order</button>
-                    </tr>
+                    <td class="mb-8">  
+                        <button id="place-order" class="bg-green-700  text-white rounded-md px-6 py-2 mt-4 w-full">Place Order</button>
+                    </td>
                 </div>
             </div>
         </main>
@@ -135,6 +135,7 @@
         <%- include('layouts/footer') %>
         <!-- #endregion Footer -->
     </div>
+    <script src="/js/moveToCheckoutBtn.js"></script>
 </body>
 
 </html>
