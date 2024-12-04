@@ -21,6 +21,31 @@ const addToCart = async (req, res) => {
     }
 };
 
+const renderCartPage=async (req,res)=>{
+    try{
+        const user_id = res.locals.user ? res.locals.user.id : null;
+        const {products, totalSum, totalDiscount}=await cartService.getProductInCartByUserId(user_id);
+
+        const response = {
+            title: 'Cart Page - Superstore - GA05',
+            error: false,
+            products: products,
+            totalSum: totalSum,
+            totalDiscount: totalDiscount,
+            user_id:user_id
+          };
+
+        
+         return res.render('cart', response);
+    }catch(error){
+        console.error('Error rendering cart page:', error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
+    }
+}
+
 module.exports = {
-    addToCart
+    addToCart,
+    renderCartPage
 };

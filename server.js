@@ -5,8 +5,6 @@ const cookieParser = require("cookie-parser");
 const utils = require("./apps/Utils/jwtUtils");
 const passport = require("passport");
 const flash = require("connect-flash");
-const cartRouter = require("./apps/cart/cartRouter");
-const checkoutRouter = require("./apps/checkout/checkoutRouter");
 require("dotenv").config();
 
 const { ConnectSessionKnexStore } = require("connect-session-knex");
@@ -46,6 +44,9 @@ const registrationRouter = require("./apps/registration/registrationRouter");
 const categoryRouter = require("./apps/category/categoryRouter");
 const loginRouter = require("./apps/login/loginRouter");
 const logoutRouter = require("./apps/logout/logoutRouter");
+const cartRouter = require("./apps/cart/cartRouter");
+const checkoutRouter = require("./apps/checkout/checkoutRouter");
+
 
 // Set the view engine to EJS
 app.set("view engine", "ejs");
@@ -80,12 +81,6 @@ app.use("/logout", logoutRouter);
 app.use("/cart", cartRouter);
 app.use("/checkout", checkoutRouter); 
 
-app.get("/cart", utils.authMiddleware({ session: true }), (req, res) => {
-  res.render("cart", {
-    title: "Your Cart",
-    body: "<p></p>",
-  });
-});
 
 const PORT = process.env.SERVER_PORT || 3000;
 app.listen(PORT, () => {

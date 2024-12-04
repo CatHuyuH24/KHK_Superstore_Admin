@@ -5,8 +5,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   buttons.forEach((button) => {
     button.addEventListener("click", async (event) => {
+      if(userId==""){
+        window.location.href = "/login"; 
+      return;
+      }
       event.preventDefault();
-
       const productId = button.getAttribute("data-product-id");
       const quantity = 1;
       const price = button.getAttribute("data-product-price");

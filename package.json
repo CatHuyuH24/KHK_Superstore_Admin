@@ -8,7 +8,7 @@
     "create-db": "node createDatabase.js",
     "migrate:dev": "knex migrate:latest --env development",
     "seed:dev": "knex seed:run --specific=categories_seed.js --env development && knex seed:run --specific=manufacturers_seed.js --env development && knex seed:run --specific=products_seed.js --env development",
-    "setup-db:dev": "npm run create-db && npm run migrate:dev && npm run seed:dev",
+    "setup-db:dev": "npm run create-db && npm run migrate:dev",
     "setup-db-no-seed:dev": "npm run create-db && npm run migrate:dev",
     "start-server:dev": "nodemon server.js --watch ./views --ext ejs,html",
     "dev": "npm run setup-db:dev && npm run start-server:dev",
