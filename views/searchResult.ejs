@@ -20,8 +20,6 @@
 
     <!-- #region Header -->
     <%- include('layouts/mainLayout', { content: locals.body }) %>
-    <!--region get user_id to put into cart-->
-    <input type="hidden" id="user-id" value="<%= user_id %>">
     <!-- #endregion Header -->
 
       <main class="my-8">
@@ -54,7 +52,7 @@
                     <p class="text-xl text-primary font-semibold">
                       <%= product.manufacturer %>
                     </p>
-                    <% if (product.numberofpro > 0) {%>
+                    <% if (product.number > 0) {%>
                       <p class="text-right text-base text-green-600">In stock</p>
                     <% }else{ %>
                       <p class="text-right text-base text-red-600">Out of stock</p>

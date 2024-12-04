@@ -37,8 +37,8 @@ const getProductInCartByUserId= async(user_id)=>{
         const totalDiscount=result.rows.reduce((sum, row) => sum+ row.discount_price, 0);
         return {
             products: result.rows,
-            totalSum: totalSum,
-            totalDiscount: totalDiscount
+            totalSum: parseFloat(totalSum.toFixed(2)),
+            totalDiscount: parseFloat(totalDiscount.toFixed(2))
         };
     }catch(error){
         console.error('Error fetching product in cart by user id', error);
