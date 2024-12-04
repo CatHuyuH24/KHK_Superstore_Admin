@@ -21,7 +21,7 @@
   <!-- #region Header -->
   <%- include('layouts/mainLayout', { content: locals.body }) %>
   <!--region get user_id to put into cart-->
-        <input type="hidden" id="user-id" value="<%= user_id %>">
+        <span type="hidden" id="user-id" value="<%= user_id %>"></span>
 
   <!-- #endregion Header -->
   <div x-data="{ cartOpen: false , isOpen: false }">

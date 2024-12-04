@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="/css/all.min.css" />
   <link rel="stylesheet" href="/css/style.css" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <link id="favicon" rel="icon" type="image/png" href="/images/store_icon.ico">
 </head>
 
 <body>
@@ -74,7 +75,7 @@
                                 <th class="py-4 px-6 text-white text-right font-medium uppercase">Delete</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="cart-list">
                             <!-- Lặp qua các sản phẩm trong bảng -->
                             <% products.forEach(product => { %>
                             <tr class="border-b bg-white">
@@ -86,7 +87,7 @@
                                         <button class="text-gray-700 hover:text-gray-900 p-2">
                                             <i class="gg-math-minus"></i>
                                         </button>
-                                        <input class="mx-2 w-8 text-center" type="number" value="<%= product.quantity %>">
+                                        <input id="quantity-modifier" class="mx-2 w-8 text-center" type="number" value="<%= product.quantity %>">
                                         <button class="text-gray-700 hover:text-gray-900 p-2">
                                             <i class="gg-math-plus"></i>
                                         </button>
@@ -95,7 +96,7 @@
                                 <td class="py-4 px-6 text-right">$<%= product.price %></td>
                                 <td class="py-4 px-6 text-right">$<%= product.discount_price %></td>
                                 <td class="py-4 px-6 text-center">
-                                    <button class="text-red-600 hover:text-red-800 delete-btn" data-product-id="<%= product.id %>">
+                                    <button class="text-red-600 hover:text-red-800 delete-btn" product-id="<%= product.id %>">
                                         Delete
                                     </button>
                                 </td>
@@ -134,7 +135,10 @@
         <!-- #region Footer-->
         <%- include('layouts/footer') %>
         <!-- #endregion Footer -->
+        <input type="hidden" id="user-id" value="<%= user_id %>">
     </div>
+
+    <script src="/js/handlingProductInCart.js"></script>
 </body>
 
 </html>

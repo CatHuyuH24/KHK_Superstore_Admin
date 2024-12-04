@@ -23,12 +23,12 @@ const addToCart = async (user_id, product_id, quantity, price) => {
     
 }
 
-const getProductInCartByUserId= async(user_id)=>{
+const getProductInCartByUserId = async(user_id)=>{
     try {
         const result=await pool.query(`
         SELECT p.image_url, c.quantity, c.price,
         c.quantity * p.price AS total, p.name,
-        p.price*p.discount/100 AS discount_price
+        p.price*p.discount/100 AS discount_price, p.id
         FROM carts c
         JOIN products p ON c.product_id=p.id
         WHERE c.user_id=$1
@@ -47,7 +47,50 @@ const getProductInCartByUserId= async(user_id)=>{
     }
 }
 
+async function updateQuantityInCart(product_id, user_id, new_quantity){
+  console.log(product_id, user_id, new_quantity)
+  const checkQuery = 'SELECT quantity FROM carts WHERE product_id = $1 AND user_id = $2';
+  const checkResult = await pool.query(checkQuery, [product_id, user_id]);
+
+  if (checkResult.rows.length === 0) {
+    throw new Error('Product not found in cart');
+  }
+
+  const oldQuantity = checkResult.rows[0].quantity;
+
+  const query = `UPDATE carts SET quantity = $1 WHERE product_id = $2 AND user_id = $3`;
+
+  const values = [new_quantity, product_id, user_id];
+
+  await pool.query(query, values);
+
+  //update quantity products table 
+  if(oldQuantity < new_quantity)
+  {
+    await pool.query(`UPDATE products SET number = number - $1 WHERE id = $2`, [(new_quantity - oldQuantity), product_id]);
+  }
+  if(oldQuantity > new_quantity)
+  {
+    await pool.query(`UPDATE products SET number = number + $1 WHERE id = $2`, [(oldQuantity - new_quantity), product_id]);
+  }
+  
+}
+
+async function deleteProductInCart(product_id, user_id) {
+  const checkQuery = 'SELECT quantity FROM carts WHERE product_id = $1 AND user_id = $2';
+  const checkResult = await pool.query(checkQuery, [product_id, user_id]);
+
+  if (checkResult.rows.length === 0) {
+    throw new Error('Product not found in cart');
+  }
+
+  const query = `DELETE FROM carts WHERE product_id = $1 AND user_id = $2`;
+  await pool.query(query, [product_id, user_id]);
+}
+
 module.exports ={
     addToCart,
-    getProductInCartByUserId
+    getProductInCartByUserId,
+    updateQuantityInCart,
+    deleteProductInCart
 }

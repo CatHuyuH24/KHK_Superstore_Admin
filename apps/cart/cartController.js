@@ -51,7 +51,58 @@ const renderCartPage=async (req,res)=>{
     }
 }
 
+const updateQuantity = async (req, res) => {
+
+    try {
+        const { userId, productId, newQuantity } = req.body;
+
+        cartService.updateQuantityInCart(productId, userId, newQuantity);
+        const {products, totalSum, totalDiscount, totalPay}=await cartService.getProductInCartByUserId(userId);
+
+        const response = {
+            title: 'Cart Page - Superstore - GA05',
+            error: false,
+            products: products,
+            totalSum: totalSum,
+            totalDiscount: totalDiscount,
+            user_id:userId,
+            totalPay: totalPay
+          };
+          if(req.xhr){
+              return res.status(200).json(response);
+          }
+
+
+        
+    } catch(error) {
+        console.error('Error updating quantity in cart:', error);
+        res.status(500).json({ message: 'Error updating quantity in cart' });
+    }
+}
+
+const deleteProductInCart = async (req, res) => {
+    const {productId, userId} = req.body;
+    cartService.deleteProductInCart(productId, userId);
+
+    const {products, totalSum, totalDiscount, totalPay}=await cartService.getProductInCartByUserId(userId);
+
+        const response = {
+            title: 'Cart Page - Superstore - GA05',
+            error: false,
+            products: products,
+            totalSum: totalSum,
+            totalDiscount: totalDiscount,
+            user_id:userId,
+            totalPay: totalPay
+          };
+          if(req.xhr){
+              return res.status(200).json(response);
+          }
+
+}
 module.exports = {
     addToCart,
-    renderCartPage
+    renderCartPage,
+    updateQuantity,
+    deleteProductInCart,
 };
