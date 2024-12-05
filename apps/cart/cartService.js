@@ -65,14 +65,14 @@ async function updateQuantityInCart(product_id, user_id, new_quantity){
   await pool.query(query, values);
 
   //update quantity products table 
-  if(oldQuantity < new_quantity)
-  {
-    await pool.query(`UPDATE products SET number = number - $1 WHERE id = $2`, [(new_quantity - oldQuantity), product_id]);
-  }
-  if(oldQuantity > new_quantity)
-  {
-    await pool.query(`UPDATE products SET number = number + $1 WHERE id = $2`, [(oldQuantity - new_quantity), product_id]);
-  }
+  // if(oldQuantity < new_quantity)
+  // {
+  //   await pool.query(`UPDATE products SET number = number - $1 WHERE id = $2`, [(new_quantity - oldQuantity), product_id]);
+  // }
+  // if(oldQuantity > new_quantity)
+  // {
+  //   await pool.query(`UPDATE products SET number = number + $1 WHERE id = $2`, [(oldQuantity - new_quantity), product_id]);
+  // }
   
 }
 

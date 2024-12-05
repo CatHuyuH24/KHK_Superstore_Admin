@@ -31,6 +31,7 @@ async function renderCategoryPage(req, res) {
     products.forEach((product) => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
+ 
 
     const response = {
       title: 'Category Page - Superstore - GA05',

@@ -27,7 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
             price: price,
           }),
         });
-
         const result = await response.json();
         if (response.ok) {
           alert(result.message); // Success message
