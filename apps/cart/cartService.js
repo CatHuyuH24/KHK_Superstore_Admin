@@ -65,14 +65,14 @@ async function updateQuantityInCart(product_id, user_id, new_quantity){
   await pool.query(query, values);
 
   //update quantity products table 
-  if(oldQuantity < new_quantity)
-  {
-    await pool.query(`UPDATE products SET number = number - $1 WHERE id = $2`, [(new_quantity - oldQuantity), product_id]);
-  }
-  if(oldQuantity > new_quantity)
-  {
-    await pool.query(`UPDATE products SET number = number + $1 WHERE id = $2`, [(oldQuantity - new_quantity), product_id]);
-  }
+  // if(oldQuantity < new_quantity)
+  // {
+  //   await pool.query(`UPDATE products SET number = number - $1 WHERE id = $2`, [(new_quantity - oldQuantity), product_id]);
+  // }
+  // if(oldQuantity > new_quantity)
+  // {
+  //   await pool.query(`UPDATE products SET number = number + $1 WHERE id = $2`, [(oldQuantity - new_quantity), product_id]);
+  // }
 
   return new_quantity;
   
@@ -91,7 +91,7 @@ async function deleteProductInCart(product_id, user_id) {
     await pool.query(query, [product_id, user_id]);
 
     //update products table
-    await pool.query(`UPDATE products SET number = number + $1 WHERE id = $2`, [checkResult.rows[0].quantity, product_id]);
+    // await pool.query(`UPDATE products SET number = number + $1 WHERE id = $2`, [checkResult.rows[0].quantity, product_id]);
     return true;
   } catch (error) {
     console.error('Error deleting product in cart:', error);
