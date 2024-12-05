@@ -1,5 +1,6 @@
 const cartService = require('./cartService');
 const productService = require('../product/productService');
+const { StatusCodes } = require('http-status-codes');
 
 const addToCart = async (req, res) => {
     try {
@@ -41,7 +42,9 @@ const renderCartPage=async (req,res)=>{
             totalPay: totalPay
           };
 
-        
+        if(req.xhr){
+            return res.status(200).json(response);
+        }
          return res.render('cart', response);
     }catch(error){
         console.error('Error rendering cart page:', error);
@@ -56,49 +59,31 @@ const updateQuantity = async (req, res) => {
     try {
         const { userId, productId, newQuantity } = req.body;
 
-        cartService.updateQuantityInCart(productId, userId, newQuantity);
-        const {products, totalSum, totalDiscount, totalPay}=await cartService.getProductInCartByUserId(userId);
+        const new_quantity = cartService.updateQuantityInCart(productId, userId, newQuantity);
+        if (new_quantity) {
+            return res.status(StatusCodes.OK).json({ message: 'Quantity updated successfully' });
+        }
 
-        const response = {
-            title: 'Cart Page - Superstore - GA05',
-            error: false,
-            products: products,
-            totalSum: totalSum,
-            totalDiscount: totalDiscount,
-            user_id:userId,
-            totalPay: totalPay
-          };
-          if(req.xhr){
-              return res.status(200).json(response);
-          }
-
-
-        
     } catch(error) {
         console.error('Error updating quantity in cart:', error);
-        res.status(500).json({ message: 'Error updating quantity in cart' });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error updating quantity in cart' });
     }
 }
 
 const deleteProductInCart = async (req, res) => {
-    const {productId, userId} = req.body;
-    cartService.deleteProductInCart(productId, userId);
-
-    const {products, totalSum, totalDiscount, totalPay}=await cartService.getProductInCartByUserId(userId);
-
-        const response = {
-            title: 'Cart Page - Superstore - GA05',
-            error: false,
-            products: products,
-            totalSum: totalSum,
-            totalDiscount: totalDiscount,
-            user_id:userId,
-            totalPay: totalPay
-          };
-          if(req.xhr){
-              return res.status(200).json(response);
-          }
-
+    try {
+        const {productId, userId} = req.body;
+        const success = await cartService.deleteProductInCart(productId, userId);
+        if(success){
+            return res.status(StatusCodes.OK).json({message: 'Product deleted successfully'});
+        }
+        else{
+            throw new Error('Failed to delete product');
+        }
+    } catch (error) {
+        console.error('Error deleting product in cart:', error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error deleting product in cart' });
+    }
 }
 module.exports = {
     addToCart,
