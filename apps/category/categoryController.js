@@ -7,7 +7,7 @@ async function renderCategoryPage(req, res) {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 6;
-    let sort = req.query.sort || 'id';
+    let sort = req.query.sort || 'id,desc';
     let manufacturer = req.query.manufacturer || 'All';
     const search = req.query.search || '';
     const minPrice = req.query.min ? parseInt(req.query.min) : null;
@@ -49,7 +49,6 @@ async function renderCategoryPage(req, res) {
     if (req.xhr) {
       return res.json(response);
     }
-
     return res.render('category', response);
   } catch (error) {
     console.error('Error rendering category page:', error);

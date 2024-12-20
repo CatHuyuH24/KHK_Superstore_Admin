@@ -20,6 +20,9 @@
 <body>
   <!-- #region Header -->
   <%- include('layouts/mainLayout', { content: locals.body }) %>
+  <!-- #region Search -->
+  <%- include('layouts/search')%>
+  <!-- #endregion Search -->
   <!--region get user_id to put into cart-->
   <input type="hidden" id="user-id" value="<%= user_id %>">
 
@@ -75,8 +78,7 @@
             <div class="flex items-center mb-4"></div>
 
             <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              <% products.forEach( product => { %>
-                
+              <% products.forEach( product => { %>                
                 <div class="bg-white shadow-md flex flex-col h-full rounded-lg">
                   <!-- Phần hình ảnh sản phẩm -->
                   <div class="relative group w-full h-80 flex items-center justify-center">
@@ -157,6 +159,8 @@
   <script src="/js/cart.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/js/filterHandlingAndPaginationAJAX.js"></script>
+  <script src="/layouts/search"></script>
+
 </body>
 
 </html>

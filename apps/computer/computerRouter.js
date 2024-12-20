@@ -5,3 +5,4 @@ router.get("/", computerController.renderComputerCategoryPage);
 router.get("/:id", computerController.renderComputerDetailPage);
 
 module.exports = router;
+

@@ -56,6 +56,9 @@
 <body>
   <!-- #region Header -->
   <%- include('layouts/mainLayout', { content: locals.body }) %>
+  <!-- #region Search -->
+  <%- include('layouts/search')%>
+  <!-- #endregion Search -->
   <!--region get user_id to put into cart-->
   <input type="hidden" id="user-id" value="<%= user_id %>">
   <!-- #endregion Header -->
@@ -191,6 +194,8 @@
   <script src="/js/cart.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/js/filterHandlingAndPaginationAJAX.js"></script>
+  <script src="/js/searchWithAJAXHandling.js"></script>
+  <script src="/layouts/search"></script>
 </body>
 
 </html>

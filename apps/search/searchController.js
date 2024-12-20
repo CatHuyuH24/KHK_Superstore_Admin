@@ -8,7 +8,11 @@ exports.renderSearchResultsPage = async (req, res) => {
       console.error("Query is empty or undefined in controller");
     }
     const products = await searchService.searchAllProducts(query);
-    res.render('searchResult', { title: 'Search Results', products, query, user_id:userID});
+    if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+      return res.json({ products, query });
+    } else {
+      res.render('searchResult', { title: 'Search Results', products, query, user_id: userID });
+    }
   } catch (error) {
     console.error('Error rendering search results page:', error);
     res.status(500).send('Internal Server Error');

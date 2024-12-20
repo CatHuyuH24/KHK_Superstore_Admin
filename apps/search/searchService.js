@@ -8,17 +8,16 @@ async function searchAllProducts(query) {
     }
 
     const sqlQuery = `
-      SELECT p.*, t.category_name
+      SELECT p.*, t.category_name, m.manufacturer_name
       FROM products p
       JOIN categories t ON p.category_id = t.id
+      JOIN manufacturers m ON p.manufacturer_id = m.id
       WHERE p.name ILIKE $1 OR p.detail ILIKE $1
     `;
     const queryParams = [`%${query}%`];
-    
-    console.log("Executing query with params:", queryParams);
+  
     const result = await pool.query(sqlQuery, queryParams);
     
-    console.log("Query result:", result.rows);
     return result.rows;
   } catch (error) {
     console.error("Error searching products:", error.message);
