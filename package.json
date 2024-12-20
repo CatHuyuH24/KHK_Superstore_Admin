@@ -16,7 +16,7 @@
   "seed:prod": "knex seed:run --specific=categories_seed.js --env production --knexfile ./config/knexfile.js && knex seed:run --specific=manufacturers_seed.js --env production --knexfile ./config/knexfile.js && knex seed:run --specific=products_seed.js --env production --knexfile ./config/knexfile.js",
   "setup-db:prod": "npm run create-db && npm run migrate:prod && npm run seed:prod",
   "build": "npm run setup:prod",
-  "build:css": "npx tailwindcss -i ./public/css/main.css -o ./dist/main.css",
+  "build:css": "npx tailwindcss -i ./public/css/main.css -o ./public/css/tailwind.css",
   "serve": "five-server",
   "fe:start": "concurrently \"npm run build:css\" \"npm run serve\"",
   "start": "node server.js"

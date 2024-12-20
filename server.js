@@ -66,12 +66,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.urlencoded({ extended: true }));
-app.use("/dist", express.static("dist"));
 
 app.use("/", indexRouter);
-// app.use("/televisions", televisionRouter);
-// app.use("/mobilephones", mobilephoneRouter);
-// app.use("/computers", computerRouter);
 app.use("/register", registrationRouter);
 app.use("/search", searchRouter);
 app.use("/category", categoryRouter);
