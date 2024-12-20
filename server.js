@@ -2,14 +2,13 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const utils = require("./app/Utils/jwtUtils");
 const passport = require("passport");
 const flash = require("connect-flash");
 require("dotenv").config();
 
 const { ConnectSessionKnexStore } = require("connect-session-knex");
 const knexConstructor = require("knex");
-const knexConfig = require("./knexfile.js");
+const knexConfig = require("./config/knexfile.js");
 
 const knex = knexConstructor(knexConfig[process.env.NODE_ENV || "development"]);
 

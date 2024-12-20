@@ -1,7 +1,8 @@
-const { connect } = require("./app/home/indexRouter");
-
-require("dotenv").config();
-// Update with your config settings.
+require("dotenv").config(
+	{
+		path:"../.env",
+	}
+);
 
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
@@ -19,11 +20,11 @@ module.exports = {
 		},
 
 		migrations: {
-			directory: "./migrations",
+			directory: "../db/migrations",
 		},
 
 		seeds: {
-			directory: "./seeds",
+			directory: "../db/seeds",
 		},
 	},
 	production:{
@@ -37,10 +38,10 @@ module.exports = {
 		},
 		
 		migrations: {
-			directory: "./migrations",
+			directory: "../db/migrations",
 		},
 		seeds: {
-			directory: "./seeds",
+			directory: "../db/seeds",
 		},
 	}
 };
