@@ -1,4 +1,4 @@
-const { connect } = require("./apps/home/indexRouter");
+const { connect } = require("./app/home/indexRouter");
 
 require("dotenv").config();
 // Update with your config settings.

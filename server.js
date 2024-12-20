@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const utils = require("./apps/Utils/jwtUtils");
+const utils = require("./app/Utils/jwtUtils");
 const passport = require("passport");
 const flash = require("connect-flash");
 require("dotenv").config();
@@ -34,18 +34,18 @@ app.use((req, res, next) => {
   next();
 });
 
-require("./apps/login/passport.js");
+require("./app/login/passport.js");
 app.use(passport.initialize());
 app.use(passport.session());
 
-const indexRouter = require("./apps/home/indexRouter");
-const searchRouter = require("./apps/search/searchRouter");
-const registrationRouter = require("./apps/registration/registrationRouter");
-const categoryRouter = require("./apps/category/categoryRouter");
-const loginRouter = require("./apps/login/loginRouter");
-const logoutRouter = require("./apps/logout/logoutRouter");
-const cartRouter = require("./apps/cart/cartRouter");
-const checkoutRouter = require("./apps/checkout/checkoutRouter");
+const indexRouter = require("./app/home/indexRouter");
+const searchRouter = require("./app/search/searchRouter");
+const registrationRouter = require("./app/registration/registrationRouter");
+const categoryRouter = require("./app/category/categoryRouter");
+const loginRouter = require("./app/login/loginRouter");
+const logoutRouter = require("./app/logout/logoutRouter");
+const cartRouter = require("./app/cart/cartRouter");
+const checkoutRouter = require("./app/checkout/checkoutRouter");
 
 
 // Set the view engine to EJS
