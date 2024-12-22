@@ -27,7 +27,7 @@ async function renderTelevisionCategoryPage(req, res) {
     const manufacturersList = await televisionService.getAllTelevisionManufacturers();
 
     const response = {
-      title: "Televisions - Superstore - GA05",
+      title: "Televisions - Superstore",
       error: false,
       total: totalCount,
       page: page,
@@ -64,7 +64,7 @@ async function renderTelevisionDetailPage(req, res) {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    const TITLE = television.name + " - Superstore - GA05";
+    const TITLE = television.name + " - Superstore";
 
     res.render("product", { product: television, relatedProducts: relatedComputers, title: TITLE, user_id: userID });
   } catch (error) {

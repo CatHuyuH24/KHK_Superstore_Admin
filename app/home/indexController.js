@@ -33,7 +33,7 @@ async function renderHomePage(req, res) {
       await productService.getAllManufacturersOfCategory();
 
     const response = {
-      title: 'Homepage - Superstore - GA05',
+      title: 'Homepage - Superstore',
       error: false,
       total: totalCount,
       page: page,

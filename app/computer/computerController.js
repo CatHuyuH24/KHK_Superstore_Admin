@@ -28,7 +28,7 @@ async function renderComputerCategoryPage(req, res) {
     const manufacturersList = await computerService.getAllComputerManufacturers();
 
     const response = {
-      title: "Computers - Superstore - GA05",
+      title: "Computers - Superstore",
       error: false,
       total: totalCount,
       page: page,
@@ -65,7 +65,7 @@ async function renderComputerDetailPage(req, res) {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    const TITLE = computer.name + " - Superstore - GA05";
+    const TITLE = computer.name + " - Superstore";
 
     res.render("product", { product: computer, relatedProducts: relatedComputers, title: TITLE, user_id:userID});
   } catch (error) {

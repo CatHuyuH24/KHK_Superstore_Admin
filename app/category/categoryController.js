@@ -34,7 +34,7 @@ async function renderCategoryPage(req, res) {
  
 
     const response = {
-      title: 'Category Page - Superstore - GA05',
+      title: 'Category Page - Superstore',
       error: false,
       total: total,
       page: page,

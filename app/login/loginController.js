@@ -2,7 +2,7 @@ const loginService = require('./loginService');
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
 const validPassword=require('../Utils/passwordUtils').validPassword;
 const utils=require('../Utils/jwtUtils');
-const title = "Login - Supershop - GA05";
+const title = "Login - Superstore";
 
 async function handleLoginRequest(req, res, next) {
     try{

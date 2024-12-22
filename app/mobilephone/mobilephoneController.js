@@ -27,7 +27,7 @@ async function renderMobilephoneCategoryPage(req, res) {
     const manufacturersList = await mobilephoneService.getAllMobilephoneManufacturers();
 
     const response = {
-      title: "Mobilephones - Superstore - GA05",
+      title: "Mobilephones - Superstore",
       error: false,
       total: totalCount,
       page: page,
@@ -64,7 +64,7 @@ async function renderMobilephoneDetailPage(req, res) {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    const TITLE = mobilephone.name + " - Superstore - GA05";
+    const TITLE = mobilephone.name + " - Superstore";
 
     res.render("product", { product: mobilephone, relatedProducts: relatedComputers, title: TITLE, user_id: userID });
   } catch (error) {

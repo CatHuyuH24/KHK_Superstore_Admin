@@ -33,7 +33,7 @@ const renderCartPage=async (req,res)=>{
         const {products, totalSum, totalDiscount, totalPay}=await cartService.getProductInCartByUserId(user_id);
 
         const response = {
-            title: 'Cart Page - Superstore - GA05',
+            title: 'Cart Page - Superstore',
             error: false,
             products: products,
             totalSum: totalSum,

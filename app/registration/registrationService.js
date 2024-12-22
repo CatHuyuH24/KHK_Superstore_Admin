@@ -26,11 +26,11 @@ async function findUserById(id) {
     }
 }
 
-async function createUser(name,email,hashedPassword,salt) {
+async function createUser(name,username,email,hashedPassword,salt) {
     try {  
         const query ="INSERT INTO users (real_name,username,email, hashed_password, salt,role) VALUES ($1, $2, $3, $4, $5, $6)";
 	    
-        const values = [name,email,email, hashedPassword, salt,"customer"];
+        const values = [name, username, email, hashedPassword, salt, "customer"];
         
         await pool.query(query, values);     
         

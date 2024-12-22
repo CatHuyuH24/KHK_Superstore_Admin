@@ -6,7 +6,7 @@ const renderCheckoutPage=async (req,res)=>{
         const {products, totalSum, totalDiscount, totalPay}=await checkoutService.getProductInCartByUserIdToOrder(user_id);
 
         const response = {
-            title: 'Order Page - Superstore - GA05',
+            title: 'Order Page - Superstore',
             error: false,
             products: products,
             totalSum: totalSum,
