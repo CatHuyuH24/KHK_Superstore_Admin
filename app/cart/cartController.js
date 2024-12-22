@@ -1,18 +1,22 @@
 const cartService = require('./cartService');
-const productService = require('../product/productService');
-const { StatusCodes } = require('http-status-codes');
+const productService = require('../../services/product/productService');
+const { StatusCodes, getReasonPhrase } = require('http-status-codes');
 
 const addToCart = async (req, res) => {
     try {
         const { user_id, product_id, quantity = 1, price } = req.body;
         console.log('Request Body:', req.body); // Debugging log
         if (!user_id || !product_id || !quantity || !price) {
-            return res.status(400).json({ message: 'Missing required fields' });
+            return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({ message: getReasonPhrase(StatusCodes.BAD_REQUEST) + '\nMissing required fields' });
         }
         const product = await productService.getProductById(product_id);
         console.log('Product:', product.status); // Debugging log
         if(product.status==='out of stock'){
-            return res.status(400).json({ message: 'Product out of stock' });
+            return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({ message: getReasonPhrase(StatusCodes.BAD_REQUEST) + '\nProduct out of stock' });
         }
         const result = await cartService.addToCart(user_id, product_id, quantity, price);
         console.log('Service Result:', result); // Debugging log
@@ -23,7 +27,8 @@ const addToCart = async (req, res) => {
         }
     } catch (error) {
         console.error('Error adding product to cart:', error);
-        res.status(500).json({ message: 'Error adding product to cart' });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) + '\nError adding product to cart' });
     }
 };
 
@@ -66,7 +71,8 @@ const updateQuantity = async (req, res) => {
 
     } catch(error) {
         console.error('Error updating quantity in cart:', error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error updating quantity in cart' });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) + '\nError updating quantity in cart' });
     }
 }
 
@@ -82,7 +88,8 @@ const deleteProductInCart = async (req, res) => {
         }
     } catch (error) {
         console.error('Error deleting product in cart:', error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error deleting product in cart' });
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ message: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) + '\nError deleting product in cart' });
     }
 }
 module.exports = {

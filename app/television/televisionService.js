@@ -1,5 +1,5 @@
 const pool = require('../../config/database');
-const productService = require('../product/productService');
+const productService = require('../../services/product/productService');
 
 /**
  * Get all mobilphones with filters applied and the total number of televisions.

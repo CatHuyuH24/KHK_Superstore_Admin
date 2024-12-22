@@ -1,8 +1,6 @@
 const categoryService = require('./categoryService');
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
 const { calculateDiscountedPrice } = require('../Utils/discountedPriceUtils');
-const { user } = require('pg/lib/defaults');
-
 async function renderCategoryPage(req, res) {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -69,11 +67,11 @@ async function renderProductPage(req, res) {
   } else if (category === 'televisions') {
     product = await categoryService.getTelevisionById(id);
   } else {
-    return res.status(404).send('Category not found');
+    return res.status(StatusCodes.NOT_FOUND).send('Category not found');
   }
 
   if (!product) {
-    return res.status(404).send('Product not found');
+    return res.status(StatusCodes.NOT_FOUND).send('Product not found');
   }
 
   res.render('product', { title: 'Product Page', product });

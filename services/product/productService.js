@@ -1,5 +1,5 @@
 const pool = require('../../config/database');
-const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
+const { prepareFilterStatements } = require('../../app/Utils/filterStatementUtils');
 
 /**
  * Get all products of a specific category with filters applied and the total number of products.

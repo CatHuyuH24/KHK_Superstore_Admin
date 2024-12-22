@@ -1,5 +1,5 @@
 const indexService = require('./indexService');
-const productService = require('../product/productService');
+const productService = require('../../services/product/productService');
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
 const { user } = require('pg/lib/defaults');
 

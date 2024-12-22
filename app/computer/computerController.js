@@ -1,8 +1,6 @@
 const computerService = require("./computerService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
-const { user } = require("pg/lib/defaults");
-const { use } = require("passport");
 
 async function renderComputerCategoryPage(req, res) {
   try {

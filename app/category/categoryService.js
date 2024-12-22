@@ -1,6 +1,5 @@
 const pool = require("../../config/database");
-const productService = require("../product/productService");
-const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils.js");
+const productService = require("../../services/product/productService.js");
 
 /**
  * Get all products with filters applied, the total number of products, and the list of manufacturers.
