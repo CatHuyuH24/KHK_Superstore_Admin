@@ -2,7 +2,7 @@ const pool = require('../../config/database');
 const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
 /**
  * Get all discounted products with filters applied and the total number of products.
- * Each record in the result set contains the following fields:
+ * Each record in the 'products' array contains the following fields:
  * - id
  * - name
  * - manufacturer
@@ -10,8 +10,10 @@ const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
  * - imageurl
  * - detail
  * - discount
- * - numberofpro (number of products)
+ * - number (number of products in stock)
  * - category_name (category of product)
+ * - review_average (average rating of the product)
+ * - distinct_review_count (number of distinct reviews for the product)
  * - total_count (total number of products matching the filters)
  *
  * @param {number} minPrice - Minimum price filter.
@@ -95,6 +97,9 @@ async function getAllDiscountedProductsWithFilterAndCount(
     if(result.rows.length > 0){
       count = parseInt(result.rows[0].total_count);
     }
+
+    // changing manually for debugging
+    result.rows[0].review_average = 4.5;
 
     return {
       totalCount: count,

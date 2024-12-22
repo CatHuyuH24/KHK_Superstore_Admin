@@ -145,22 +145,40 @@ function updateProductList(products) {
                     </div>
                     
                     <div class="flex gap-1 text-sm text-yellow-400">
-                      <i class="star"></i>
-                      <i class="star"></i>
-                      <i class="star"></i>
-                      <i class="star"></i>
-                      <i class="star"></i>
-                    </div>
-                  </div> 
+                      
+                    `;
+    if (product.review_average == null) {
+      product.review_average = 0;
+    }
+    let rating = Number(product.review_average.toFixed(1));
+    let total = 0;
+    while (rating > 0) {
+      if (rating > 0.7) {
+        productHTML += `<span class="star on"></span>`;
+      } else if (rating >= 0.3) {
+        productHTML += `<span class="star half"></span>`;
+      } else {
+        productHTML += `<span class="star off"></span>`;
+      }
+      total++;
+      rating--;
+    }
+    while (total < 5) {
+      productHTML += `<span class="star off"></span>`;
+      total++;
+    }
+    productHTML += `
+                  </div>
+                </div> 
 
-                  <!-- Nút Add to Cart -->
-                  <a href="#"
-                    class="add-to-cart-btn block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition"
-                    data-product-id="${product.id}"
-                    data-product-price="${product.price}">
-                    Add to cart
-                  </a>
-                </div>`;
+                <!-- Nút Add to Cart -->
+                <a href="#"
+                  class="add-to-cart-btn block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition"
+                  data-product-id="${product.id}"
+                  data-product-price="${product.price}">
+                  Add to cart
+                </a>
+              </div>`;
 
     productContainer.insertAdjacentHTML('beforeend', productHTML);
   });

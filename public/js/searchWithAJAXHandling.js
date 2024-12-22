@@ -70,11 +70,30 @@ function updateProductList(products) {
                       </div>
                       
                       <div class="flex gap-1 text-sm text-yellow-400">
-                        <i class="star"></i>
-                        <i class="star"></i>
-                        <i class="star"></i>
-                        <i class="star"></i>
-                        <i class="star"></i>
+
+                      `;
+      if(product.review_average == null){
+        product.review_average = 0;
+      }
+      let rating = Number(product.review_average.toFixed(1));
+      let total = 0;
+      while (rating > 0) {
+        if (rating > 0.7) {
+          productHTML += `<span class="star on"></span>`;
+        } else if (rating >= 0.3) {
+          productHTML += `<span class="star half"></span>`;
+        } else {
+          productHTML += `<span class="star off"></span>`;
+        }
+        total++;
+        rating--;
+      }
+      while (total < 5) {
+        productHTML += `<span class="star off"></span>`;
+        total++;
+      }
+
+      productHTML += `
                       </div>
                     </div> 
   

@@ -7,42 +7,24 @@
 }
 
 .star {
-    position: relative;
-
     display: inline-block;
-    width: 0;
-    height: 0;
-
-    margin-left: .6em;
-    margin-right: .6em;
-    margin-bottom: 1.2em;
-
-    border-right: .3em solid transparent;
-    border-bottom: .7em solid #FC0;
-    border-left: .3em solid transparent;
-    /* Controlls the size of the stars. */
-    font-size: 12px;
+    width: 20px;
+    text-align: center;
+    font-size: 24px;
 }
-
-.star:before,
-.star:after {
-    content: '';
-
-    display: block;
-    width: 0;
-    height: 0;
-
+.star:before {
+    display: inline-block;
+    content: '\2605';
+}
+.star.on { color: gold; }
+.star.half { color: gray; }
+.star.half:after {
+    display: inline-block;
+    color: gold;
+    content: '\2605';
     position: absolute;
-    top: .6em;
-    left: -1em;
-
-    border-right: 1em solid transparent;
-    border-bottom: .7em solid #FC0;
-    border-left: 1em solid transparent;
-
-    transform: rotate(-35deg);
+    margin-left:-20px;
+    width: 10px;
+    overflow: hidden;
 }
-
-.star:after {
-    transform: rotate(35deg);
-}
+.star.off { color: gray; }

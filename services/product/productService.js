@@ -3,7 +3,7 @@ const { prepareFilterStatements } = require('../../app/Utils/filterStatementUtil
 
 /**
  * Get all products of a specific category with filters applied and the total number of products.
- * Each record in the result set contains the following fields:
+ * Each record in the 'products' array contains the following fields:
  * - id
  * - name
  * - manufacturer
@@ -11,7 +11,7 @@ const { prepareFilterStatements } = require('../../app/Utils/filterStatementUtil
  * - imageurl
  * - detail
  * - discount
- * - number (number of products)
+ * - number (number of products in stock)
  * - category_name
  * - distinct_review_count (number of unique users who rated the product)
  * - review_average (average rating of the product)
@@ -100,8 +100,6 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
             LIMIT $1 OFFSET $2`,
       [limit, (page - 1) * limit]
     );
-
-    console.log(result.rows);
 
     let count = 0;
     if(result.rows.length > 0){
