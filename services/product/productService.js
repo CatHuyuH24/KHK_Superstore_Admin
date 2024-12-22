@@ -13,21 +13,23 @@ const { prepareFilterStatements } = require('../../app/Utils/filterStatementUtil
  * - discount
  * - number (number of products)
  * - category_name
+ * - distinct_review_count (number of unique users who rated the product)
+ * - review_average (average rating of the product)
  * - total_count (total number of products matching the filters)
  *
  * @param {number} minPrice - Minimum price filter.
  * @param {number} maxPrice - Maximum price filter.
  * @param {number} page - Page number for pagination, expected to be greater than 0.
  * @param {number} limit - Number of items per page.
- * @param {string} sort- Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
- * @param {string} manufacturer - manufacturer filter. e.g ["Apple", "Samsung",...].
+ * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is ascending order by id.
+ * @param {string} manufacturer - Manufacturer filter. e.g ["Apple", "Samsung",...].
  * @param {string} search - Search keyword.
- * @param {string} products_category - category of products. e.g. "computers". If not provided, all products will be fetched.
+ * @param {string} products_category - Category of products. e.g. "computers". If not provided, all products will be fetched.
  * @returns {Promise<Object>} An object containing the total count of products and the array of products.
  * @returns {number} return.totalCount - Total number of products matching the filters.
  * @returns {Array} return.products - Array of products.
  * @example
- * const {totalCount, products} = await getAllProductsOfmanufacturerWithFilterAndCount(0, 1000, 1, 10, "price,ASC", "Apple", "macbook", "computers");
+ * const {totalCount, products} = await getAllProductsOfCategoriesWithFilterAndCount(0, 1000, 1, 10, "price,ASC", "Apple", "macbook", "computers");
  */
 async function getAllProductsOfCategoriesWithFilterAndCount(
   minPrice,
@@ -44,32 +46,62 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
       priceFilter, 
       manufacturerFilter, 
       searchFilter, 
-      sortFilter, 
       productsCategoryFilter,
     } = prepareFilterStatements(
       minPrice,
       maxPrice,
-      sort,
       manufacturer,
       search,
       products_category
     );
+    let sortFilter = "";
+    const [sortColumn, sortDir] = sort.split(",");
+    if(sortColumn != null && sortDir != null) {
+        sortFilter = `ORDER BY ${sortColumn} ${sortDir}`;
+    } else {
+        sortFilter = "ORDER BY p.id ASC";
+    }
 
     const result = await pool.query(
       `
-            SELECT p.*, m.manufacturer_name, c.category_name, count(*) over() as total_count 
-            FROM products p 
+            SELECT 
+                p.id, 
+                p.name, 
+                p.image_url, 
+                p.number, 
+                p.price, 
+                p.discount, 
+                m.manufacturer_name, 
+                c.category_name, 
+                COUNT(DISTINCT r.user_id) AS distinct_review_count,
+                AVG(r.rating) AS review_average,             
+                COUNT(*) OVER() AS total_count
+            FROM products p
             JOIN categories c ON p.category_id = c.id
             JOIN manufacturers m ON p.manufacturer_id = m.id
+            LEFT JOIN reviews r ON p.id = r.product_id
             WHERE 1=1
             ${productsCategoryFilter}
             ${searchFilter}
             ${manufacturerFilter}
             ${priceFilter}
+            GROUP BY 
+                p.id, 
+                p.name, 
+                p.image_url, 
+                p.number, 
+                p.price, 
+                p.discount, 
+                m.id, 
+                c.id, 
+                m.manufacturer_name, 
+                c.category_name
             ${sortFilter}
             LIMIT $1 OFFSET $2`,
       [limit, (page - 1) * limit]
     );
+
+    console.log(result.rows);
 
     let count = 0;
     if(result.rows.length > 0){

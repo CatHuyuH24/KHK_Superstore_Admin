@@ -10,6 +10,7 @@ exports.up = async function (knex) {
           user_id INT NOT NULL,
           comment VARCHAR NOT NULL,
           rating INT NOT NULL,
+          created_at timestamp without time zone DEFAULT NOW(),
           FOREIGN KEY (product_id) REFERENCES products(id),
           FOREIGN KEY (user_id) REFERENCES users(id),
           CONSTRAINT rating CHECK (rating >= 1 AND rating <= 5)
