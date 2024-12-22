@@ -18,7 +18,6 @@ const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
  * @param {number} maxPrice - Maximum price filter.
  * @param {number} page - Page number for pagination, expected to be greater than 0.
  * @param {number} limit - Number of items per page.
- * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
  * @param {string} manufacturer - manufacturer filter.
  * @param {string} search - Search keyword.
  * @returns {Promise<Object>} - An object containing the total count of discounted products and the list of discounted products.
@@ -41,22 +40,52 @@ async function getAllDiscountedProductsWithFilterAndCount(
     const {
       priceFilter, 
       manufacturerFilter, 
-      searchFilter, 
-      sortFilter, 
+      searchFilter,
       productsCategoryFilter
-    } = prepareFilterStatements(minPrice, maxPrice, sort, manufacturer, search);
+    } = prepareFilterStatements(minPrice, maxPrice, manufacturer, search);
     
+    let sortFilter = "";
+    const [sortColumn, sortDir] = sort.split(",");
+    if(sortColumn != null && sortDir != null) {
+        sortFilter = `ORDER BY ${sortColumn} ${sortDir}`;
+    } else {
+        sortFilter = "ORDER BY p.id ASC";
+    }
+
     const result = await pool.query(
       `
-            SELECT p.*, c.category_name, m.manufacturer_name, count(*) over() as total_count 
-            FROM products p 
-            JOIN categories c on p.category_id = c.id
+            SELECT 
+                p.id, 
+                p.name, 
+                p.image_url, 
+                p.number, 
+                p.price, 
+                p.discount, 
+                m.manufacturer_name, 
+                c.category_name, 
+                COUNT(DISTINCT r.user_id) AS distinct_review_count,
+                AVG(r.rating) AS review_average,             
+                COUNT(*) OVER() AS total_count
+            FROM products p
+            JOIN categories c ON p.category_id = c.id
             JOIN manufacturers m ON p.manufacturer_id = m.id
-            WHERE discount > 0
+            LEFT JOIN reviews r ON p.id = r.product_id
+            WHERE p.discount > 0
             ${productsCategoryFilter}
             ${searchFilter}
             ${manufacturerFilter}
             ${priceFilter}
+            GROUP BY 
+                p.id, 
+                p.name, 
+                p.image_url, 
+                p.number, 
+                p.price, 
+                p.discount, 
+                m.id, 
+                c.id, 
+                m.manufacturer_name, 
+                c.category_name
             ${sortFilter}
             LIMIT $1 OFFSET $2`,
       [limit, (page - 1) * limit]
