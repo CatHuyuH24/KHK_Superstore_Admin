@@ -94,9 +94,10 @@ async function getAllMobilephoneManufacturers() {
   return manufacturers;
 }
 
-async function getReviewsOfMobilephone(productId) {
-  const reviews = await reviewService.getReviewsByProductId(productId);
-  return reviews;
+async function getReviewsInfoOfMobilephoneById(productId) {
+  const {reviews, reviewAverage, reviewerCount, totalCount} 
+        = await reviewService.getReviewsByProductId(productId);
+  return {reviews, reviewAverage, reviewerCount, totalCount};
 }
 
 module.exports = {
@@ -104,6 +105,6 @@ module.exports = {
   getMobilephoneByID,
   getRelatedMobilephones,
   getAllMobilephoneManufacturers,
-  getReviewsOfMobilephone,
+  getReviewsInfoOfMobilephoneById,
 };
     

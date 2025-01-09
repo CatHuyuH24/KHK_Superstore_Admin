@@ -59,16 +59,26 @@ async function renderMobilephoneDetailPage(req, res) {
     const userID = res.locals.user ? res.locals.user.id : null;
     mobilephone.price = calculateDiscountedPrice(mobilephone.price, mobilephone.discount);
 
-    const relatedComputers = await mobilephoneService.getRelatedMobilephones(mobilephoneID, 5);
-    relatedComputers.forEach((product) => {
+    const relatedMobilephones = await mobilephoneService.getRelatedMobilephones(mobilephoneID, 5);
+    relatedMobilephones.forEach((product) => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    const mobilephoneReviews = await mobilephoneService.getReviewsOfMobilephone(mobilephoneID);
-
+    let {reviews, reviewAverage, reviewerCount, totalCount} = await mobilephoneService.getReviewsInfoOfMobilephoneById(mobilephoneID);
+    reviewAverage = reviewAverage ? Number(reviewAverage) : 0;
+    reviewerCount = reviewerCount ? Number(reviewerCount) : 0;
+    totalCount = totalCount ? Number(totalCount) : 0;
     const TITLE = mobilephone.name + " - Superstore";
-
-    res.render("product", { product: mobilephone, relatedProducts: relatedComputers, title: TITLE, user_id: userID, reviews: mobilephoneReviews });
+    res.render("product", { 
+      product: mobilephone, 
+      relatedProducts: relatedMobilephones, 
+      title: TITLE, 
+      user_id: userID, 
+      reviews: reviews,
+      review_average: reviewAverage,
+      reviewer_count: reviewerCount,
+      total_reviews_count: totalCount,
+     });
   } catch (error) {
     console.error("Error rendering mobilephone detail page:", error);
     res

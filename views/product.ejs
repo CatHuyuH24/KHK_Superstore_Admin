@@ -88,10 +88,10 @@
                             </h2>
                             <div class="flex items-center mb-4">
                                 <div class="flex gap-1 text-sm text-yellow-400">
-                                    <% if(product.review_average == null){ %>
-                                        <% product.review_average = 0; %>
+                                    <% if(review_average == null){ %>
+                                        <%review_average = 0; %>
                                     <% } %>
-                                    <% let rating = Number(product.review_average.toFixed(1)); %>
+                                    <% let rating = Number(review_average.toFixed(1)); %>
                                     <% let total = 0; %>
                                     <% while (rating > 0) { %>
                                         <% if (rating > 0.7) { %>
@@ -109,6 +109,9 @@
                                         <% total++; %>
                                     <% } %>
                                 </div>
+                                <span class="text-gray-600 text-sm ml-2">
+                                    (<%= reviewer_count %> reviewers)
+                                </span>
                             </div>
                             <div class="space-y-2">
                                 <p class="font-semibold space-x-2">
@@ -192,7 +195,7 @@
 
                     <!-- review -->
                     <div class="py-16 mx-3 w-full">
-                        <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6 w-full text-center">Reviews</h2>
+                        <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6 w-full text-center">Reviews(<%= total_reviews_count %>)</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row gap-3 xl:gap-9 lg:p-5">
                             <% reviews.forEach( review => { %>
                                 <div class="bg-white shadow-md flex flex-col h-full justify-items-start">
