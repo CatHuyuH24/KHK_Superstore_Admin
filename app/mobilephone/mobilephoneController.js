@@ -64,9 +64,11 @@ async function renderMobilephoneDetailPage(req, res) {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
+    const mobilephoneReviews = await mobilephoneService.getReviewsOfMobilephone(mobilephoneID);
+
     const TITLE = mobilephone.name + " - Superstore";
 
-    res.render("product", { product: mobilephone, relatedProducts: relatedComputers, title: TITLE, user_id: userID });
+    res.render("product", { product: mobilephone, relatedProducts: relatedComputers, title: TITLE, user_id: userID, reviews: mobilephoneReviews });
   } catch (error) {
     console.error("Error rendering mobilephone detail page:", error);
     res

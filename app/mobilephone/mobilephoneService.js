@@ -1,5 +1,6 @@
 const pool = require('../../config/database');
 const productService = require('../../services/product/productService');
+const reviewService = require('../../services/reviews/reviewService');
 
 /**
  * Get all mobilphones with filters applied and the total number of mobilephones.
@@ -93,10 +94,16 @@ async function getAllMobilephoneManufacturers() {
   return manufacturers;
 }
 
+async function getReviewsOfMobilephone(productId) {
+  const reviews = await reviewService.getReviewsByProductId(productId);
+  return reviews;
+}
+
 module.exports = {
   getAllMobilephonesWithFilterAndCount,
   getMobilephoneByID,
   getRelatedMobilephones,
   getAllMobilephoneManufacturers,
+  getReviewsOfMobilephone,
 };
     

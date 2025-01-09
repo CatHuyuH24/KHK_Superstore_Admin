@@ -166,7 +166,6 @@ async function getAllManufacturersOfCategory(products_category) {
  * @throws {Error} - Throws an error if there is an issue with the database query.
  * @example
  * const product = await getProductById(1);
- * console.log(product);
  * // {
  * //   id: 1,
  * //   name: 'Product Name',

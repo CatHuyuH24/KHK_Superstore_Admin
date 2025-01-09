@@ -190,6 +190,53 @@
                     </div>
                     <!-- ./description -->
 
+                    <!-- review -->
+                    <div class="py-16 mx-3 w-full">
+                        <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6 w-full text-center">Reviews</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row gap-3 xl:gap-9 lg:p-5">
+                            <% reviews.forEach( review => { %>
+                                <div class="bg-white shadow-md flex flex-col h-full justify-items-start">
+                                    <div class="flex items-center justify-between p-3">
+                                        <div class="flex items-center m-2">
+                                            <img src="/images/user_image_placeholder.png" alt="user" class="w-10 h-10 rounded-full">
+                                            <div class="ml-3">
+                                                <h4 class="text-lg lg:text-xl font-medium text-gray-800">
+                                                    <%= review.username %>
+                                                </h4>
+                                                <div class="flex items-center gap-1 text-yellow-400">
+                                                    <% let rating = Number(review.rating); %>
+                                                    <% let total = 0; %>
+                                                    <% while (rating > 0) { %>
+                                                        <span class="star on"></span>
+                                                        <% rating--; %>
+                                                        <% total++; %>
+                                                    <% } %>
+                                                    <% while (total < 5) { %>
+                                                        <span class="star off"></span>
+                                                        <% total++; %>
+                                                    <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="text-gray-600 text-sm text-end m-2 md:text-base lg:text-lg">
+                                            <% let date = new Date(review.created_at); %>
+                                            <%= date.toLocaleString('en-US', { month: 'short' }).toUpperCase() %> 
+                                            <%= date.getDate().toString().padStart(2, '0') %> 
+                                            <%= date.getFullYear() %> 
+                                            <%= date.toTimeString().slice(0, 8) %>
+                                        </span>
+                                    </div>
+                                    <div class="p-3 max-h-52 text-ellipsis overflow-y-auto">
+                                        <p class="text-gray-600 text-sm md:text-base lg:text-lg 2xl:text-2xl">
+                                            <%= review.comment %>
+                                        </p>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                    </div>
+                    <!-- review -->
+
                     <!-- related product -->
                     <div class="pb-16 mx-3 w-full">
                         <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6 w-full text-center">Related

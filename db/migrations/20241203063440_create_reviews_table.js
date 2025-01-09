@@ -8,7 +8,7 @@ exports.up = async function (knex) {
           id SERIAL PRIMARY KEY,
           product_id INT NOT NULL,
           user_id INT NOT NULL,
-          comment VARCHAR NOT NULL,
+          comment VARCHAR,
           rating INT NOT NULL,
           created_at timestamp without time zone DEFAULT NOW(),
           FOREIGN KEY (product_id) REFERENCES products(id),
