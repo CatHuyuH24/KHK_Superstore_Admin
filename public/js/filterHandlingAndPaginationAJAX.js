@@ -168,7 +168,7 @@ function updateProductList(products) {
         productHTML += `<span class="star off"></span>`;
         total++;
       }
-      productHTML += `<span">(<%= product.reviewer_count %>)</span>`
+      productHTML += `<span>(${product.reviewer_count})</span>`
     }
 
     productHTML += `
@@ -186,6 +186,9 @@ function updateProductList(products) {
 
     productContainer.insertAdjacentHTML('beforeend', productHTML);
   });
+
+  console.log('here')
+  productContainer.scrollIntoView({ behavior: 'smooth' });
 }
 
 async function fetchAndRender(newURL) {

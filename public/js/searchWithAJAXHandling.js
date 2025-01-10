@@ -93,7 +93,7 @@ function updateProductList(products) {
           productHTML += `<span class="star off"></span>`;
           total++;
         }
-        productHTML += `<span">(<%= product.reviewer_count %>)</span>`
+        productHTML += `<span">(${product.reviewer_count})</span>`
       }
 
       productHTML += `
