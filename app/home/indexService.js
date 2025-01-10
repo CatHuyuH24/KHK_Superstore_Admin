@@ -13,7 +13,7 @@ const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
  * - number (number of products in stock)
  * - category_name (category of product)
  * - review_average (average rating of the product)
- * - distinct_review_count (number of distinct reviews for the product)
+ * - reviewer_count (number of distinct reviews for the product)
  * - total_count (total number of products matching the filters)
  *
  * @param {number} minPrice - Minimum price filter.
@@ -65,7 +65,7 @@ async function getAllDiscountedProductsWithFilterAndCount(
                 p.discount, 
                 m.manufacturer_name, 
                 c.category_name, 
-                COUNT(DISTINCT r.user_id) AS distinct_review_count,
+                COUNT(DISTINCT r.user_id) AS reviewer_count,
                 AVG(r.rating) AS review_average,             
                 COUNT(*) OVER() AS total_count
             FROM products p
@@ -98,9 +98,7 @@ async function getAllDiscountedProductsWithFilterAndCount(
       count = parseInt(result.rows[0].total_count);
     }
 
-    // changing manually for debugging
-    result.rows[0].review_average = 4.5;
-
+    console.log('indexService.js: result: ', result.rows);
     return {
       totalCount: count,
       products: result.rows,

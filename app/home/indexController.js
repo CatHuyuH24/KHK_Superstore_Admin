@@ -32,6 +32,11 @@ async function renderHomePage(req, res) {
     const allmanufacturers =
       await productService.getAllManufacturersOfCategory();
 
+      // products.forEach(product => {
+      //   if(product.review_average == null) {
+      //     product.review_average = Number(100);
+      //   }
+      // });
     const response = {
       title: 'Homepage - Superstore',
       error: false,

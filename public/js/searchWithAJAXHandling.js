@@ -69,28 +69,31 @@ function updateProductList(products) {
       productHTML += `
                       </div>
                       
-                      <div class="flex gap-1 text-sm text-yellow-400">
+                      <div class="flex gap-1 text-sm lg:text-base text-gray-600">
 
                       `;
       if(product.review_average == null){
-        product.review_average = 0;
+        productHTML += `<span>No reviews</span>`;
       }
-      let rating = Number(product.review_average.toFixed(1));
-      let total = 0;
-      while (rating > 0) {
-        if (rating > 0.7) {
-          productHTML += `<span class="star on"></span>`;
-        } else if (rating >= 0.3) {
-          productHTML += `<span class="star half"></span>`;
-        } else {
-          productHTML += `<span class="star off"></span>`;
+      else{
+        let rating = Number(product.review_average).toFixed(1);
+        let total = 0;
+        while (rating > 0) {
+          if (rating > 0.7) {
+            productHTML += `<span class="star on"></span>`;
+          } else if (rating >= 0.3) {
+            productHTML += `<span class="star half"></span>`;
+          } else {
+            productHTML += `<span class="star off"></span>`;
+          }
+          total++;
+          rating--;
         }
-        total++;
-        rating--;
-      }
-      while (total < 5) {
-        productHTML += `<span class="star off"></span>`;
-        total++;
+        while (total < 5) {
+          productHTML += `<span class="star off"></span>`;
+          total++;
+        }
+        productHTML += `<span">(<%= product.reviewer_count %>)</span>`
       }
 
       productHTML += `

@@ -87,31 +87,33 @@
                                 <%= product.name %>
                             </h2>
                             <div class="flex items-center mb-4">
-                                <div class="flex gap-1 text-sm text-yellow-400">
+                                <div class="flex gap-1 text-sm text-gray-600">
                                     <% if(review_average == null){ %>
-                                        <%review_average = 0; %>
-                                    <% } %>
-                                    <% let rating = Number(review_average.toFixed(1)); %>
-                                    <% let total = 0; %>
-                                    <% while (rating > 0) { %>
-                                        <% if (rating > 0.7) { %>
-                                            <span class="star on"></span>
-                                        <% } else if (rating >= 0.3) { %>
-                                            <span class="star half"></span>
-                                        <% } else {%>
-                                            <span class="star off"></span>
+                                        <span>No reviews</span>
+                                    <% } else { %>
+                                        <% let rating = Number(review_average).toFixed(1); %>
+                                        <% let total = 0; %>
+                                        <% while (rating > 0) { %>
+                                            <% if (rating > 0.7) { %>
+                                                <span class="star on"></span>
+                                            <% } else if (rating >= 0.3) { %>
+                                                <span class="star half"></span>
+                                            <% } else {%>
+                                                <span class="star off"></span>
+                                            <% } %>
+                                            <% total++; %>
+                                            <% rating--; %>
                                         <% } %>
-                                        <% total++; %>
-                                        <% rating--; %>
-                                    <% } %>
-                                    <% while (total < 5) { %>
-                                        <span class="star off"></span>
-                                        <% total++; %>
+                                        <% while (total < 5) { %>
+                                            <span class="star off"></span>
+                                            <% total++; %>
+                                        <% } %>
+                                        <span class="text-sm">
+                                            (<%= reviewer_count %> reviewers)
+                                        </span>
                                     <% } %>
                                 </div>
-                                <span class="text-gray-600 text-sm ml-2">
-                                    (<%= reviewer_count %> reviewers)
-                                </span>
+                               
                             </div>
                             <div class="space-y-2">
                                 <p class="font-semibold space-x-2">
@@ -206,7 +208,7 @@
                                                 <h4 class="text-lg lg:text-xl font-medium text-gray-800">
                                                     <%= review.username %>
                                                 </h4>
-                                                <div class="flex items-center gap-1 text-yellow-400">
+                                                <div class="flex items-center gap-1">
                                                     <% let rating = Number(review.rating); %>
                                                     <% let total = 0; %>
                                                     <% while (rating > 0) { %>
@@ -230,7 +232,7 @@
                                         </span>
                                     </div>
                                     <div class="p-3 max-h-52 text-ellipsis overflow-y-auto">
-                                        <p class="text-gray-600 text-sm md:text-base lg:text-lg 2xl:text-2xl">
+                                        <p class="text-gray-600 text-sm md:text-base lg:text-lg 2xl:text-2xl break-words">
                                             <%= review.comment %>
                                         </p>
                                     </div>
@@ -275,26 +277,30 @@
                                         </div>
 
                                         <div class="flex p-3">
-                                            <div class="flex gap-1">
+                                            <div class="flex gap-1 text-sm lg:text-base text-gray-600">
                                                 <% if(product.review_average == null){ %>
-                                                    <% product.review_average = 0; %>
-                                                <% } %>
-                                                <% let rating = Number(product.review_average.toFixed(1)); %>
-                                                <% let total = 0; %>
-                                                <% while (rating > 0) { %>
-                                                    <% if (rating > 0.7) { %>
-                                                        <span class="star on"></span>
-                                                    <% } else if (rating >= 0.5 || rating >= 0.3) { %>
-                                                        <span class="star half"></span>
-                                                    <% } else {%>
-                                                        <span class="star off"></span>
+                                                    <span>No reviews</span>
+                                                <% } else { %>
+                                                    <% let rating = Number(product.review_average).toFixed(1); %>
+                                                    <% let total = 0; %>
+                                                    <% while (rating > 0) { %>
+                                                        <% if (rating > 0.7) { %>
+                                                            <span class="star on"></span>
+                                                        <% } else if (rating >= 0.5 || rating >= 0.3) { %>
+                                                            <span class="star half"></span>
+                                                        <% } else {%>
+                                                            <span class="star off"></span>
+                                                        <% } %>
+                                                        <% total++; %>
+                                                        <% rating--; %>
                                                     <% } %>
-                                                    <% total++; %>
-                                                    <% rating--; %>
-                                                <% } %>
-                                                <% while (total < 5) { %>
-                                                    <span class="star off"></span>
-                                                    <% total++; %>
+                                                    <% while (total < 5) { %>
+                                                        <span class="star off"></span>
+                                                        <% total++; %>
+                                                    <% } %>
+                                                    <span>
+                                                        (<%= product.reviewer_count %>)
+                                                    </span>
                                                 <% } %>
                                             </div>
                                         </div>

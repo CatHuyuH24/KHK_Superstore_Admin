@@ -13,7 +13,7 @@ const { prepareFilterStatements } = require('../../app/Utils/filterStatementUtil
  * - discount
  * - number (number of products in stock)
  * - category_name
- * - distinct_review_count (number of unique users who rated the product)
+ * - reviewer_count (number of unique users who rated the product)
  * - review_average (average rating of the product)
  * - total_count (total number of products matching the filters)
  *
@@ -73,7 +73,7 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
                 p.discount, 
                 m.manufacturer_name, 
                 c.category_name, 
-                COUNT(DISTINCT r.user_id) AS distinct_review_count,
+                COUNT(DISTINCT r.user_id) AS reviewer_count,
                 AVG(r.rating) AS review_average,             
                 COUNT(*) OVER() AS total_count
             FROM products p

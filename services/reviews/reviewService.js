@@ -20,9 +20,9 @@ async function getReviewsByProductId(productId) {
     );
 
     const reviews = result.rows;
-    const reviewAverage = result.rows.length > 0 ? result.rows[0].review_average : 0;
-    const reviewerCount = result.rows.length > 0 ? result.rows[0].review_count : 0;
-    const totalCount = result.rows.length > 0 ? result.rows[0].total_count : 0;
+    const reviewAverage = result.rows[0]? result.rows[0].review_average : null;
+    const reviewerCount = result.rows[0]? result.rows[0].review_count : 0;
+    const totalCount = result.rows[0]? result.rows[0].total_count : 0;
     
     return {
       reviews,

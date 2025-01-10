@@ -65,9 +65,6 @@ async function renderMobilephoneDetailPage(req, res) {
     });
 
     let {reviews, reviewAverage, reviewerCount, totalCount} = await mobilephoneService.getReviewsInfoOfMobilephoneById(mobilephoneID);
-    reviewAverage = reviewAverage ? Number(reviewAverage) : 0;
-    reviewerCount = reviewerCount ? Number(reviewerCount) : 0;
-    totalCount = totalCount ? Number(totalCount) : 0;
     const TITLE = mobilephone.name + " - Superstore";
     res.render("product", { 
       product: mobilephone, 
