@@ -7,6 +7,7 @@ exports.seed = async function(knex) {
   await knex('users').del()
   await knex('users').insert([
     {
+      id: 1,
       real_name: 'Admin',
       email: 'admin@admin.com',
       username: 'admin123',//also the password
@@ -17,6 +18,7 @@ exports.seed = async function(knex) {
       is_active: true,
     },
     {
+      id: 2,
       real_name: 'Customer',
       email: 'customer@customer.com',
       username: 'customer123',//also the password
