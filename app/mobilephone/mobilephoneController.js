@@ -80,9 +80,11 @@ async function renderMobilephoneDetailPage(req, res) {
       total_reviews_count: totalCount,
       total_pages: Math.ceil(totalCount / limit),
       page: page,
+      reviews_per_page: limit,
+      error: false,
     }
 
-    if(req.xhq) {
+    if(req.xhr) {
       return res.json(response);
     }
 
