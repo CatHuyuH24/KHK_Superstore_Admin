@@ -69,16 +69,24 @@ async function renderMobilephoneDetailPage(req, res) {
 
     let {reviews, reviewAverage, reviewerCount, totalCount} = await mobilephoneService.getReviewsInfoOfMobilephoneById(mobilephoneID, page, limit);
     const TITLE = mobilephone.name + " - Superstore";
-    res.render("product", { 
+    const response = {
       product: mobilephone, 
-      relatedProducts: relatedMobilephones, 
+      related_products: relatedMobilephones, 
       title: TITLE, 
       user_id: userID, 
       reviews: reviews,
       review_average: reviewAverage,
       reviewer_count: reviewerCount,
       total_reviews_count: totalCount,
-     });
+      total_pages: Math.ceil(totalCount / limit),
+      page: page,
+    }
+
+    if(req.xhq) {
+      return res.json(response);
+    }
+
+    res.render("product", response);
   } catch (error) {
     console.error("Error rendering mobilephone detail page:", error);
     res
