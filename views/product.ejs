@@ -196,12 +196,12 @@
                     <!-- ./description -->
 
                     <!-- review -->
-                    <div class="py-16 mx-1 w-full bg-slate-100 ">
+                    <div class="py-16 mx-3 w-0.9 bg-slate-100">
                         <h2 class="text-2xl font-medium text-black uppercase mb-6 w-full text-center">Reviews(<%= total_reviews_count %>)</h2>
                         <div id="reviews-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-flow-row gap-3 xl:gap-9 lg:p-5">
                             <% reviews.forEach( review => { %>
                                 <div class="bg-white shadow-md flex flex-col h-full justify-items-start">
-                                    <div class="flex items-center justify-between p-3">
+                                    <div class="flex items-center justify-between m-3">
                                         <div class="flex items-center m-2">
                                             <img src="/images/user_image_placeholder.png" alt="user" class="w-10 h-10 rounded-full">
                                             <div class="ml-3">
@@ -231,7 +231,7 @@
                                             <%= date.toTimeString().slice(0, 8) %>
                                         </span>
                                     </div>
-                                    <div class="p-3 max-h-52 text-ellipsis overflow-y-auto">
+                                    <div class="m-3 max-h-52 text-ellipsis overflow-y-auto">
                                         <p class="text-gray-600 text-sm md:text-base lg:text-lg 2xl:text-2xl break-words">
                                             <%= review.comment %>
                                         </p>
@@ -240,30 +240,45 @@
                             <% }); %>
                         </div>
                         <!-- review page changing-->
-                        <div class="flex items-center justify-between px-6 py-4 sm:px-8">
-                            <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-center">
-                                <div>
+                        <div class="flex items-center justify-center mx-6 my-4 sm:mx-8">
+                            <div class="sm:flex sm:items-center sm:justify-center">
                                     <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination" id="Pagination">
-                                        <button onclick="changeReviewPage(<%= page - 1 %>)" class="relative inline-flex items-center rounded-l-md px-4 py-4 text-black ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
+                                        <button onclick="changeReviewPage(<%= page - 1 %>)" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-black ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
                                             <span class="sr-only">Previous</span>
                                             <svg class="size-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                                                 <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
                                             </svg>
                                         </button>
-                                        <% for (let i = 1; i <= total_pages; i++) { %>
-                                            <button onclick="changeReviewPage(<%= i %>)" class="relative <%= i === page? 'z-10 text-white bg-slate-800' : 'text-gray-900' %> inline-flex items-center px-6 py-4 text-lg font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
-                                                <%= i %>
-                                            </button>
+                                        <% if (total_pages > 0) { %>
+                                            <button onclick="changeReviewPage(1)" class="relative <%= 1 === page? 'z-10 text-white bg-slate-800' : 'text-gray-900' %> inline-flex items-center px-3 py-3 text-lg font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
+                                                1</button>
+                                                <% if (page > 2) { %>
+                                                    <button disabled class="relative text-gray-900 inline-flex items-center px-3 py-3 text-lg font-semibold ring-1 ring-inset ring-gray-300">
+                                                        ...</button>
+                                                <% } %>
+                                                    
+                                                <% if(page > 1 && page < total_pages) { %>
+                                                <button onclick="changeReviewPage(<%= page %>)" class="relative z-10 text-white bg-slate-800 inline-flex items-center px-3 py-3 text-lg font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
+                                                    <%= page %></button>
+                                                <% } %>
+                                                
+                                                <% if (page < total_pages - 1) { %>
+                                                    <button disabled class="relative text-gray-900 inline-flex items-center px-3 py-3 text-lg font-semibold ring-1 ring-inset ring-gray-300 ">
+                                                        ...</button>
+                                                <% } %>
+                                                <button onclick="changeReviewPage(<%= total_pages %>)" class="relative <%= total_pages === page? 'z-10 text-white bg-slate-800' : 'text-gray-900' %> inline-flex items-center px-3 py-3 text-lg font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
+                                                    <%= total_pages %></button>
+
                                         <% } %>
-            
-                                        <button onclick="changeReviewPage(<%= page + 1 %>)" class="relative inline-flex items-center rounded-r-md px-4 py-4 text-black ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
+                                        
+
+                                        <button onclick="changeReviewPage(<%= page + 1 %>)" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-black ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
                                             <span class="sr-only">Next</span>
                                             <svg class="size-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                                                 <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                                             </svg>
                                         </button>
                                     </nav>
-                                </div>
                             </div>
                         </div>
                         <!-- review page changing-->
@@ -273,7 +288,7 @@
                     
 
                     <!-- related product -->
-                    <div class="pb-16 mx-3 w-full">
+                    <div class="pb-16 mx-3">
                         <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6 w-full text-center">Related
                             products</h2>
                         <div
