@@ -98,7 +98,6 @@ async function getAllDiscountedProductsWithFilterAndCount(
       count = parseInt(result.rows[0].total_count);
     }
 
-    console.log('indexService.js: result: ', result.rows);
     return {
       totalCount: count,
       products: result.rows,

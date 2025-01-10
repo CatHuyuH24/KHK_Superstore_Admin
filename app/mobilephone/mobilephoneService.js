@@ -94,9 +94,9 @@ async function getAllMobilephoneManufacturers() {
   return manufacturers;
 }
 
-async function getReviewsInfoOfMobilephoneById(productId) {
+async function getReviewsInfoOfMobilephoneById(productId, page, limit) {
   const {reviews, reviewAverage, reviewerCount, totalCount} 
-        = await reviewService.getReviewsByProductId(productId);
+        = await reviewService.getReviewsByProductId(productId, page, limit);
   return {reviews, reviewAverage, reviewerCount, totalCount};
 }
 

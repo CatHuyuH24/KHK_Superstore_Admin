@@ -54,6 +54,9 @@ async function renderMobilephoneCategoryPage(req, res) {
 
 async function renderMobilephoneDetailPage(req, res) {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
+
     const mobilephoneID = req.params.id;
     const mobilephone = await mobilephoneService.getMobilephoneByID(mobilephoneID);
     const userID = res.locals.user ? res.locals.user.id : null;
@@ -64,7 +67,7 @@ async function renderMobilephoneDetailPage(req, res) {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    let {reviews, reviewAverage, reviewerCount, totalCount} = await mobilephoneService.getReviewsInfoOfMobilephoneById(mobilephoneID);
+    let {reviews, reviewAverage, reviewerCount, totalCount} = await mobilephoneService.getReviewsInfoOfMobilephoneById(mobilephoneID, page, limit);
     const TITLE = mobilephone.name + " - Superstore";
     res.render("product", { 
       product: mobilephone, 
