@@ -186,8 +186,7 @@ function updateProductList(products) {
 
     productContainer.insertAdjacentHTML('beforeend', productHTML);
   });
-
-  console.log('here')
+  
   productContainer.scrollIntoView({ behavior: 'smooth' });
 }
 
