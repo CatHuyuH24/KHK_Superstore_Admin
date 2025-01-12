@@ -46,6 +46,8 @@ const logoutRouter = require("./app/logout/logoutRouter");
 const cartRouter = require("./app/cart/cartRouter");
 const checkoutRouter = require("./app/checkout/checkoutRouter");
 
+const reviewAPIRouter = require("./API/reviews/reviewRouter.js");
+
 
 // Set the view engine to EJS
 app.set("view engine", "ejs");
@@ -76,6 +78,7 @@ app.use("/logout", logoutRouter);
 app.use("/cart", cartRouter);
 app.use("/checkout", checkoutRouter); 
 
+app.use("/api/reviews", reviewAPIRouter);
 
 const PORT = process.env.SERVER_PORT || 3000;
 app.listen(PORT, () => {

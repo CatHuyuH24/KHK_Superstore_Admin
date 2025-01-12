@@ -19,6 +19,35 @@
 
 <body class="w-full overflow-x-hidden">
     <div x-data="{ cartOpen: false , isOpen: false }">
+        <!-- Review Form -->
+        <div id="review-form" class="hidden">
+            <div class="w-full h-full z-10 fixed inset-0 items-center justify-center bg-black bg-opacity-50 flex">
+                <div class="bg-white p-6 rounded-lg shadow-lg h-auto w-full">
+                    <h2 class="text-2xl font-medium text-gray-800 mb-4">Add a Review</h2>
+                    <form action="/api/reviews" method="POST">
+                        <div class="mb-4">
+                            <label for="rating" class="block text-gray-700">Rating</label>
+                            <select id="review-rating" name="rating" class="w-full mt-2 p-2 border border-gray-300 rounded-md">
+                                <option value="5">5 - Excellent</option>
+                                <option value="4">4 - Good</option>
+                                <option value="3">3 - Average</option>
+                                <option value="2">2 - Poor</option>
+                                <option value="1">1 - Terrible</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="comment" class="block text-gray-700">Comment</label>
+                            <textarea id="review-comment" name="comment" rows="4" class="w-full mt-2 p-2 border border-gray-300 rounded-md"></textarea>
+                        </div>
+                        <div class="flex justify-end">
+                            <button id="cancel-review-btn" type="button" class="mr-4 px-4 py-2 bg-gray-500 text-white rounded-md">Cancel</button>
+                            <button type="submit" class="px-4 py-2 bg-green-700 text-white rounded-md">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
         <!-- #region Header -->
         <%- include('layouts/mainLayout', { content: locals.body }) %>
             <!-- #region Search -->
@@ -161,16 +190,16 @@
                                 </div>
                             </div>
 
-                            <div class="mt-6 flex gap-3 border-b border-gray-200 pb-5 pt-5">
+                            <div class="mt-6 flex-col gap-3 border-b border-gray-200 pb-5 pt-5">
                                 <a href="#"
                                     class="add-to-cart-btn block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition"
                                     data-product-id="<%= product.id %>" data-product-price="<%= product.price %>">
-                                    Add to cart
+                                    ADD TO CART
                                 </a>
-                                <a href="#"
-                                    class="border border-gray-300 text-gray-600 px-8 py-2 font-medium uppercase flex items-center gap-2 hover:text-primary transition">
-                                    <i class="gg-heart"></i> Wishlist
-                                </a>
+                                <button id="add-review-btn" type="button" product-id="<%= product.id %>"
+                                    class="block w-full text-center border border-gray-300 text-gray-600 px-8 py-2 font-medium hover:text-primary transition">
+                                    ADD REVIEW
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -233,7 +262,17 @@
                                     </div>
                                     <div class="m-3 max-h-52 text-ellipsis overflow-y-auto">
                                         <p class="text-gray-600 text-sm md:text-base lg:text-lg 2xl:text-2xl break-words">
-                                            <%= review.comment %>
+                                            <% if(review.comment == null){ %>
+                                                <span><i>No comment</i></span>
+                                            <% } else { %>
+                                                <% let commentLines = review.comment.split('\n'); %>
+                                                <% commentLines.forEach( line=> { %>
+                                                    <span>
+                                                        <%= line %>
+                                                    </span>
+                                                    <br>
+                                                    <% }); %>
+                                            <% } %>
                                         </p>
                                     </div>
                                 </div>
@@ -370,7 +409,7 @@
                                     class="add-to-cart-btn block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition"
                                     data-product-id="<%= product.id %>" data-product-price="<%= product.price %>">
                                     Add to cart
-                                </a>
+                                    </a>
                                 </div>
 
                                 <% }); %>
@@ -390,6 +429,7 @@
     <script src="/js/increaseAndDecreaseQuantity.js"></script>
     <!-- <script src="/js/filterHandlingAndPaginationAJAX.js"></script> -->
     <script src="/js/reviewsChangePageAJAX.js"></script>
+    <script src="/js/addReviewHandling.js"></script>
     <script src="/layouts/search"></script>
 </body>
 

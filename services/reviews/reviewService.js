@@ -42,10 +42,20 @@ async function getReviewsByProductId(productId, page, limit) {
   }
 }
 
-module.exports = {
-  getReviewsByProductId,
-};
+async function addReview(productId, userId, rating, comment) {
+  try {
+    const result = await pool.query(
+      `INSERT INTO reviews (product_id, user_id, rating, comment) VALUES ($1, $2, $3, $4) RETURNING *`,
+      [productId, userId, rating, comment]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error adding review:', error);
+    throw error;
+  }
+}
 
 module.exports = {
     getReviewsByProductId,
+    addReview,
 };

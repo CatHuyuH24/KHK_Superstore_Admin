@@ -68,8 +68,16 @@ function updateReviews(reviews){
                 </span>
             </div>
             <div class="p-3 max-h-52 text-ellipsis overflow-y-auto">
-                <p class="text-gray-600 text-sm md:text-base lg:text-lg 2xl:text-2xl break-words">
-                    ${review.comment}
+                <p class="text-gray-600 text-sm md:text-base lg:text-lg 2xl:text-2xl break-words">`
+                    if(review.comment == null){
+                        reviewHTML +=`<span><i>No comment</i></span>`;
+                    } else {
+                        let commentLines = review.comment.split('\n');
+                        commentLines.forEach( line=> {
+                        reviewHTML += `<span>${line}</span><br>`;
+                        });
+                    }
+        reviewHTML += `
                 </p>
             </div>
         </div>`;
