@@ -1,6 +1,6 @@
 const pool = require("../../config/database");
 
-async function searchAllProducts(query) {
+async function searchAllProducts(query, manufacturers, startDate, endDate) {
   try {
     if (!query) {
       console.error("Query is empty or undefined");

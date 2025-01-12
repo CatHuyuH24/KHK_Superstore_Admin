@@ -6,10 +6,10 @@ async function findUserByEmail(email) {
         if (result.rows.length > 0) {
             return result.rows[0];
         }
-        return null; 
+        return null;
     } catch (error) {
         console.error('Error fetching user by email', error);
-        return null; 
+        return null;
     }
 }
 
@@ -19,25 +19,25 @@ async function findUserById(id) {
         if (result.rows.length > 0) {
             return result.rows[0];
         }
-        return null; 
+        return null;
     } catch (error) {
         console.error('Error fetching user by id', error);
-        return null; 
+        return null;
     }
 }
 
 async function createUser(name,email,hashedPassword,salt) {
-    try {  
+    try {
         const query = `
-        INSERT INTO users (real_name, username, email, hashed_password, salt, role)
-        VALUES ($1, $2, $3, $4, $5, $6)
-        RETURNING *`;  
-	    
+            INSERT INTO users (real_name, username, email, hashed_password, salt, role)
+            VALUES ($1, $2, $3, $4, $5, $6)
+                RETURNING *`;
+
         const values = [name,email,email, hashedPassword, salt,"customer"];
-        
+
         const result = await pool.query(query, values);
         return result.rows[0];
-        
+
     } catch (error) {
         console.error('Error create user', error);
     }

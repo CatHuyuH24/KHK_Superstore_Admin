@@ -15,7 +15,8 @@ async function getReviewsByProductId(productId, page, limit) {
         r.rating, 
         r.created_at, 
         r.comment,
-        u.username,        
+        u.username, 
+        u.avatar_img_url,       
         COUNT(*) OVER() AS total_count
       FROM reviews r 
       JOIN users u ON r.user_id = u.id 
@@ -29,7 +30,6 @@ async function getReviewsByProductId(productId, page, limit) {
     const reviewAverage = result.rows[0]? result.rows[0].review_average : null;
     const reviewerCount = result.rows[0]? result.rows[0].review_count : 0;
     const totalCount = result.rows[0]? result.rows[0].total_count : 0;
-    
     return {
       reviews,
       reviewAverage,

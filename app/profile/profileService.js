@@ -1,4 +1,5 @@
 const {genPassword, validPassword} = require('../Utils/passwordUtils');
+const cloudinary = require('../../config/cloudinary');
 const pool = require('../../config/database');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
@@ -73,7 +74,6 @@ async function sendVerificationEmail(userID, email) {
             "INSERT INTO email_verifications (user_id, email, token) VALUES ($1, $2, $3)",
             [userID, email, token]
         );
-
         const transporter = nodemailer.createTransport({
             service: 'Gmail',
             auth: {
@@ -81,16 +81,13 @@ async function sendVerificationEmail(userID, email) {
                 pass: 'jqiq loga kajs agol',
             },
         });
-
         const verificationLink = `http://localhost:3000/profile/verify-email?token=${token}`;
-
         const mailOptions = {
             from: 'nguyenminhkhang15052004@gmail.com',
             to: email,
             subject: 'Email Verification',
             text: `Please verify your email by clicking the following link: ${verificationLink}`,
         };
-
         await transporter.sendMail(mailOptions);
     } catch (error) {
         console.error('Error sending verification email', error);
@@ -131,6 +128,27 @@ async function updateUserPassword(userID, newPassword) {
     }
 }
 
+async function uploadAvatar(userId, filePath) {
+    try {
+      const result = await cloudinary.uploader.upload(filePath, {
+        folder: 'avatars',
+      });
+  
+      const imageUrl = result.secure_url;
+  
+      await pool.query(
+        'UPDATE users SET avatar_img_url = $1 WHERE id = $2',
+        [imageUrl, userId]
+      );
+  
+      return imageUrl;
+    } catch (error) {
+      console.error('Error uploading avatar:', error);
+      throw error;
+    }
+  }
+  
+
 module.exports = {
     getUserById,
     updateUserProfile,
@@ -138,5 +156,6 @@ module.exports = {
     sendVerificationEmail,
     verifyPassword,
     updateUserPassword,
-    getUserProfile
+    getUserProfile,
+    uploadAvatar,
 };

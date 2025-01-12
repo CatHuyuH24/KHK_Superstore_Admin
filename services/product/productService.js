@@ -16,6 +16,7 @@ const { prepareFilterStatements } = require('../../app/Utils/filterStatementUtil
  * - reviewer_count (number of unique users who rated the product)
  * - review_average (average rating of the product)
  * - total_count (total number of products matching the filters)
+ * - created_at
  *
  * @param {number} minPrice - Minimum price filter.
  * @param {number} maxPrice - Maximum price filter.
@@ -25,6 +26,9 @@ const { prepareFilterStatements } = require('../../app/Utils/filterStatementUtil
  * @param {string} manufacturer - Manufacturer filter. e.g ["Apple", "Samsung",...].
  * @param {string} search - Search keyword.
  * @param {string} products_category - Category of products. e.g. "computers". If not provided, all products will be fetched.
+ * @param {string} startDate - Start date filter.
+ * @param {string} endDate - End date filter.
+ * @param {number} fps - frame fresh rate filter.
  * @returns {Promise<Object>} An object containing the total count of products and the array of products.
  * @returns {number} return.totalCount - Total number of products matching the filters.
  * @returns {Array} return.products - Array of products.
@@ -39,28 +43,33 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
   sort,
   manufacturer,
   search,
-  products_category
+  products_category,
+  startDate,
+  endDate,
+  fps,
 ) {
   try {
-    const {
-      priceFilter, 
-      manufacturerFilter, 
-      searchFilter, 
-      productsCategoryFilter,
-    } = prepareFilterStatements(
-      minPrice,
-      maxPrice,
-      manufacturer,
-      search,
-      products_category
-    );
-    let sortFilter = "";
-    const [sortColumn, sortDir] = sort.split(",");
-    if(sortColumn != null && sortDir != null) {
-        sortFilter = `ORDER BY ${sortColumn} ${sortDir}`;
-    } else {
-        sortFilter = "ORDER BY p.id ASC";
-    }
+  const {
+    priceFilter, 
+    manufacturerFilter, 
+    dateFilter,
+    searchFilter, 
+    productsCategoryFilter,
+    fpsFilter,
+  } = prepareFilterStatements(
+    minPrice, maxPrice, sort, manufacturer, 
+    search, products_category, startDate, endDate, fps,
+  );
+
+  console.log("filter by fps: ", fpsFilter);
+
+  let sortFilter = "";
+  const [sortColumn, sortDir] = sort.split(",");
+  if(sortColumn != null && sortDir != null) {
+      sortFilter = `ORDER BY ${sortColumn} ${sortDir}`;
+  } else {
+      sortFilter = "ORDER BY p.id ASC";
+  }
 
     const result = await pool.query(
       `
@@ -82,9 +91,11 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
             LEFT JOIN reviews r ON p.id = r.product_id
             WHERE 1=1
             ${productsCategoryFilter}
-            ${searchFilter}
             ${manufacturerFilter}
+            ${searchFilter}
             ${priceFilter}
+            ${dateFilter}
+            ${fpsFilter}
             GROUP BY 
                 p.id, 
                 p.name, 
@@ -113,7 +124,11 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
   } catch (error) {
     console.error(
       `Error fetching ${products_category} products from productService:`,
-      error.message
+      error.message,
+      {
+          minPrice, maxPrice, sort, manufacturer, search, products_category, startDate, endDate, fps,
+        stack: error.stack
+      }
     );
     return { totalCount: 0, products: [] };
   }
@@ -163,6 +178,7 @@ async function getAllManufacturersOfCategory(products_category) {
  * @returns {number} return.total_purchased - Total number of products purchased.
  * @returns {string} return.manufacturer_name - Manufacturer name.
  * @returns {string} return.category_name - Category name.
+ * @returns {Date} return.created_at - Product creation timestamp.
  * @throws {Error} - Throws an error if there is an issue with the database query.
  * @example
  * const product = await getProductById(1);
@@ -281,7 +297,7 @@ async function getRelatedProductsFromProductId(currentId, categoryName, limit = 
 }
 
 module.exports = {
-    getAllProductsOfCategoriesWithFilterAndCount,
+  getAllProductsOfCategoriesWithFilterAndCount,
   getAllManufacturersOfCategory,
   getProductById,
   getRelatedProductsFromProductId,

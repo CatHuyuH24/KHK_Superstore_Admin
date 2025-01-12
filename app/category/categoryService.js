@@ -20,6 +20,9 @@ const productService = require("../../services/product/productService.js");
  * @param {number} limit - Number of items per page.
  * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
  * @param {string} search - Search keyword.
+ * @param {string} startDate - start date
+ * @param {string} endDate - end date
+ * @param {number} fps - frame fresh rate
  * @returns {Promise<Object>} - An object containing the total count of products, the list of products, and the list of manufacturers.
  * @returns {Array} return.products - List of products with discounted prices.
  * @returns {number} return.total - Total number of products matching the filters.
@@ -27,7 +30,7 @@ const productService = require("../../services/product/productService.js");
  * @example
  * const { products, total, manufacturers } = await getAllProductsWithFiltersAndCountAndManufacturers(0, 1000, 1, 10, "price,ASC", "Apple", "macbook");
  */
-async function getAllProductsWithFiltersAndCountAndmanufacturers(minPrice, maxPrice, page, limit, sort, manufacturer, search) {
+async function getAllProductsWithFiltersAndCountAndmanufacturers(minPrice, maxPrice, page, limit, sort, manufacturer, search, startDate, endDate, fps) {
   try {
     // Ensure page is not less than 1
     page = Math.max(1, page);
@@ -37,7 +40,7 @@ async function getAllProductsWithFiltersAndCountAndmanufacturers(minPrice, maxPr
     // and the total number of products 
     const {totalCount, products} = 
       await productService.getAllProductsOfCategoriesWithFilterAndCount
-      (minPrice, maxPrice, page, limit, sort, manufacturer, search);
+      (minPrice, maxPrice, page, limit, sort, manufacturer, search, null, startDate, endDate, fps);
       
     // Get all manufacturers of all products (product_type is not provided)
     const manufacturersArray = await productService.getAllManufacturersOfCategory();
@@ -48,8 +51,6 @@ async function getAllProductsWithFiltersAndCountAndmanufacturers(minPrice, maxPr
     return { result: [], total: 0, manufacturers: [] };
   }
 }
-
-
 
 async function getMobilePhoneById(id) {
   try {
