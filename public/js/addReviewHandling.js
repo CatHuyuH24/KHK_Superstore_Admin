@@ -24,8 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             const result = await response.json();
             if(response.ok){
-                alert(result.message);
-                location.reload();
+                alert(result.message + "\nYour review will be processed soon.");
+                reviewForm.classList.toggle('hidden');
+                document.querySelector("form[action='/api/reviews']").reset();
             } else {
                 alert(result.message);
             }
