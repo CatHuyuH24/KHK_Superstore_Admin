@@ -39,14 +39,14 @@ function prepareFilterStatements(minPrice, maxPrice, sort, manufacturer, search,
     }
 
     let dateFilter = "";
-    if (startDate !== null && endDate !== null) {
-        dateFilter = `AND created_at BETWEEN '${startDate}' AND '${endDate}'`;
-    } else if (startDate!== null) {
-        dateFilter = `AND created_at >= '${startDate}'`;
-    } else if (endDate !== null) {
-        dateFilter = `AND created_at <= '${endDate}'`;
+    if (startDate != null && endDate != null && startDate != "" && endDate != "") {
+        dateFilter = `AND p.created_at BETWEEN '${startDate}' AND '${endDate}'`;
+    } else if (startDate != null && startDate != "") {
+        dateFilter = `AND p.created_at >= '${startDate}'`;
+    } else if (endDate != null && endDate != "") {
+        dateFilter = `AND p.created_at <= '${endDate}'`;
     }
-
+    
     let sortFilter = "";
     const [sortColumn, sortDir] = sort.split(",");
     if(sortColumn != null && sortDir != null) {

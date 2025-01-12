@@ -49,19 +49,28 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
   fps,
 ) {
   try {
-    const {
-      priceFilter, 
-      manufacturerFilter, 
-      dateFilter,
-      searchFilter, 
-      productsCategoryFilter,
-      fpsFilter,
-    } = prepareFilterStatements(
-      minPrice, maxPrice, sort, manufacturer, 
-      search, products_category, startDate, endDate, fps,
-    );
+  const {
+    priceFilter, 
+    manufacturerFilter, 
+    dateFilter,
+    searchFilter, 
+    productsCategoryFilter,
+    fpsFilter,
+  } = prepareFilterStatements(
+    minPrice, maxPrice, sort, manufacturer, 
+    search, products_category, startDate, endDate, fps,
+  );
 
-console.log("filter by fps: ", fpsFilter);
+  console.log("filter by fps: ", fpsFilter);
+
+  let sortFilter = "";
+  const [sortColumn, sortDir] = sort.split(",");
+  if(sortColumn != null && sortDir != null) {
+      sortFilter = `ORDER BY ${sortColumn} ${sortDir}`;
+  } else {
+      sortFilter = "ORDER BY p.id ASC";
+  }
+
     const result = await pool.query(
       `
             SELECT 

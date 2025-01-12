@@ -294,7 +294,6 @@ exports.seed = async function(knex) {
         created_at: "2025-01-10 11:30:00",
     },
     {
-      id: 11,
       name: "iPhone 14 Pro Max",
       manufacturer_id: 1,
       price: 999,

@@ -33,7 +33,6 @@ async function renderHomePage(req, res) {
         startDate,
         endDate,
         fps,
-        null,
       );
 
     // get manufacturers of all products
