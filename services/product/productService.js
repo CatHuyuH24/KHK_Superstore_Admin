@@ -59,6 +59,7 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
       minPrice, maxPrice, sort, manufacturer, search, products_category, startDate, endDate, fps,
     );
 
+console.log("filter by fps: ", fpsFilter);
     const result = await pool.query(
       `
             SELECT p.*, m.manufacturer_name, c.category_name, count(*) over() as total_count 
@@ -70,9 +71,9 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
             ${searchFilter}
             ${priceFilter}
             ${dateFilter}
+            ${fpsFilter}
             ${sortFilter}
             ${manufacturerFilter}
-            ${fpsFilter}
             LIMIT $1 OFFSET $2`,
       [limit, (page - 1) * limit]
     );

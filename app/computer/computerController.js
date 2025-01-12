@@ -15,8 +15,9 @@ async function renderComputerCategoryPage(req, res) {
     const userID = res.locals.user ? res.locals.user.id : null;
     const startDate = req.query.startDate || null;
     const endDate = req.query.endDate || null;
+    const fps =req.query.fps || ''
 
-
+    const selectedFPS = fps === 'All' ? [] : fps.split(',').map(fpsValue => parseInt(fpsValue, 10));
     const {totalCount, products} = 
     await computerService.getAllComputersWithFilterAndCount
     (
@@ -29,6 +30,7 @@ async function renderComputerCategoryPage(req, res) {
       search,
       startDate,
       endDate,
+      fps,
       'computers',
     );
 
@@ -48,6 +50,7 @@ async function renderComputerCategoryPage(req, res) {
       products: products,
       manufacturers: manufacturersList,
       selectedManufacturers,
+      selectedFPS,
       user_id: userID,
     };
 

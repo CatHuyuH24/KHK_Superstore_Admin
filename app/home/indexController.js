@@ -15,7 +15,9 @@ async function renderHomePage(req, res) {
     const userID = res.locals.user ? res.locals.user.id : null;
     const startDate = req.query.startDate || null;
     const endDate = req.query.endDate || null;
+    const fps =req.query.fps || ''
 
+    const selectedFPS = fps === 'All' ? [] : fps.split(',').map(fpsValue => parseInt(fpsValue, 10));
     const selectedManufacturers =
       manufacturer === 'All' ? [] : manufacturer.split(',');
 
@@ -30,6 +32,7 @@ async function renderHomePage(req, res) {
         search,
         startDate,
         endDate,
+        fps,
         null,
       );
 
@@ -47,6 +50,7 @@ async function renderHomePage(req, res) {
       products: products,
       manufacturers: allmanufacturers,
       selectedManufacturers,
+      selectedFPS,
       user_id: userID,
     };
 

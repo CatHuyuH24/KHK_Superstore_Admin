@@ -13,10 +13,9 @@ async function renderCategoryPage(req, res) {
     const userID = res.locals.user ? res.locals.user.id : null;
     const startDate = req.query.startDate || null;
     const endDate = req.query.endDate || null;
-    const fps =req.query.fps || 'All'
+    const fps =req.query.fps || ''
 
     const selectedFPS = fps === 'All' ? [] : fps.split(',').map(fpsValue => parseInt(fpsValue, 10));
-
     const selectedManufacturers =
       manufacturer === 'All' ? [] : manufacturer.split(',');
 
@@ -31,8 +30,8 @@ async function renderCategoryPage(req, res) {
         search,
         startDate,
         endDate,
-        null,
         fps,
+        null,
       );
 
     products.forEach((product) => {
