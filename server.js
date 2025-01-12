@@ -49,6 +49,7 @@ const checkoutRouter = require("./app/checkout/checkoutRouter");
 const profileRouter = require("./app/profile/profileRouter");
 const changePasswordRouter = require("./app/profile/changePasswordRouter"); 
 const resetPassRouter=require("./app/resetPassword/resetPassRouter");
+const orderListRouter=require("./app/OrderList/orderListRouter");
 const reviewAPIRouter = require("./API/reviews/reviewRouter.js");
 
 
@@ -83,6 +84,7 @@ app.use("/checkout", checkoutRouter);
 app.use("/profile", profileRouter);
 app.use("/change-password", changePasswordRouter);
 app.use("/resetPass",resetPassRouter);
+app.use("/orderList",orderListRouter);
 
 app.use("/api/reviews", reviewAPIRouter);
 

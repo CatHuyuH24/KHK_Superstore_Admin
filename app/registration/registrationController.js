@@ -28,6 +28,7 @@ async function handleRegisterRequest(req, res) {
 
         if (!agree) {
             message = "You need to agree to the Terms and Conditions.";
+            message = "You need to agree to the Terms and Conditions.";
             if (req.xhr) {
                 return res.json({ message, title });
             }
@@ -35,6 +36,7 @@ async function handleRegisterRequest(req, res) {
         }
 
         if (password !== passwordConfirm) {
+            message = "Passwords do not match.";
             message = "Passwords do not match.";
             if (req.xhr) {
                 return res.json({ message, title });
@@ -45,12 +47,13 @@ async function handleRegisterRequest(req, res) {
         const userCheck = await registrationService.findUserByEmail(email);
         if (userCheck) {
             message = "This email is already registered. Please use a different email.";
+            message = "This email is already registered. Please use a different email.";
             if (req.xhr) {
                 return res.json({ message, title });
             }
             return res.render("register", { message, title });
         }
-
+        
         message=validatePassword(password);
         if(message!="Password is valid."){
             if (req.xhr) {
@@ -165,6 +168,7 @@ const sendVerificationEmail =async ({id,email},res)=>{
         html: `<p>Verify your email address to complete the signup and login into your account.</p>
             <p>
             This link 
+            <b>expries in 1 minute</b>.</p>
             <b>expries in 1 minute</b>.</p>
             <p>Press <a href=${currentUrl+"register/verify/"+id+"/"+uniqueString}>here</a>
             to process.</p>`,

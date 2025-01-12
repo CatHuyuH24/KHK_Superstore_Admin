@@ -64,6 +64,23 @@ function prepareFilterStatements(minPrice, maxPrice, sort, manufacturer, search,
     return {priceFilter, manufacturerFilter, dateFilter, searchFilter, sortFilter, productsCategoryFilter, fpsFilter};
 }
 
+function prepareFilterStatementsForOrder(status, search) {
+    let orderFilter;
+    if (status === 'Paid' || status === 'Unpaid') {
+        orderFilter = `AND status_payment IN ('${status}')`;
+    } else if (status === 'All') {
+        orderFilter = "";
+    } else {
+        orderFilter = `AND status IN ('${status}')`;
+    }
+    
+    let searchFilter = search ? `AND order_code LIKE '%${search}%'` : "";
+
+  
+    return { orderFilter, searchFilter };
+}
+
 module.exports = {
     prepareFilterStatements,
+  prepareFilterStatementsForOrder,
 };
