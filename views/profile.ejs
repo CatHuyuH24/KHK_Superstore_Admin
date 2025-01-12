@@ -12,9 +12,6 @@
     <meta name="description" content="TailwindCSS Ecommerce Template" />
     <link href="//fonts.googleapis.com/css?family=Righteous" rel="stylesheet" />
     <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700" rel="stylesheet" />
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/all.min.css" />
-    <link rel="stylesheet" href="/css/style.css" />
     <link id="favicon" rel="icon" type="image/png" href="/images/store_icon.ico" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/tailwind.css" />
@@ -30,76 +27,89 @@
             <input type="hidden" id="user-id" value="<%= user_id %>" />
             <!-- #endregion Header -->
 
-            <div class="max-w-xl mx-auto mt-20 bg-white shadow-md rounded-lg p-6 relative">
+            <div class="max-w-xl mx-auto mt-20 mb-10 bg-white shadow-md rounded-2xl p-6 relative">
                 <!-- Avatar -->
                 <div class="absolute -top-16 left-1/2 transform -translate-x-1/2">
                     <label for="avatar" class="block">
-                        <img id="avatarPreview" src="https://via.placeholder.com/100" alt="Avatar Preview"
+                        <img id="avatarPreview" src="<%= avatarUrl || 'https://via.placeholder.com/100' %>" alt="Avatar Preview"
                             class="w-32 h-32 rounded-full border-4 border-white shadow-md cursor-pointer object-cover" />
                         <input type="file" id="avatar" accept="image/*" class="hidden"
                             onchange="previewAvatar(event)" />
                     </label>
+
                 </div>
+
+                <div id="uploadStatus" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded shadow-lg">
+                    Uploading...
+                </div>
+
                 <!-- Save Avatar Button -->
                 <div class="mt-12">
                     <button type="button" id="saveAvatarBtn"
-                        class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
+                            class="w-full bg-gradient-to-r from-blue-500 to-green-500 text-white py-3 rounded-lg hover:from-blue-600 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105 shadow-lg">
                         Save Avatar
                     </button>
                 </div>
 
+
                 <div class="pt-4">
                     <h1 class="text-2xl font-bold text-center mb-6">Update Profile</h1>
                     <form id="profileForm" class="space-y-4">
-                        <!-- Name -->
-                        <div>
-                            <label for="name" class="block font-medium mb-1">Full Name</label>
+
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 font-semibold mb-2">Full Name</label>
                             <input type="text" id="name"
-                                class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-300"
-                                placeholder="Enter your full name" value="<%= user.real_name %>" />
-                            <p id="nameError" class="text-red-500 text-sm mt-1 hidden">
+                                   class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm transition placeholder-gray-400"
+                                   placeholder="Enter your full name" value="<%= user.real_name %>" />
+                            <p id="nameError" class="text-red-500 text-sm mt-2 hidden">
                                 Name is required.
                             </p>
                         </div>
 
                         <!-- Email -->
-                        <div>
-                            <label for="email" class="block font-medium mb-1">Email</label>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
                             <input type="email" id="email"
-                                class="w-full border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-300"
-                                placeholder="Enter your email" value="<%= user.email %>" />
-                            <p id="emailError" class="text-red-500 text-sm mt-1 hidden">
+                                   class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm transition placeholder-gray-400"
+                                   placeholder="Enter your email" value="<%= user.email %>" />
+                            <p id="emailError" class="text-red-500 text-sm mt-2 hidden">
                                 Invalid email format.
                             </p>
                         </div>
 
+
                         <!-- Phone -->
-                        <div>
-                            <label for="phone" class="block font-medium mb-1">Phone Number</label>
-                            <div class="flex">
-                                <span
-                                    class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">+84</span>
+                        <div class="mb-4">
+                            <label for="phone" class="block text-gray-700 font-semibold mb-2">Phone Number</label>
+                            <div class="relative">
                                 <input type="text" id="phone"
-                                    class="w-full border-gray-300 rounded-r-lg p-2 focus:ring focus:ring-blue-300"
-                                    placeholder="Enter your phone number" value="<%= user.phone_number %>">
+                                       class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm transition placeholder-gray-400"
+                                       placeholder="Enter your phone number" value="<%= user.phone_number %>" />
                             </div>
-                            <p id="phoneError" class="text-red-500 text-sm mt-1 hidden">
+                            <p id="phoneError" class="text-red-500 text-sm mt-2 hidden">
                                 Invalid phone number.
                             </p>
                         </div>
 
+
                         <!-- Submit Button -->
                         <div>
                             <button type="button" id="submitBtn"
-                                class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Save</button>
+                                    class="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white py-3 rounded-lg hover:from-blue-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                                Save
+                            </button>
                         </div>
+
 
                         <!-- Change Password Button -->
                         <div>
                             <a href="/change-password"
-                                class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 text-center block">Change
-                                Password</a>
+                               class="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white py-3 rounded-lg hover:from-blue-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105 shadow-lg text-center block">
+                                Change Password
+                            </a>
                         </div>
+
+
                     </form>
                 </div>
             </div>

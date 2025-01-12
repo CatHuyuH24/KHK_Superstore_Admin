@@ -30,6 +30,51 @@
           </div>
         </form>
       </div>
+      <!-- Frame Fresh Rate -->
+      <div>
+        <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium mt-3">FPS</h3>
+        <form id="FPS-filter-form">
+          <div class="space-y-2">
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                name="fps" 
+                value="60" 
+                id="fps-60" 
+                class="text-primary focus:ring-0 cursor-pointer"
+              />
+              <label for="fps-60" class="text-gray-600 ml-3 cursor-pointer">
+                60 FPS
+              </label>
+            </div>
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                name="fps" 
+                value="120" 
+                id="fps-120" 
+                class="text-primary focus:ring-0 cursor-pointer"
+              />
+              <label for="fps-120" class="text-gray-600 ml-3 cursor-pointer">
+                120 FPS
+              </label>
+            </div>
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                name="fps" 
+                value="144" 
+                id="fps-144" 
+                class="text-primary focus:ring-0 cursor-pointer"
+              />
+              <label for="fps-144" class="text-gray-600 ml-3 cursor-pointer">
+                144 FPS
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      
       <!--region filter min max value-->
       <form id="price-filter-form" method="GET">
         <div class="pt-4">
@@ -38,6 +83,37 @@
             <input type="text" name="min" id="min" class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md" placeholder="min" value="" />
             <span class="mx-3 text-gray-500">-</span>
             <input type="text" name="max" id="max" class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md" placeholder="max" value="" />
+          </div>
+        </div>
+      </form>
+
+      <!--region filter created time-->
+      <form id="created-time-filter-form" method="GET">
+        <div class="pt-4">
+          <h3 class="text-xl text-gray-800 mb-3 uppercase font-medium">CREATE TIME</h3>
+          <div class="mt-4 flex items-center space-x-3">
+            <!-- Start day-->
+            <div class="flex-1">
+              <label for="startDate" class="block text-sm text-gray-700">Start Date</label>
+              <input
+                type="date"
+                name="startDate"
+                id="startDate"
+                class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md" 
+                value=""
+              />
+            </div>
+            <!-- end day -->
+            <div class="flex-1">
+              <label for="endDate" class="block text-sm text-gray-700">End Date</label>
+              <input
+                type="date"
+                name="endDate"
+                id="endDate"
+                class="rounded-md w-full border-gray-600 focus:border-primary focus:ring-0 px-3 py-1 text-gray-600 shadow-md" 
+                value=""
+              />
+            </div>
           </div>
         </div>
       </form>

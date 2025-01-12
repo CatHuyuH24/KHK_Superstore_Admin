@@ -9,7 +9,9 @@ async function renderProfilePage(req, res) {
         if (!userID) {
             return res.redirect('/login');
         }
-        res.render('profile', { title: 'Profile - Superstore', user_id: userID });
+        const user = await profileService.getUserById(userID);
+        const avatarUrl = user.avatar_img_url;
+        res.render('profile', { title: 'Profile - Superstore', user_id: userID, avatarUrl });
     } catch (error) {
         console.error('Error rendering profile page:', error);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
@@ -92,9 +94,27 @@ async function changePassword(req, res) {
     }
 }
 
+async function uploadAvatar(req, res) {
+    try {
+        const userId = res.locals.user ? res.locals.user.id : null;
+        if (!userId) {
+            return res.status(StatusCodes.UNAUTHORIZED).send('Unauthorized');
+        }
+        const filePath = req.file.path;
+
+        const imageUrl = await profileService.uploadAvatar(userId, filePath);
+
+        res.json({ imageUrl });
+    } catch (error) {
+        console.error('Error uploading avatar:', error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Failed to upload avatar' });
+    }
+}
+
 module.exports = {
     renderProfilePage,
     updateProfile,
     verifyEmail,
     changePassword,
+    uploadAvatar,
 };

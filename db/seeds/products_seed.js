@@ -24,6 +24,8 @@ exports.seed = async function(knex) {
       discount: 0,
       number: 0,
       status: "out of stock",
+      created_at: "2025-01-01 10:00:00",
+      fps_hz: 60,
     },
     {
       name: "Macbook Pro 14 M2",
@@ -42,7 +44,9 @@ exports.seed = async function(knex) {
         $$`,
       discount: 10,
       number: 0,
-      status: "out of stock"
+      status: "out of stock",
+      created_at: "2025-01-02 15:30:00",
+      fps_hz: 120,
     },
     {
       name: "Macbook Pro 16 M2 (16/256)",
@@ -78,9 +82,11 @@ exports.seed = async function(knex) {
         $$`,
       discount: 30,
       number: 5,
+      created_at: "2025-01-02 16:30:00",
+      fps_hz: 120,
     },
     {
-      name: "Macbook M2",
+      name: "Macbook Air M2",
       manufacturer_id: 1,
       price: 1399,
       category_id: 1,
@@ -113,6 +119,8 @@ exports.seed = async function(knex) {
         $$`,
       discount: 0,
       number: 985,
+      created_at: "2025-01-03 15:30:00",
+      fps_hz: 60,
     },
     {
       name: "Macbook Pro 16 M1 Max",
@@ -148,6 +156,8 @@ exports.seed = async function(knex) {
         $$`,
       discount: 0,
       number: 554,
+      created_at: "2024-01-02 15:30:00",
+      fps_hz: 120,
     },
     {
       name: "Macbook Pro 13",
@@ -183,6 +193,8 @@ exports.seed = async function(knex) {
         $$`,
         discount: 10,
         number: 677,
+        created_at: "2025-01-05 15:00:00",
+        fps_hz: 120,
     },
     {
       name: "Macbook Air M3",
@@ -218,6 +230,8 @@ exports.seed = async function(knex) {
         $$`,
         discount: 12,
         number: 714,
+        created_at: "2024-11-02 15:30:00",
+        fps_hz: 120,
     },
     {
       name: "Laptop Dell XPS 13 9340 ",
@@ -237,6 +251,7 @@ exports.seed = async function(knex) {
         $$`,
         discount: 0,
         number: 105,
+        created_at: "2024-11-02 15:30:00",
     },
     {
       name: "Laptop Dell XPS 13 Plus 9320-5CG56",
@@ -256,6 +271,7 @@ exports.seed = async function(knex) {
         $$`,
         discount: 0,
         number: 245,
+        created_at: "2025-01-03 12:30:00",
     },
     {
       name: "Laptop Acer Nitro 5 Tiger",
@@ -275,6 +291,7 @@ exports.seed = async function(knex) {
         $$`,
         discount: 0,
         number: 19,
+        created_at: "2025-01-10 11:30:00",
     },
     {
       id: 11,
@@ -307,6 +324,7 @@ exports.seed = async function(knex) {
         $$`,
         discount: 10,
         number: 87,
+        created_at: "2025-01-10 15:30:00",
     },
     {
       name: "iPhone 16",
@@ -337,6 +355,7 @@ exports.seed = async function(knex) {
         $$`,
         discount: 10,
         number: 281,
+        created_at: "2023-09-02 15:30:00",
     },
     {
       name: "iPhone 16 Plus",
@@ -367,6 +386,7 @@ exports.seed = async function(knex) {
         $$`,
         discount: 10,
         number: 420,
+        created_at: "2025-01-08 15:30:00",
     },
     {
       name: "iPhone 16 Pro",
@@ -387,6 +407,7 @@ exports.seed = async function(knex) {
         $$`,
         discount: 0,
         number: 323,
+        created_at: "2024-10-02 15:30:00",
     },
     {
       name: "iPhone 16 Pro Max",
@@ -407,6 +428,7 @@ exports.seed = async function(knex) {
         $$`,
         discount: 0,
         number: 496,
+        created_at: "2025-01-08 15:40:00",
     },
     {
       name: "iPhone 15",
@@ -437,6 +459,7 @@ exports.seed = async function(knex) {
         $$`,
         discount: 0,
         number: 554,
+        created_at: "2025-01-07 15:30:00",
     },
     {
       name: "iPhone 15 Plus",
@@ -466,6 +489,7 @@ exports.seed = async function(knex) {
         $$`,
         discount: 0,
         number: 122,
+        created_at: "2024-12-02 15:30:00",
     },
     {
       name: "iPhone 15 Pro",
@@ -500,6 +524,7 @@ exports.seed = async function(knex) {
         $$`,
         discount: 0,
         number: 215,
+        created_at: "2025-01-02 10:30:00",
     },
     {
       name: "iPhone 15 Pro Max",
@@ -534,6 +559,7 @@ exports.seed = async function(knex) {
       \n$$`,
         discount: 50,
         number: 375,
+        created_at: "2025-01-03 14:30:00",
     },
     {
       name: "Samsung Galaxy S24 Ultra",
@@ -559,6 +585,7 @@ exports.seed = async function(knex) {
       $$`,
       discount: 0,
       number: 135,
+      created_at: "2025-01-04 15:30:00",
     },
     {
       name: "Samsung Galaxy S24",
@@ -584,6 +611,7 @@ exports.seed = async function(knex) {
         $$`,
         discount: 0,
         number: 111,
+        created_at: "2025-01-03 15:30:00",
     },
     {
       name: "Samsung QLED 8K",
@@ -601,6 +629,7 @@ exports.seed = async function(knex) {
       $$`,
       discount: 10,
       number: 98,
+      created_at: "2025-01-05 15:30:00",
     },
     {
       name: "LG Electronics 22-inch",
@@ -620,6 +649,7 @@ exports.seed = async function(knex) {
               $$`,
               discount: 0,
               number: 67,
+              created_at: "2025-01-02 15:30:00",
     },
     {
       name: "LG OLED 4K",
@@ -636,6 +666,7 @@ exports.seed = async function(knex) {
               $$`,
               discount: 0,
               number: 46,
+              created_at: "2025-01-09 15:30:00",
     },
     {
       name: "Smart Tivi 32 inch Darling 32HD946T2",
@@ -659,6 +690,7 @@ exports.seed = async function(knex) {
         $$`,
           discount: 0,
           number: 32,
+          created_at: "2025-01-01 15:30:00",
     },
     {
       name: "Smart Tivi Darling 43 Inch 43FH960S",
@@ -676,6 +708,7 @@ exports.seed = async function(knex) {
           $$`,
           discount: 0,
           number: 38,
+          created_at: "2024-12-02 15:30:00",
     },
     {
       name: "Tivi Led 40 inch Darling 40HD957T2",
@@ -693,6 +726,7 @@ exports.seed = async function(knex) {
           $$`,
           discount: 28,
           number: 182,
+          created_at: "2024-12-02 15:30:00",
     },
     {
       name: "Tivi Led 32 inch Darling 32HD955T2",
@@ -710,6 +744,7 @@ exports.seed = async function(knex) {
           $$`,
           discount: 10,
           number: 95,
+          created_at: "2025-01-07 15:30:00",
     },
     {
       name: "Tivi Led Darling 32HD957T2 32 inch",
@@ -727,6 +762,7 @@ exports.seed = async function(knex) {
             $$`,
             discount: 35,
             number: 76,
+            created_at: "2025-01-05 12:30:00",
     },
   ]);
 };

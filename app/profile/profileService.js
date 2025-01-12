@@ -1,4 +1,5 @@
 const {genPassword, validPassword} = require('../Utils/passwordUtils');
+const cloudinary = require('../../config/cloudinary');
 const pool = require('../../config/database');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
@@ -106,6 +107,27 @@ async function updateUserPassword(userID, newPassword) {
     }
 }
 
+async function uploadAvatar(userId, filePath) {
+    try {
+      const result = await cloudinary.uploader.upload(filePath, {
+        folder: 'avatars',
+      });
+  
+      const imageUrl = result.secure_url;
+  
+      await pool.query(
+        'UPDATE users SET avatar_img_url = $1 WHERE id = $2',
+        [imageUrl, userId]
+      );
+  
+      return imageUrl;
+    } catch (error) {
+      console.error('Error uploading avatar:', error);
+      throw error;
+    }
+  }
+  
+
 module.exports = {
     getUserById,
     updateUserProfile,
@@ -113,4 +135,5 @@ module.exports = {
     sendVerificationEmail,
     verifyPassword,
     updateUserPassword,
+    uploadAvatar,
 };

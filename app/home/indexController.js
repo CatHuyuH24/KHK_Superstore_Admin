@@ -13,7 +13,11 @@ async function renderHomePage(req, res) {
     const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
     const userID = res.locals.user ? res.locals.user.id : null;
+    const startDate = req.query.startDate || null;
+    const endDate = req.query.endDate || null;
+    const fps =req.query.fps || ''
 
+    const selectedFPS = fps === 'All' ? [] : fps.split(',').map(fpsValue => parseInt(fpsValue, 10));
     const selectedManufacturers =
       manufacturer === 'All' ? [] : manufacturer.split(',');
 
@@ -25,7 +29,11 @@ async function renderHomePage(req, res) {
         limit,
         sort,
         manufacturer,
-        search
+        search,
+        startDate,
+        endDate,
+        fps,
+        null,
       );
 
     // get manufacturers of all products
@@ -47,6 +55,7 @@ async function renderHomePage(req, res) {
       products: products,
       manufacturers: allmanufacturers,
       selectedManufacturers,
+      selectedFPS,
       user_id: userID,
     };
 

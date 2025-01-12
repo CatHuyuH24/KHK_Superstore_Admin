@@ -16,11 +16,25 @@ async function renderTelevisionCategoryPage(req, res) {
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
     const selectedManufacturers = manufacturer === "All" ? [] : manufacturer.split(",");
     const userID = res.locals.user ? res.locals.user.id : null;
+    const startDate = req.query.startDate || null;
+    const endDate = req.query.endDate || null;
+    const fps =req.query.fps || ''
 
+    const selectedFPS = fps === 'All' ? [] : fps.split(',').map(fpsValue => parseInt(fpsValue, 10));
     const {totalCount, products} = 
-    await televisionService.getAllTelevisionsWithFilterAndCount
-    (minPrice, maxPrice, page, 
-      limit, sort, manufacturer, search);
+    await televisionService.getAllTelevisionsWithFilterAndCount(
+        minPrice,
+        maxPrice,
+        page,
+        limit,
+        sort,
+        manufacturer,
+        search,
+        startDate,
+        endDate,
+        fps,
+        'televisions',
+    );
 
     products.forEach(product => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
@@ -38,6 +52,7 @@ async function renderTelevisionCategoryPage(req, res) {
       products: products,
       manufacturers: manufacturersList,
       selectedManufacturers,
+      selectedFPS,
       user_id: userID,
     };
 
