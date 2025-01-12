@@ -7,9 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "create-db": "node ./db/createDatabase.js",
     "migrate:dev": "knex migrate:latest --env development --knexfile ./config/knexfile.js",
-    "reviews_seed:dev": "knex seed:run --specific=reviews_seed.js --env development --knexfile ./config/knexfile.js",
     "seed:dev": "knex seed:run --specific=categories_seed.js --env development --knexfile ./config/knexfile.js && knex seed:run --specific=manufacturers_seed.js --env development --knexfile ./config/knexfile.js && knex seed:run --specific=products_seed.js --env development --knexfile ./config/knexfile.js && knex seed:run --specific=users_seed.js --env development --knexfile ./config/knexfile.js",
-    "setup-db:dev": "npm run create-db && npm run migrate:dev && npm run seed:dev && npm run reviews_seed:dev",
+    "setup-db:dev": "npm run create-db && npm run migrate:dev && npm run seed:dev",
     "setup-db-no-seed:dev": "npm run create-db && npm run migrate:dev",
     "start-server:dev": "nodemon server.js --watch ./views --ext ejs,html",
     "dev": "npm run setup-db:dev && npm run start-server:dev",
@@ -27,6 +26,7 @@
   "dependencies": {
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
+    "cloudinary": "^2.5.1",
     "concurrently": "^6.2.1",
     "connect-flash": "^0.1.1",
     "connect-session-knex": "^5.0.0",

@@ -22,6 +22,9 @@ const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
  * @param {number} limit - Number of items per page.
  * @param {string} manufacturer - manufacturer filter.
  * @param {string} search - Search keyword.
+ * @param {string} startDate - start date
+ * @param {string} endDate - end date
+ * @param {number} fps - frame fresh rate
  * @returns {Promise<Object>} - An object containing the total count of discounted products and the list of discounted products.
  * @returns {number} return.totalCount - Total number of discounted products matching the filters.
  * @returns {Array} return.products - Array of discounted products in random order.
@@ -35,7 +38,10 @@ async function getAllDiscountedProductsWithFilterAndCount(
   limit,
   sort,
   manufacturer,
-  search
+  search,
+  startDate,
+  endDate,
+  fps
 ) {
   try {
     page = Math.max(1, page);
@@ -43,8 +49,10 @@ async function getAllDiscountedProductsWithFilterAndCount(
       priceFilter, 
       manufacturerFilter, 
       searchFilter,
-      productsCategoryFilter
-    } = prepareFilterStatements(minPrice, maxPrice, manufacturer, search);
+      productsCategoryFilter,
+      dateFilter, 
+      fpsFilter,
+    } = prepareFilterStatements(minPrice, maxPrice, sort, manufacturer, search, null, startDate, endDate, fps);
     
     let sortFilter = "";
     const [sortColumn, sortDir] = sort.split(",");
@@ -72,11 +80,13 @@ async function getAllDiscountedProductsWithFilterAndCount(
             JOIN categories c ON p.category_id = c.id
             JOIN manufacturers m ON p.manufacturer_id = m.id
             LEFT JOIN reviews r ON p.id = r.product_id
-            WHERE p.discount > 0
-            ${productsCategoryFilter}
-            ${searchFilter}
-            ${manufacturerFilter}
-            ${priceFilter}
+            WHERE p.discount > 0 
+              ${productsCategoryFilter}
+              ${searchFilter}
+              ${priceFilter}
+              ${dateFilter}
+              ${fpsFilter}
+              ${manufacturerFilter}
             GROUP BY 
                 p.id, 
                 p.name, 
@@ -88,16 +98,52 @@ async function getAllDiscountedProductsWithFilterAndCount(
                 c.id, 
                 m.manufacturer_name, 
                 c.category_name
-            ${sortFilter}
+              
+              ${sortFilter}
             LIMIT $1 OFFSET $2`,
       [limit, (page - 1) * limit]
     );
-
+    const query = ` SELECT 
+                p.id, 
+                p.name, 
+                p.image_url, 
+                p.number, 
+                p.price, 
+                p.discount, 
+                m.manufacturer_name, 
+                c.category_name, 
+                COUNT(DISTINCT r.user_id) AS reviewer_count,
+                AVG(r.rating) AS review_average,             
+                COUNT(*) OVER() AS total_count
+            FROM products p
+            JOIN categories c ON p.category_id = c.id
+            JOIN manufacturers m ON p.manufacturer_id = m.id
+            LEFT JOIN reviews r ON p.id = r.product_id
+            WHERE p.discount > 0 
+              ${productsCategoryFilter}
+              ${searchFilter}
+              ${priceFilter}
+              ${dateFilter}
+              ${fpsFilter}
+              ${manufacturerFilter}
+            GROUP BY 
+                p.id, 
+                p.name, 
+                p.image_url, 
+                p.number, 
+                p.price, 
+                p.discount, 
+                m.id, 
+                c.id, 
+                m.manufacturer_name, 
+                c.category_name
+              
+              ${sortFilter}
+            LIMIT ${limit} OFFSET ${(page - 1) * limit}`;
     let count = 0;
     if(result.rows.length > 0){
       count = parseInt(result.rows[0].total_count);
     }
-
     return {
       totalCount: count,
       products: result.rows,
