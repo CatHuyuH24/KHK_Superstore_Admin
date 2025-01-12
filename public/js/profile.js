@@ -1,9 +1,13 @@
 document.getElementById('avatar').addEventListener('change', previewAvatar);
 
 document.getElementById('saveAvatarBtn').addEventListener('click', async () => {
+  const uploadStatus = document.getElementById('uploadStatus');
   const formData = new FormData();
   const fileInput = document.getElementById('avatar');
   formData.append('avatar', fileInput.files[0]);
+
+  // Hiển thị thông báo "Uploading..."
+  uploadStatus.style.display = 'block';
 
   try {
     const response = await fetch('/profile/upload-avatar', {
@@ -21,6 +25,9 @@ document.getElementById('saveAvatarBtn').addEventListener('click', async () => {
   } catch (error) {
     console.error('Error uploading avatar:', error);
     alert('An error occurred while uploading the avatar.');
+  } finally {
+    // Ẩn thông báo "Uploading..." sau khi quá trình hoàn tất
+    uploadStatus.style.display = 'none';
   }
 });
 

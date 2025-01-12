@@ -15,7 +15,7 @@ exports.up = async function (knex) {
     avatar_img_url VARCHAR,
     is_active BOOLEAN DEFAULT TRUE NOT NULL,
     fullname VARCHAR(255), 
-    phone_number INTEGER
+    phone_number VARCHAR(255)
 );`
   );
 };
