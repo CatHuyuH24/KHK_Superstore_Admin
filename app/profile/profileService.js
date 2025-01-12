@@ -17,6 +17,31 @@ async function getUserById(id) {
     }
 }
 
+
+async function getUserProfile(id) {
+    try {
+        const result = await pool.query(`
+            SELECT email, real_name, phone_number
+            FROM users u 
+            WHERE u.id = $1
+        `, [id]);
+
+        if (result.rows.length > 0) {
+            const userProfile = result.rows[0];
+            
+            if(!userProfile.phone_number){
+                userProfile.phone_number='';
+            }
+            return userProfile;
+        }
+
+        return null;
+    } catch (error) {
+        console.error('Error fetching user profile by id', error);
+        return null;
+    }
+}
+
 async function updateUserProfile(id, name, email, phone) {
     try {
         await pool.query(
@@ -113,4 +138,5 @@ module.exports = {
     sendVerificationEmail,
     verifyPassword,
     updateUserPassword,
+    getUserProfile
 };

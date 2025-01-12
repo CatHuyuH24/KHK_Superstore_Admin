@@ -9,6 +9,8 @@
     <meta name="description" content="main layout section of Superstore page" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
+    <link id="favicon" rel="icon" type="image/png" href="/images/store_icon.ico">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100">
@@ -24,7 +26,29 @@
                         <i class="fa fa-envelope mr-2"></i>mail@ecom.com
                     </a>
                 </div>
-                <div class="flex space-x-4">
+                <div class="flex items-center space-x-4 mt-2 mr-3">
+                    <!-- User Profile Dropdown -->
+                    <div class="relative group" id="user-menu">
+                        <a href="#" class="text-white hover:text-gray-300">
+                            <i class="fas fa-user text-3xl"></i>
+                        </a>
+                        <!-- Dropdown Menu -->
+                        <div
+                            class="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                            <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Tài khoản</a>
+                            <a href="/orderList" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Đơn mua</a>
+                            <a href="/logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" id="logout-link">Đăng xuất</a>
+                        </div>
+                    </div>
+                
+                    <!-- Shopping Bag Icon -->
+                    <a href="/cart" class="text-white hover:text-gray-300" id="cart">
+                        <i class="fas fa-shopping-bag text-3xl"></i>
+                    </a>
+                </div>
+                
+                <!-- Register and Login Links for logged out users -->
+                <div class="flex space-x-4" id="auth-links">
                     <a href="/register" class="text-white flex items-center">
                         <i class="fas fa-user-edit mr-2"></i>Register
                     </a>
@@ -51,28 +75,49 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-           
-            const user = <%- JSON.stringify(user) %>; 
-
+            // Assuming user info is passed from backend as a global variable
+            const user = <%- JSON.stringify(user) %>;
+    
+            // If user is logged in, show the profile and logout links
             if (user) {
-                const loginLink = document.querySelector('a[href="/login"]');
-                const registerLink = document.querySelector('a[href="/register"]');
+                const authLinks = document.getElementById('auth-links');
+                const userMenu = document.getElementById('user-menu');
+                const logoutLink = document.getElementById('logout-link');
     
-                if (loginLink) {
-                    loginLink.innerHTML = '<i class="fas fa-sign-out-alt mr-2"></i>Logout';
-                    loginLink.href = '/logout'; 
+                // Hide register and login links
+                if (authLinks) {
+                    authLinks.style.display = 'none';
                 }
     
-                if (registerLink) {
-                    registerLink.style.display = 'none';
+                // Show user menu with logout
+                if (userMenu) {
+                    userMenu.style.display = 'block';
                 }
+    
+                // Change logout link to the actual logout URL
+                if (logoutLink) {
+                    logoutLink.innerHTML = '<i class="fas fa-sign-out-alt mr-2"></i>Logout';
+                }
+    
             } else {
-                
                 console.log("User chưa đăng nhập, không có thông tin user.");
+    
+                const authLinks = document.getElementById('auth-links');
+                const userMenu = document.getElementById('user-menu');
+                const cart=document.getElementById('cart');
+                
+                // Hide user menu and show register/login links
+                if (authLinks) {
+                    authLinks.style.display = 'flex';
+                }
+    
+                if (userMenu) {
+                    userMenu.style.display = 'none';
+                    cart.style.display='none';
+                }
             }
         });
     </script>
-    
     <script src="/js/searchWithAJAXHandling.js"></script>
     
 </body>
