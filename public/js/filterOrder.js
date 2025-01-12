@@ -103,7 +103,7 @@ function updateOrderList(products) {
           </div>
           <div>
             <button class="bg-gray-200 p-4 rounded-lg">
-              <a href="/checkout/payment?order_code=${order.order_code} " class="text-red-500 font-semibold" onclick="event.preventDefault(); updateFilter('status', 'Canceled'); window.location.href=this.href;">Go To Payment</a>
+              <a href="/checkout/orderSuccess?order_code=${order.order_code} " class="text-red-500 font-semibold" onclick="event.preventDefault(); updateFilter('status', 'Canceled'); window.location.href=this.href;">Go To Payment</a>
             </button>
             
         </div>
