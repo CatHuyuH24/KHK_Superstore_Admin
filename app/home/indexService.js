@@ -50,7 +50,8 @@ async function getAllDiscountedProductsWithFilterAndCount(
       searchFilter, 
       sortFilter, 
       productsCategoryFilter,
-      dateFilter, fpsFilter,
+      dateFilter, 
+      fpsFilter,
     } = prepareFilterStatements(minPrice, maxPrice, sort, manufacturer, search, null, startDate, endDate, fps);
     
     const result = await pool.query(
@@ -64,9 +65,9 @@ async function getAllDiscountedProductsWithFilterAndCount(
               ${searchFilter}
               ${priceFilter}
               ${dateFilter}
+              ${fpsFilter}
               ${sortFilter}
               ${manufacturerFilter}
-              ${fpsFilter}
             LIMIT $1 OFFSET $2`,
       [limit, (page - 1) * limit]
     );
