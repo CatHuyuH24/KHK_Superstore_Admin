@@ -1,3 +1,4 @@
+
 const registrationService = require('./registrationService');
 const userVerificationService=require('../userVerification/userVerificationService')
 const { StatusCodes, getReasonPhrase } = require('http-status-codes');
@@ -24,26 +25,26 @@ const title = "Register - Superstore - GA05";
 async function handleRegisterRequest(req, res) {
     try {
         const { name, email, password, passwordConfirm, agree } = req.body;
-   
+
         if (!agree) {
-            message = "Bạn cần đồng ý với các Điều khoản và Điều kiện.";
+            message = "You need to agree to the Terms and Conditions.";
             if (req.xhr) {
                 return res.json({ message, title });
             }
             return res.render("register", { message, title });
         }
-    
+
         if (password !== passwordConfirm) {
-            message = "Mật khẩu không khớp.";
+            message = "Passwords do not match.";
             if (req.xhr) {
                 return res.json({ message, title });
             }
             return res.render("register", { message, title });
         }
-        
+
         const userCheck = await registrationService.findUserByEmail(email);
         if (userCheck) {
-            message = "Email này đã được đăng ký. Vui lòng sử dụng email khác.";
+            message = "This email is already registered. Please use a different email.";
             if (req.xhr) {
                 return res.json({ message, title });
             }
@@ -57,7 +58,7 @@ async function handleRegisterRequest(req, res) {
             }
             return res.render("register",{message,title});
         }
-        
+
         try {
             const genPass = await genPassword(password);
             try {
@@ -164,7 +165,7 @@ const sendVerificationEmail =async ({id,email},res)=>{
         html: `<p>Verify your email address to complete the signup and login into your account.</p>
             <p>
             This link 
-            <b>expries in 6 hours</b>.</p>
+            <b>expries in 1 minute</b>.</p>
             <p>Press <a href=${currentUrl+"register/verify/"+id+"/"+uniqueString}>here</a>
             to process.</p>`,
     }
@@ -189,7 +190,7 @@ const sendVerificationEmail =async ({id,email},res)=>{
             getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR)
         );
     }
-   
+
 }
 
 

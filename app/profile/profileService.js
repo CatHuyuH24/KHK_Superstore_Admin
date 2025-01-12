@@ -49,7 +49,6 @@ async function sendVerificationEmail(userID, email) {
             "INSERT INTO email_verifications (user_id, email, token) VALUES ($1, $2, $3)",
             [userID, email, token]
         );
-
         const transporter = nodemailer.createTransport({
             service: 'Gmail',
             auth: {
@@ -57,16 +56,13 @@ async function sendVerificationEmail(userID, email) {
                 pass: 'jqiq loga kajs agol',
             },
         });
-
         const verificationLink = `http://localhost:3000/profile/verify-email?token=${token}`;
-
         const mailOptions = {
             from: 'nguyenminhkhang15052004@gmail.com',
             to: email,
             subject: 'Email Verification',
             text: `Please verify your email by clicking the following link: ${verificationLink}`,
         };
-
         await transporter.sendMail(mailOptions);
     } catch (error) {
         console.error('Error sending verification email', error);
