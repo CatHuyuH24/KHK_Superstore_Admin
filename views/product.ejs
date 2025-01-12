@@ -19,6 +19,35 @@
 
 <body class="w-full overflow-x-hidden">
     <div x-data="{ cartOpen: false , isOpen: false }">
+        <!-- Review Form -->
+        <div id="review-form" class="hidden">
+            <div class="w-full h-full z-10 fixed inset-0 items-center justify-center bg-black bg-opacity-50 flex">
+                <div class="bg-white p-6 rounded-lg shadow-lg h-auto w-full">
+                    <h2 class="text-2xl font-medium text-gray-800 mb-4">Add a Review</h2>
+                    <form action="/api/reviews" method="POST">
+                        <div class="mb-4">
+                            <label for="rating" class="block text-gray-700">Rating</label>
+                            <select id="review-rating" name="rating" class="w-full mt-2 p-2 border border-gray-300 rounded-md">
+                                <option value="5">5 - Excellent</option>
+                                <option value="4">4 - Good</option>
+                                <option value="3">3 - Average</option>
+                                <option value="2">2 - Poor</option>
+                                <option value="1">1 - Terrible</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="comment" class="block text-gray-700">Comment</label>
+                            <textarea id="review-comment" name="comment" rows="4" class="w-full mt-2 p-2 border border-gray-300 rounded-md"></textarea>
+                        </div>
+                        <div class="flex justify-end">
+                            <button id="cancel-review-btn" type="button" class="mr-4 px-4 py-2 bg-gray-500 text-white rounded-md">Cancel</button>
+                            <button type="submit" class="px-4 py-2 bg-green-700 text-white rounded-md">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
         <!-- #region Header -->
         <%- include('layouts/mainLayout', { content: locals.body }) %>
             <!-- #region Search -->
@@ -87,13 +116,33 @@
                                 <%= product.name %>
                             </h2>
                             <div class="flex items-center mb-4">
-                                <div class="flex gap-1 text-sm text-yellow-400">
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                    <i class="star"></i>
-                                    <i class="star"></i>
+                                <div class="flex gap-1 text-sm text-gray-600">
+                                    <% if(review_average == null){ %>
+                                        <span>No reviews</span>
+                                    <% } else { %>
+                                        <% let rating = Number(review_average).toFixed(1); %>
+                                        <% let total = 0; %>
+                                        <% while (rating > 0) { %>
+                                            <% if (rating > 0.7) { %>
+                                                <span class="star on"></span>
+                                            <% } else if (rating >= 0.3) { %>
+                                                <span class="star half"></span>
+                                            <% } else {%>
+                                                <span class="star off"></span>
+                                            <% } %>
+                                            <% total++; %>
+                                            <% rating--; %>
+                                        <% } %>
+                                        <% while (total < 5) { %>
+                                            <span class="star off"></span>
+                                            <% total++; %>
+                                        <% } %>
+                                        <span class="text-sm">
+                                            (<%= reviewer_count %> reviewers)
+                                        </span>
+                                    <% } %>
                                 </div>
+                               
                             </div>
                             <div class="space-y-2">
                                 <p class="font-semibold space-x-2">
@@ -102,11 +151,10 @@
                                         <span class="text-green-600">In Stock (<%= product.number %>)</span>
                                         <% }else{ %>
                                             <span class="text-red-600">Currently out of stock</span>
-                                            <% } %>
-
+                                        <% } %>
                                 </p>
                                 <p class="space-x-2">
-                                    <span class="text-gray-800 font-semibold">Brand: </span>
+                                    <span class="text-gray-800 font-semibold">Manufacturer: </span>
                                     <span class="text-gray-600">
                                         <%= product.manufacturer_name %>
                                     </span>
@@ -141,16 +189,16 @@
                                 </div>
                             </div>
 
-                            <div class="mt-6 flex gap-3 border-b border-gray-200 pb-5 pt-5">
+                            <div class="mt-6 flex-col gap-3 border-b border-gray-200 pb-5 pt-5">
                                 <a href="#"
                                     class="add-to-cart-btn block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition"
                                     data-product-id="<%= product.id %>" data-product-price="<%= product.price %>">
-                                    Add to cart
+                                    ADD TO CART
                                 </a>
-                                <a href="#"
-                                    class="border border-gray-300 text-gray-600 px-8 py-2 font-medium uppercase flex items-center gap-2 hover:text-primary transition">
-                                    <i class="gg-heart"></i> Wishlist
-                                </a>
+                                <button id="add-review-btn" type="button" product-id="<%= product.id %>"
+                                    class="block w-full text-center border border-gray-300 text-gray-600 px-8 py-2 font-medium hover:text-primary transition">
+                                    ADD REVIEW
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -175,13 +223,133 @@
                     </div>
                     <!-- ./description -->
 
+                    <!-- review -->
+                    <div class="py-16 mx-3 w-0.9 bg-slate-100">
+                        <h2 id="review-title" class="text-2xl font-medium text-black uppercase mb-6 w-full text-center">Reviews (<%= total_reviews_count %>)</h2>
+                        <div id="reviews-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-flow-row gap-3 xl:gap-9 lg:p-5">
+                            <% reviews.forEach( review => { %>
+                                <div class="bg-white shadow-md flex flex-col h-full justify-items-start">
+                                    <div class="flex items-center justify-between m-3">
+                                        <div class="flex items-center m-2">
+                                            <img src="/images/user_image_placeholder.png" alt="user" class="w-10 h-10 rounded-full">
+                                            <div class="ml-3">
+                                                <h4 class="text-lg lg:text-xl font-medium text-gray-800">
+                                                    <%= review.username %>
+                                                </h4>
+                                                <div class="flex items-center gap-1">
+                                                    <% let rating = Number(review.rating); %>
+                                                    <% let total = 0; %>
+                                                    <% while (rating > 0) { %>
+                                                        <span class="star on"></span>
+                                                        <% rating--; %>
+                                                        <% total++; %>
+                                                    <% } %>
+                                                    <% while (total < 5) { %>
+                                                        <span class="star off"></span>
+                                                        <% total++; %>
+                                                    <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="text-gray-600 text-sm text-end m-2 md:text-base lg:text-lg">
+                                            <% let date = new Date(review.created_at); %>
+                                            <%= date.toLocaleString('en-US', { month: 'short' }).toUpperCase() %> 
+                                            <%= date.getDate().toString().padStart(2, '0') %> 
+                                            <%= date.getFullYear() %> 
+                                            <%= date.toTimeString().slice(0, 8) %>
+                                        </span>
+                                    </div>
+                                    <div class="m-3 max-h-52 text-ellipsis overflow-y-auto">
+                                        <p class="text-gray-600 text-sm md:text-base lg:text-lg 2xl:text-2xl break-words">
+                                            <% if(review.comment == null){ %>
+                                                <span><i>(No comment)</i></span>
+                                            <% } else { %>
+                                                <% let commentLines = review.comment.split('\n'); %>
+                                                <% commentLines.forEach( line=> { %>
+                                                    <span>
+                                                        <%= line %>
+                                                    </span>
+                                                    <br>
+                                                    <% }); %>
+                                            <% } %>
+                                        </p>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                        <!-- review page changing-->
+                        <div class="flex items-center justify-center mx-6 my-4 sm:mx-8">
+                            <div class="sm:flex sm:items-center sm:justify-center">
+                                    <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination" id="Pagination">
+                                        
+                                        <% if (total_pages > 0) { %>
+                                            <% if (page == 1) { %>
+                                                <button disabled onclick="changeReviewPage(<%= page - 1 %>)" class="relative inline-flex items-center rounded-l-md px-2 py-2 md:px-5 md:py-5 text-black ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
+                                                    <span class="sr-only">Previous</span>
+                                                    <svg class="size-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                                        <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            <% } else { %>
+                                                <button onclick="changeReviewPage(<%= page - 1 %>)" class="relative inline-flex items-center rounded-l-md px-2 py-2 md:px-5 md:py-5 text-black ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
+                                                    <span class="sr-only">Previous</span>
+                                                    <svg class="size-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                                        <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            <% } %>
+                                            <button onclick="changeReviewPage(1)" class="relative <%= 1 === page? 'z-10 text-white bg-slate-800' : 'text-gray-900' %> inline-flex items-center px-3 py-3 md:px-7 md:py-5 text-lg font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
+                                                1</button>
+                                                <% if (page > 2) { %>
+                                                    <button disabled class="relative text-gray-900 inline-flex items-center px-3 py-3 md:px-5 md:py-5 text-lg font-semibold ring-1 ring-inset ring-gray-300">
+                                                        ...</button>
+                                                <% } %>
+                                                    
+                                                <% if(page > 1 && page < total_pages) { %>
+                                                <button onclick="changeReviewPage(<%= page %>)" class="relative z-10 text-white bg-slate-800 inline-flex items-center px-3 py-3 md:px-7 md:py-5 text-lg font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
+                                                    <%= page %></button>
+                                                <% } %>
+                                                
+                                                <% if (page < total_pages - 1) { %>
+                                                    <button disabled class="relative text-gray-900 inline-flex items-center px-3 py-3 md:px-5 md:py-5 text-lg font-semibold ring-1 ring-inset ring-gray-300 ">
+                                                        ...</button>
+                                                <% } %>
+                                                <% if(total_pages > 1) { %>
+                                                    <button onclick="changeReviewPage(<%= total_pages %>)" class="relative <%= total_pages === page? 'z-10 text-white bg-slate-800' : 'text-gray-900' %> inline-flex items-center px-3 py-3 md:px-7 md:py-5 text-lg font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
+                                                    <%= total_pages %></button>
+                                                <% } %>
+                                            <% if (page == total_pages) { %>
+                                                <button disabled onclick="changeReviewPage(<%= page + 1 %>)" class="relative inline-flex items-center rounded-r-md px-2 py-2 md:px-5 md:py-5 text-black ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
+                                                    <span class="sr-only">Next</span>
+                                                    <svg class="size-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                                        <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            <% } else { %>
+                                                <button onclick="changeReviewPage(<%= page + 1 %>)" class="relative inline-flex items-center rounded-r-md px-2 py-2 md:px-5 md:py-5 text-black ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
+                                                    <span class="sr-only">Next</span>
+                                                    <svg class="size-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                                        <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            <% } %>
+                                        <% } %>
+                                    </nav>
+                            </div>
+                        </div>
+                        <!-- review page changing-->
+                    </div>
+                    <!-- review -->
+
+                    
+
                     <!-- related product -->
-                    <div class="pb-16 mx-3 w-full">
+                    <div class="pb-16 mx-3">
                         <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6 w-full text-center">Related
                             products</h2>
                         <div
-                            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-flow-row gap-3 xl:gap-9 lg:p-5">
-                            <% relatedProducts.forEach( product=> { %>
+                            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 grid-flow-row gap-3 xl:gap-9 lg:p-5">
+                            <% related_products.forEach( product=> { %>
                                 <div class="bg-white shadow-md flex flex-col h-full justify-around">
                                     <div class="relative group w-full h-80 flex items-center justify-center">
                                         <img src="<%= product.image_url %>" alt="<%= product.name %>"
@@ -193,12 +361,22 @@
                                         </a>
                                     </div>
 
-                                    <div class="flex-grow pt-4 pb-3 px-4 flex flex-col">
+                                    <div class="flex-grow px-4 flex flex-col">
                                         <a href="/category/<%= product.category_name %>/<%= product.id %>">
                                             <h4
-                                                class="text-wrap uppercase font-medium text-base lg:text-xl mb-2 text-gray-800 hover:text-primary transition">
+                                                class="text-wrap uppercase font-medium text-base lg:text-lg mb-2 text-gray-800 hover:text-primary transition">
                                                 <%= product.name %>
                                             </h4>
+                                            <div class="flex place-content-between space-x-2 text-sm lg:text-base">
+                                                <span class="font-semibold">
+                                                    <%= product.manufacturer_name %>
+                                                </span>
+                                                <% if (product.number > 0) {%>
+                                                    <span class="text-end text-sm lg:text-base text-green-600">In stock</span>
+                                                  <% }else{ %>
+                                                    <div class="text-end text-sm lg:text-base text-red-600">Out of stock</div>
+                                                  <% } %>
+                                            </div>
                                         </a>
                                         <div class="flex items-baseline mb-1 space-x-2">
                                             <p class="text-xl text-primary font-semibold">$ <%= product.price %>
@@ -209,13 +387,32 @@
                                                 <% } %>
                                         </div>
 
-                                        <div class="flex p-3">
-                                            <div class="flex gap-1">
-                                                <i class="star"></i>
-                                                <i class="star"></i>
-                                                <i class="star"></i>
-                                                <i class="star"></i>
-                                                <i class="star"></i>
+                                        <div class="flex pb-3">
+                                            <div class="flex gap-1 text-sm lg:text-base text-gray-600">
+                                                <% if(product.review_average == null){ %>
+                                                    <span>No reviews</span>
+                                                <% } else { %>
+                                                    <% let rating = Number(product.review_average).toFixed(1); %>
+                                                    <% let total = 0; %>
+                                                    <% while (rating > 0) { %>
+                                                        <% if (rating > 0.7) { %>
+                                                            <span class="star on"></span>
+                                                        <% } else if (rating >= 0.5 || rating >= 0.3) { %>
+                                                            <span class="star half"></span>
+                                                        <% } else {%>
+                                                            <span class="star off"></span>
+                                                        <% } %>
+                                                        <% total++; %>
+                                                        <% rating--; %>
+                                                    <% } %>
+                                                    <% while (total < 5) { %>
+                                                        <span class="star off"></span>
+                                                        <% total++; %>
+                                                    <% } %>
+                                                    <span>
+                                                        (<%= product.reviewer_count %>)
+                                                    </span>
+                                                <% } %>
                                             </div>
                                         </div>
                                     </div>
@@ -223,7 +420,7 @@
                                     class="add-to-cart-btn block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition"
                                     data-product-id="<%= product.id %>" data-product-price="<%= product.price %>">
                                     Add to cart
-                                </a>
+                                    </a>
                                 </div>
 
                                 <% }); %>
@@ -241,7 +438,9 @@
     </div>
     <script src="/js/cart.js"></script>
     <script src="/js/increaseAndDecreaseQuantity.js"></script>
-    <script src="/js/filterHandlingAndPaginationAJAX.js"></script>
+    <!-- <script src="/js/filterHandlingAndPaginationAJAX.js"></script> -->
+    <script src="/js/reviewsChangePageAJAX.js"></script>
+    <script src="/js/addReviewHandling.js"></script>
     <script src="/layouts/search"></script>
 </body>
 

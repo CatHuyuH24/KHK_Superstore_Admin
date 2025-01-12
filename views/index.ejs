@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/css/tailwind.css" />
   <link href="https://unpkg.com/css.gg/icons/all.css" rel="stylesheet" />
   <link id="favicon" rel="icon" type="image/png" href="/images/store_icon.ico">
-  <script src="//unpkg.com/alpinejs" defer></script>
+  <script src="/unpkg.com/alpinejs" defer></script>
   <script src="../public/js/main.js" defer></script>
   <script src="/public/js/index.js" defer></script>
   <!-- views/index.ejs -->
@@ -155,13 +155,33 @@
                       <% } %>
                     </div>
                     
-                    <div class="flex gap-1 text-sm text-yellow-400">
-                      <i class="star"></i>
-                      <i class="star"></i>
-                      <i class="star"></i>
-                      <i class="star"></i>
-                      <i class="star"></i>
+                    <div class="flex gap-1 text-sm lg:text-base text-gray-600">
+                      <% if(product.review_average == null){ %>
+                        <span>No reviews</span>
+                      <% } else { %>
+                        <% let rating = Number(product.review_average).toFixed(1); %>
+                        <% let total = 0; %>
+                        <% while (rating > 0) { %>
+                          <% if (rating > 0.7) { %>
+                            <span class="star on"></span>
+                          <% } else if (rating >= 0.3) { %>
+                            <span class="star half"></span>
+                          <% } else {%>
+                            <span class="star off"></span>
+                          <% } %>
+                          <% total++; %>
+                          <% rating--; %>
+                        <% } %>
+                        <% while (total < 5) { %>
+                          <span class="star off"></span>
+                          <% total++; %>
+                        <% } %>
+                        <span>
+                            (<%= product.reviewer_count %>)
+                        </span>
+                      <% } %>
                     </div>
+
                   </div> 
 
                   <!-- Nút Add to Cart -->
@@ -195,7 +215,7 @@
   <script src="/js/cart.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/js/filterHandlingAndPaginationAJAX.js"></script>
-  <script src="/js/searchWithAJAXHandling.js"></script>
+  <!-- <script src="/js/searchWithAJAXHandling.js"></script> -->
   <script src="/layouts/search"></script>
 </body>
 

@@ -1,6 +1,8 @@
 const computerService = require("./computerService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
+const reviewService = require('../../services/reviews/reviewService');
+const productService = require('../../services/product/productService');
 
 async function renderComputerCategoryPage(req, res) {
   try {
@@ -53,19 +55,39 @@ async function renderComputerCategoryPage(req, res) {
 
 async function renderComputerDetailPage(req, res) {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
     const computerID = req.params.id;
     const computer = await computerService.getComputerByID(computerID);
     const userID = res.locals.user ? res.locals.user.id : null;
     computer.price = calculateDiscountedPrice(computer.price, computer.discount);
 
-    const relatedComputers = await computerService.getRelatedComputers(computerID, 5);
+    const relatedComputers = await productService.getRelatedProductsFromProductId(computerID, computer.category_name, 8);
     relatedComputers.forEach((product) => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
+    const {reviews, reviewAverage, reviewerCount, totalCount} = await reviewService.getReviewsByProductId(computerID, page, limit);
     const TITLE = computer.name + " - Superstore";
+    const response = {
+      product: computer, 
+      related_products: relatedComputers, 
+      title: TITLE, 
+      user_id: userID, 
+      reviews: reviews,
+      review_average: reviewAverage,
+      reviewer_count: reviewerCount,
+      total_reviews_count: totalCount,
+      total_pages: Math.ceil(totalCount / limit),
+      page: page,
+      reviews_per_page: limit,
+      error: false,
+    }
 
-    res.render("product", { product: computer, relatedProducts: relatedComputers, title: TITLE, user_id:userID});
+    if(req.xhr) {
+      return res.json(response);
+    }
+    res.render("product", response);
   } catch (error) {
     console.error("Error rendering computer detail page:", error);
     res

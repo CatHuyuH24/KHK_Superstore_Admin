@@ -60,43 +60,15 @@ async function getMobilephoneByID(id) {
   }
 }
 
-/**
-* Get related mobilephones, excluding the current mobilephone.
-* 
-* @param {number} currentId - The ID of the current mobilephone.
-* @param {number} [limit=3] - The maximum number of related mobilephones to fetch. If not provided, by default is 3.
-* @returns {Promise<Array>} - A list of related mobilephones.
-* @example
-* const relatedComputers = await getRelatedComputers(1, 3);
-*/
-async function getRelatedMobilephones(currentId, limit = 3) {
-  try {
-      const query = `
-      SELECT p.*, c.category_name, m.manufacturer_name
-      FROM products p JOIN categories c ON p.category_id = c.id
-      JOIN manufacturers m ON p.manufacturer_id = m.id
-      WHERE category_id = (SELECT id from categories where category_name = 'mobilephones')
-      AND p.id <> $1
-      ORDER BY RANDOM() 
-      LIMIT $2
-      `;
-      const result = await pool.query(query, [currentId, limit]);
-      return result.rows;
-  } catch (error) {
-      console.error('Error fetching related mobilephones', error);
-      return [];
-  }
-}
-
 async function getAllMobilephoneManufacturers() {
   const manufacturers = productService.getAllManufacturersOfCategory('mobilephones');
   return manufacturers;
 }
 
+
 module.exports = {
   getAllMobilephonesWithFilterAndCount,
   getMobilephoneByID,
-  getRelatedMobilephones,
   getAllMobilephoneManufacturers,
 };
     

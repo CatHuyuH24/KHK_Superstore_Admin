@@ -3,7 +3,7 @@ const { prepareFilterStatements } = require('../../app/Utils/filterStatementUtil
 
 /**
  * Get all products of a specific category with filters applied and the total number of products.
- * Each record in the result set contains the following fields:
+ * Each record in the 'products' array contains the following fields:
  * - id
  * - name
  * - manufacturer
@@ -11,23 +11,25 @@ const { prepareFilterStatements } = require('../../app/Utils/filterStatementUtil
  * - imageurl
  * - detail
  * - discount
- * - number (number of products)
+ * - number (number of products in stock)
  * - category_name
+ * - reviewer_count (number of unique users who rated the product)
+ * - review_average (average rating of the product)
  * - total_count (total number of products matching the filters)
  *
  * @param {number} minPrice - Minimum price filter.
  * @param {number} maxPrice - Maximum price filter.
  * @param {number} page - Page number for pagination, expected to be greater than 0.
  * @param {number} limit - Number of items per page.
- * @param {string} sort- Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
- * @param {string} manufacturer - manufacturer filter. e.g ["Apple", "Samsung",...].
+ * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is ascending order by id.
+ * @param {string} manufacturer - Manufacturer filter. e.g ["Apple", "Samsung",...].
  * @param {string} search - Search keyword.
- * @param {string} products_category - category of products. e.g. "computers". If not provided, all products will be fetched.
+ * @param {string} products_category - Category of products. e.g. "computers". If not provided, all products will be fetched.
  * @returns {Promise<Object>} An object containing the total count of products and the array of products.
  * @returns {number} return.totalCount - Total number of products matching the filters.
  * @returns {Array} return.products - Array of products.
  * @example
- * const {totalCount, products} = await getAllProductsOfmanufacturerWithFilterAndCount(0, 1000, 1, 10, "price,ASC", "Apple", "macbook", "computers");
+ * const {totalCount, products} = await getAllProductsOfCategoriesWithFilterAndCount(0, 1000, 1, 10, "price,ASC", "Apple", "macbook", "computers");
  */
 async function getAllProductsOfCategoriesWithFilterAndCount(
   minPrice,
@@ -44,28 +46,56 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
       priceFilter, 
       manufacturerFilter, 
       searchFilter, 
-      sortFilter, 
       productsCategoryFilter,
     } = prepareFilterStatements(
       minPrice,
       maxPrice,
-      sort,
       manufacturer,
       search,
       products_category
     );
+    let sortFilter = "";
+    const [sortColumn, sortDir] = sort.split(",");
+    if(sortColumn != null && sortDir != null) {
+        sortFilter = `ORDER BY ${sortColumn} ${sortDir}`;
+    } else {
+        sortFilter = "ORDER BY p.id ASC";
+    }
 
     const result = await pool.query(
       `
-            SELECT p.*, m.manufacturer_name, c.category_name, count(*) over() as total_count 
-            FROM products p 
+            SELECT 
+                p.id, 
+                p.name, 
+                p.image_url, 
+                p.number, 
+                p.price, 
+                p.discount, 
+                m.manufacturer_name, 
+                c.category_name, 
+                COUNT(DISTINCT r.user_id) AS reviewer_count,
+                AVG(r.rating) AS review_average,             
+                COUNT(*) OVER() AS total_count
+            FROM products p
             JOIN categories c ON p.category_id = c.id
             JOIN manufacturers m ON p.manufacturer_id = m.id
+            LEFT JOIN reviews r ON p.id = r.product_id
             WHERE 1=1
             ${productsCategoryFilter}
             ${searchFilter}
             ${manufacturerFilter}
             ${priceFilter}
+            GROUP BY 
+                p.id, 
+                p.name, 
+                p.image_url, 
+                p.number, 
+                p.price, 
+                p.discount, 
+                m.id, 
+                c.id, 
+                m.manufacturer_name, 
+                c.category_name
             ${sortFilter}
             LIMIT $1 OFFSET $2`,
       [limit, (page - 1) * limit]
@@ -136,7 +166,6 @@ async function getAllManufacturersOfCategory(products_category) {
  * @throws {Error} - Throws an error if there is an issue with the database query.
  * @example
  * const product = await getProductById(1);
- * console.log(product);
  * // {
  * //   id: 1,
  * //   name: 'Product Name',
@@ -173,8 +202,87 @@ async function getProductById(id) {
   }
 }
 
+/**
+ * Get related products, excluding the current product.
+ * Each record in the 'products' array contains the following fields:
+ * - id: The ID of the product.
+ * - name: The name of the product.
+ * - image_url: The URL of the product image.
+ * - number: The product number.
+ * - price: The price of the product.
+ * - discount: The discount on the product.
+ * - category_name: The name of the category.
+ * - manufacturer_name: The name of the manufacturer.
+ * - reviewer_count: The number of reviewers.
+ * - review_average: The average rating of the product.
+ *
+ * @param {number} currentId - The ID of the current product.
+ * @param {number} [limit=3] - The maximum number of related products to fetch. If not provided, the default is 3.
+ * @returns {Promise<Array>} - A list of related products.
+ * @example
+ * const relatedProducts = await getRelatedProductsFromProductId(1, 3);
+ * // [
+ * //   {
+ * //     id: 2,
+ * //     name: 'Related Product 1',
+ * //     image_url: 'http://example.com/image1.jpg',
+ * //     number: 10,
+ * //     price: 200,
+ * //     discount: 15,
+ * //     category_name: 'mobilephones',
+ * //     manufacturer_name: 'Manufacturer 1',
+ * //     reviewer_count: 5,
+ * //     review_average: 4.2
+ * //   },
+ * //   {
+ * //     id: 3,
+ * //     name: 'Related Product 2',
+ * //     image_url: 'http://example.com/image2.jpg',
+ * //     number: 20,
+ * //     price: 300,
+ * //     discount: 10,
+ * //     category_name: 'mobilephones',
+ * //     manufacturer_name: 'Manufacturer 2',
+ * //     reviewer_count: 8,
+ * //     review_average: 4.5
+ * //   }
+ * // ]
+ */
+async function getRelatedProductsFromProductId(currentId, categoryName, limit = 3) {
+  try {
+    const query = `
+    SELECT p.id, p.name, p.image_url, p.number, p.price, p.discount, 
+          c.category_name, m.manufacturer_name, COUNT(DISTINCT r.user_id) AS reviewer_count, AVG(r.rating) AS review_average
+    FROM products p JOIN categories c ON p.category_id = c.id
+    LEFT JOIN reviews r on r.product_id = p.id
+    JOIN manufacturers m ON p.manufacturer_id = m.id
+    WHERE category_id = (SELECT id from categories where category_name = $2)
+    AND p.id <> $1
+    GROUP BY 
+              p.id, 
+              p.name, 
+              p.image_url, 
+              p.number, 
+              p.price, 
+              p.discount, 
+              m.id, 
+              c.id, 
+              m.manufacturer_name, 
+              c.category_name
+    ORDER BY RANDOM() 
+    LIMIT $3
+    `;
+    const result = await pool.query(query, [currentId, categoryName, limit]);
+    return result.rows;
+  } catch (error) {
+      console.error('Error fetching related' + categoryName +' products of product id ' + currentId +'; error:\n'+ error);
+      return [];
+  }
+}
+
 module.exports = {
     getAllProductsOfCategoriesWithFilterAndCount,
   getAllManufacturersOfCategory,
   getProductById,
+  getRelatedProductsFromProductId,
 };

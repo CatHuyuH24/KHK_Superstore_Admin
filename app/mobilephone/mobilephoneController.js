@@ -2,6 +2,8 @@ const mobilephoneService = require("./mobilephoneService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
 const { use } = require("passport");
+const reviewService = require('../../services/reviews/reviewService');
+const productService = require('../../services/product/productService');
 
 async function renderMobilephoneCategoryPage(req, res) {
   try {
@@ -54,19 +56,41 @@ async function renderMobilephoneCategoryPage(req, res) {
 
 async function renderMobilephoneDetailPage(req, res) {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
+
     const mobilephoneID = req.params.id;
     const mobilephone = await mobilephoneService.getMobilephoneByID(mobilephoneID);
     const userID = res.locals.user ? res.locals.user.id : null;
     mobilephone.price = calculateDiscountedPrice(mobilephone.price, mobilephone.discount);
 
-    const relatedComputers = await mobilephoneService.getRelatedMobilephones(mobilephoneID, 5);
-    relatedComputers.forEach((product) => {
+    const relatedMobilephones = await productService.getRelatedProductsFromProductId(mobilephoneID, mobilephone.category_name, 8);
+    relatedMobilephones.forEach((product) => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
+    const {reviews, reviewAverage, reviewerCount, totalCount} = await reviewService.getReviewsByProductId(mobilephoneID, page, limit);
     const TITLE = mobilephone.name + " - Superstore";
+    const response = {
+      product: mobilephone, 
+      related_products: relatedMobilephones, 
+      title: TITLE, 
+      user_id: userID, 
+      reviews: reviews,
+      review_average: reviewAverage,
+      reviewer_count: reviewerCount,
+      total_reviews_count: totalCount,
+      total_pages: Math.ceil(totalCount / limit),
+      page: page,
+      reviews_per_page: limit,
+      error: false,
+    }
 
-    res.render("product", { product: mobilephone, relatedProducts: relatedComputers, title: TITLE, user_id: userID });
+    if(req.xhr) {
+      return res.json(response);
+    }
+
+    res.render("product", response);
   } catch (error) {
     console.error("Error rendering mobilephone detail page:", error);
     res

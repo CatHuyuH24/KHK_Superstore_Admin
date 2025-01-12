@@ -2,7 +2,7 @@ const pool = require('../../config/database');
 const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
 /**
  * Get all discounted products with filters applied and the total number of products.
- * Each record in the result set contains the following fields:
+ * Each record in the 'products' array contains the following fields:
  * - id
  * - name
  * - manufacturer
@@ -10,15 +10,16 @@ const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
  * - imageurl
  * - detail
  * - discount
- * - numberofpro (number of products)
+ * - number (number of products in stock)
  * - category_name (category of product)
+ * - review_average (average rating of the product)
+ * - reviewer_count (number of distinct reviews for the product)
  * - total_count (total number of products matching the filters)
  *
  * @param {number} minPrice - Minimum price filter.
  * @param {number} maxPrice - Maximum price filter.
  * @param {number} page - Page number for pagination, expected to be greater than 0.
  * @param {number} limit - Number of items per page.
- * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
  * @param {string} manufacturer - manufacturer filter.
  * @param {string} search - Search keyword.
  * @returns {Promise<Object>} - An object containing the total count of discounted products and the list of discounted products.
@@ -41,22 +42,52 @@ async function getAllDiscountedProductsWithFilterAndCount(
     const {
       priceFilter, 
       manufacturerFilter, 
-      searchFilter, 
-      sortFilter, 
+      searchFilter,
       productsCategoryFilter
-    } = prepareFilterStatements(minPrice, maxPrice, sort, manufacturer, search);
+    } = prepareFilterStatements(minPrice, maxPrice, manufacturer, search);
     
+    let sortFilter = "";
+    const [sortColumn, sortDir] = sort.split(",");
+    if(sortColumn != null && sortDir != null) {
+        sortFilter = `ORDER BY ${sortColumn} ${sortDir}`;
+    } else {
+        sortFilter = "ORDER BY p.id ASC";
+    }
+
     const result = await pool.query(
       `
-            SELECT p.*, c.category_name, m.manufacturer_name, count(*) over() as total_count 
-            FROM products p 
-            JOIN categories c on p.category_id = c.id
+            SELECT 
+                p.id, 
+                p.name, 
+                p.image_url, 
+                p.number, 
+                p.price, 
+                p.discount, 
+                m.manufacturer_name, 
+                c.category_name, 
+                COUNT(DISTINCT r.user_id) AS reviewer_count,
+                AVG(r.rating) AS review_average,             
+                COUNT(*) OVER() AS total_count
+            FROM products p
+            JOIN categories c ON p.category_id = c.id
             JOIN manufacturers m ON p.manufacturer_id = m.id
-            WHERE discount > 0
+            LEFT JOIN reviews r ON p.id = r.product_id
+            WHERE p.discount > 0
             ${productsCategoryFilter}
             ${searchFilter}
             ${manufacturerFilter}
             ${priceFilter}
+            GROUP BY 
+                p.id, 
+                p.name, 
+                p.image_url, 
+                p.number, 
+                p.price, 
+                p.discount, 
+                m.id, 
+                c.id, 
+                m.manufacturer_name, 
+                c.category_name
             ${sortFilter}
             LIMIT $1 OFFSET $2`,
       [limit, (page - 1) * limit]

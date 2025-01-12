@@ -2,6 +2,8 @@ const televisionService = require("./televisionService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
 const { user } = require("pg/lib/defaults");
+const reviewService = require('../../services/reviews/reviewService');
+const productService = require('../../services/product/productService');
 
 async function renderTelevisionCategoryPage(req, res) {
   try {
@@ -54,19 +56,40 @@ async function renderTelevisionCategoryPage(req, res) {
 
 async function renderTelevisionDetailPage(req, res) {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
     const televisionID = req.params.id;
     const television = await televisionService.getTelevisionByID(televisionID);
     const userID = res.locals.user ? res.locals.user.id : null;
     television.price = calculateDiscountedPrice(television.price, television.discount);
 
-    const relatedComputers = await televisionService.getRelatedTelevisions(televisionID, 5);
-    relatedComputers.forEach((product) => {
+    const relatedTelevisions = await productService.getRelatedProductsFromProductId(televisionID,  television.category_name, 8);
+    relatedTelevisions.forEach((product) => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
+    const {reviews, reviewAverage, reviewerCount, totalCount} = await reviewService.getReviewsByProductId(televisionID, page, limit);
     const TITLE = television.name + " - Superstore";
+    const response = {
+      product: television, 
+      related_products: relatedTelevisions, 
+      title: TITLE, 
+      user_id: userID, 
+      reviews: reviews,
+      review_average: reviewAverage,
+      reviewer_count: reviewerCount,
+      total_reviews_count: totalCount,
+      total_pages: Math.ceil(totalCount / limit),
+      page: page,
+      reviews_per_page: limit,
+      error: false,
+    }
 
-    res.render("product", { product: television, relatedProducts: relatedComputers, title: TITLE, user_id: userID });
+    if(req.xhr) {
+      return res.json(response);
+    }
+
+    res.render('product', response);
   } catch (error) {
     console.error("Error rendering television detail page:", error);
     res
