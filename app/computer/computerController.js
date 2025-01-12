@@ -1,6 +1,7 @@
 const computerService = require("./computerService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
+const reviewService = require('../../services/reviews/reviewService');
 
 async function renderComputerCategoryPage(req, res) {
   try {
@@ -53,6 +54,8 @@ async function renderComputerCategoryPage(req, res) {
 
 async function renderComputerDetailPage(req, res) {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
     const computerID = req.params.id;
     const computer = await computerService.getComputerByID(computerID);
     const userID = res.locals.user ? res.locals.user.id : null;
@@ -63,9 +66,27 @@ async function renderComputerDetailPage(req, res) {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
+    const {reviews, reviewAverage, reviewerCount, totalCount} = await reviewService.getReviewsByProductId(computerID, page, limit);
     const TITLE = computer.name + " - Superstore";
+    const response = {
+      product: computer, 
+      related_products: relatedComputers, 
+      title: TITLE, 
+      user_id: userID, 
+      reviews: reviews,
+      review_average: reviewAverage,
+      reviewer_count: reviewerCount,
+      total_reviews_count: totalCount,
+      total_pages: Math.ceil(totalCount / limit),
+      page: page,
+      reviews_per_page: limit,
+      error: false,
+    }
 
-    res.render("product", { product: computer, relatedProducts: relatedComputers, title: TITLE, user_id:userID});
+    if(req.xhr) {
+      return res.json(response);
+    }
+    res.render("product", response);
   } catch (error) {
     console.error("Error rendering computer detail page:", error);
     res

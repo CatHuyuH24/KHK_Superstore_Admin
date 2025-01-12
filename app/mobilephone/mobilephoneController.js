@@ -2,6 +2,7 @@ const mobilephoneService = require("./mobilephoneService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
 const { use } = require("passport");
+const reviewService = require('../../services/reviews/reviewService');
 
 async function renderMobilephoneCategoryPage(req, res) {
   try {
@@ -67,7 +68,7 @@ async function renderMobilephoneDetailPage(req, res) {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });
 
-    let {reviews, reviewAverage, reviewerCount, totalCount} = await mobilephoneService.getReviewsInfoOfMobilephoneById(mobilephoneID, page, limit);
+    const {reviews, reviewAverage, reviewerCount, totalCount} = await reviewService.getReviewsByProductId(mobilephoneID, page, limit);
     const TITLE = mobilephone.name + " - Superstore";
     const response = {
       product: mobilephone, 
