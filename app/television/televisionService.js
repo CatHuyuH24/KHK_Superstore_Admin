@@ -60,33 +60,6 @@ async function getTelevisionByID(id) {
   }
 }
 
-/**
-* Get related televisions, excluding the current television.
-* 
-* @param {number} currentId - The ID of the current television.
-* @param {number} [limit=3] - The maximum number of related televisions to fetch. If not provided, by default is 3.
-* @returns {Promise<Array>} - A list of related televisions.
-* @example
-* const relatedComputers = await getRelatedComputers(1, 3);
-*/
-async function getRelatedTelevisions(currentId, limit = 3) {
-  try {
-      const query = `
-      SELECT p.*, c.category_name, m.manufacturer_name
-      FROM products p JOIN categories c ON p.category_id = c.id
-      JOIN manufacturers m ON p.manufacturer_id = m.id
-      WHERE category_id = (SELECT id from categories where category_name = 'televisions')
-      AND p.id <> $1
-      ORDER BY RANDOM() 
-      LIMIT $2
-      `;
-      const result = await pool.query(query, [currentId, limit]);
-      return result.rows;
-  } catch (error) {
-      console.error('Error fetching related televisions', error);
-      return [];
-  }
-}
 
 async function getAllTelevisionManufacturers() {
   const manufacturers = productService.getAllManufacturersOfCategory('televisions');
@@ -96,7 +69,6 @@ async function getAllTelevisionManufacturers() {
 module.exports = {
   getAllTelevisionsWithFilterAndCount,
   getTelevisionByID,
-  getRelatedTelevisions,
   getAllTelevisionManufacturers,
 };
     

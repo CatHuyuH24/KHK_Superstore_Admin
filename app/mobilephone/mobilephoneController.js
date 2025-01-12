@@ -3,6 +3,7 @@ const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
 const { use } = require("passport");
 const reviewService = require('../../services/reviews/reviewService');
+const productService = require('../../services/product/productService');
 
 async function renderMobilephoneCategoryPage(req, res) {
   try {
@@ -63,7 +64,7 @@ async function renderMobilephoneDetailPage(req, res) {
     const userID = res.locals.user ? res.locals.user.id : null;
     mobilephone.price = calculateDiscountedPrice(mobilephone.price, mobilephone.discount);
 
-    const relatedMobilephones = await mobilephoneService.getRelatedMobilephones(mobilephoneID, 8);
+    const relatedMobilephones = await productService.getRelatedProductsFromProductId(mobilephoneID, mobilephone.category_name, 8);
     relatedMobilephones.forEach((product) => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });

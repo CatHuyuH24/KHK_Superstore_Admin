@@ -3,7 +3,7 @@ const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
 const { user } = require("pg/lib/defaults");
 const reviewService = require('../../services/reviews/reviewService');
-
+const productService = require('../../services/product/productService');
 
 async function renderTelevisionCategoryPage(req, res) {
   try {
@@ -63,7 +63,7 @@ async function renderTelevisionDetailPage(req, res) {
     const userID = res.locals.user ? res.locals.user.id : null;
     television.price = calculateDiscountedPrice(television.price, television.discount);
 
-    const relatedTelevisions = await televisionService.getRelatedTelevisions(televisionID, 5);
+    const relatedTelevisions = await productService.getRelatedProductsFromProductId(televisionID,  television.category_name, 8);
     relatedTelevisions.forEach((product) => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });

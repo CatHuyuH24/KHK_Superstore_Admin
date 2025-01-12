@@ -60,47 +60,6 @@ async function getMobilephoneByID(id) {
   }
 }
 
-/**
- * Get related mobilephones, excluding the current mobilephone.
- * 
- * @param {number} currentId - The ID of the current mobilephone.
- * @param {number} [limit=6] - The maximum number of related mobilephones to fetch. If not provided, the default is 6.
- * @returns {Promise<Array>} - A list of related mobilephones.
- * @example
- * const relatedMobilephones = await getRelatedMobilephones(1, 6);
- */
-async function getRelatedMobilephones(currentId, limit = 6) {
-  try {
-      const query = `
-      SELECT p.id, p.name, p.image_url, p.number, p.price, p.discount, 
-            c.category_name, m.manufacturer_name, COUNT(DISTINCT r.user_id) AS reviewer_count, AVG(r.rating) AS review_average
-      FROM products p JOIN categories c ON p.category_id = c.id
-      LEFT JOIN reviews r on r.product_id = p.id
-      JOIN manufacturers m ON p.manufacturer_id = m.id
-      WHERE category_id = (SELECT id from categories where category_name = 'mobilephones')
-      AND p.id <> $1
-      GROUP BY 
-                p.id, 
-                p.name, 
-                p.image_url, 
-                p.number, 
-                p.price, 
-                p.discount, 
-                m.id, 
-                c.id, 
-                m.manufacturer_name, 
-                c.category_name
-      ORDER BY RANDOM() 
-      LIMIT $2
-      `;
-      const result = await pool.query(query, [currentId, limit]);
-      return result.rows;
-  } catch (error) {
-      console.error('Error fetching related mobilephones', error);
-      return [];
-  }
-}
-
 async function getAllMobilephoneManufacturers() {
   const manufacturers = productService.getAllManufacturersOfCategory('mobilephones');
   return manufacturers;
@@ -110,7 +69,6 @@ async function getAllMobilephoneManufacturers() {
 module.exports = {
   getAllMobilephonesWithFilterAndCount,
   getMobilephoneByID,
-  getRelatedMobilephones,
   getAllMobilephoneManufacturers,
 };
     

@@ -2,6 +2,7 @@ const computerService = require("./computerService");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 const {calculateDiscountedPrice} = require("../Utils/discountedPriceUtils");
 const reviewService = require('../../services/reviews/reviewService');
+const productService = require('../../services/product/productService');
 
 async function renderComputerCategoryPage(req, res) {
   try {
@@ -61,7 +62,7 @@ async function renderComputerDetailPage(req, res) {
     const userID = res.locals.user ? res.locals.user.id : null;
     computer.price = calculateDiscountedPrice(computer.price, computer.discount);
 
-    const relatedComputers = await computerService.getRelatedComputers(computerID, 5);
+    const relatedComputers = await productService.getRelatedProductsFromProductId(computerID, computer.category_name, 8);
     relatedComputers.forEach((product) => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });

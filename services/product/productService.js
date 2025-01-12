@@ -202,8 +202,87 @@ async function getProductById(id) {
   }
 }
 
+/**
+ * Get related products, excluding the current product.
+ * Each record in the 'products' array contains the following fields:
+ * - id: The ID of the product.
+ * - name: The name of the product.
+ * - image_url: The URL of the product image.
+ * - number: The product number.
+ * - price: The price of the product.
+ * - discount: The discount on the product.
+ * - category_name: The name of the category.
+ * - manufacturer_name: The name of the manufacturer.
+ * - reviewer_count: The number of reviewers.
+ * - review_average: The average rating of the product.
+ *
+ * @param {number} currentId - The ID of the current product.
+ * @param {number} [limit=3] - The maximum number of related products to fetch. If not provided, the default is 3.
+ * @returns {Promise<Array>} - A list of related products.
+ * @example
+ * const relatedProducts = await getRelatedProductsFromProductId(1, 3);
+ * // [
+ * //   {
+ * //     id: 2,
+ * //     name: 'Related Product 1',
+ * //     image_url: 'http://example.com/image1.jpg',
+ * //     number: 10,
+ * //     price: 200,
+ * //     discount: 15,
+ * //     category_name: 'mobilephones',
+ * //     manufacturer_name: 'Manufacturer 1',
+ * //     reviewer_count: 5,
+ * //     review_average: 4.2
+ * //   },
+ * //   {
+ * //     id: 3,
+ * //     name: 'Related Product 2',
+ * //     image_url: 'http://example.com/image2.jpg',
+ * //     number: 20,
+ * //     price: 300,
+ * //     discount: 10,
+ * //     category_name: 'mobilephones',
+ * //     manufacturer_name: 'Manufacturer 2',
+ * //     reviewer_count: 8,
+ * //     review_average: 4.5
+ * //   }
+ * // ]
+ */
+async function getRelatedProductsFromProductId(currentId, categoryName, limit = 3) {
+  try {
+    const query = `
+    SELECT p.id, p.name, p.image_url, p.number, p.price, p.discount, 
+          c.category_name, m.manufacturer_name, COUNT(DISTINCT r.user_id) AS reviewer_count, AVG(r.rating) AS review_average
+    FROM products p JOIN categories c ON p.category_id = c.id
+    LEFT JOIN reviews r on r.product_id = p.id
+    JOIN manufacturers m ON p.manufacturer_id = m.id
+    WHERE category_id = (SELECT id from categories where category_name = $2)
+    AND p.id <> $1
+    GROUP BY 
+              p.id, 
+              p.name, 
+              p.image_url, 
+              p.number, 
+              p.price, 
+              p.discount, 
+              m.id, 
+              c.id, 
+              m.manufacturer_name, 
+              c.category_name
+    ORDER BY RANDOM() 
+    LIMIT $3
+    `;
+    const result = await pool.query(query, [currentId, categoryName, limit]);
+    return result.rows;
+  } catch (error) {
+      console.error('Error fetching related' + categoryName +' products of product id ' + currentId +'; error:\n'+ error);
+      return [];
+  }
+}
+
 module.exports = {
     getAllProductsOfCategoriesWithFilterAndCount,
   getAllManufacturersOfCategory,
   getProductById,
+  getRelatedProductsFromProductId,
 };

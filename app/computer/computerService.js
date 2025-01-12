@@ -60,33 +60,6 @@ async function getComputerByID(id) {
   }
 }
 
-/**
-* Get related computers, excluding the current computer.
-* 
-* @param {number} currentId - The ID of the current computer.
-* @param {number} [limit=3] - The maximum number of related computers to fetch. If not provided, by default is 3.
-* @returns {Promise<Array>} - A list of related computers.
-* @example
-* const relatedComputers = await getRelatedComputers(1, 3);
-*/
-async function getRelatedComputers(currentId, limit = 3) {
-  try {
-      const query = `
-      SELECT p.*, c.category_name, m.manufacturer_name
-      FROM products p JOIN categories c ON p.category_id = c.id
-      JOIN manufacturers m ON p.manufacturer_id = m.id
-      WHERE category_id = (SELECT id from categories where category_name = 'computers')
-      AND p.id <> $1
-      ORDER BY RANDOM() 
-      LIMIT $2
-      `;
-      const result = await pool.query(query, [currentId, limit]);
-      return result.rows;
-  } catch (error) {
-      console.error('Error fetching related computers', error);
-      return [];
-  }
-}
 
 async function getAllComputerManufacturers() {
   const manufacturers = productService.getAllManufacturersOfCategory('computers');
@@ -96,7 +69,6 @@ async function getAllComputerManufacturers() {
 module.exports = {
     getAllComputersWithFilterAndCount,
     getComputerByID,
-    getRelatedComputers,
     getAllComputerManufacturers,
 };
     
