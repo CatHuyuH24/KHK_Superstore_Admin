@@ -16,6 +16,8 @@ exports.seed = async function(knex) {
       role: 'admin',
       avatar_img_url: 'null',
       is_active: true,
+      fullname: null,
+      phone_number: null,
     },
     {
       id: 2,
@@ -27,6 +29,8 @@ exports.seed = async function(knex) {
       role: 'customer',
       avatar_img_url: 'null',
       is_active: true,
+      fullname: null,
+      phone_number: null,
     },
   ]);
 };

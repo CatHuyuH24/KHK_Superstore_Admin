@@ -45,7 +45,8 @@ const loginRouter = require("./app/login/loginRouter");
 const logoutRouter = require("./app/logout/logoutRouter");
 const cartRouter = require("./app/cart/cartRouter");
 const checkoutRouter = require("./app/checkout/checkoutRouter");
-
+const profileRouter = require("./app/profile/profileRouter");
+const changePasswordRouter = require("./app/profile/changePasswordRouter"); 
 const reviewAPIRouter = require("./API/reviews/reviewRouter.js");
 
 
@@ -77,6 +78,8 @@ app.use("/login", loginRouter);
 app.use("/logout", logoutRouter);
 app.use("/cart", cartRouter);
 app.use("/checkout", checkoutRouter); 
+app.use("/profile", profileRouter);
+app.use("/change-password", changePasswordRouter);
 
 app.use("/api/reviews", reviewAPIRouter);
 
