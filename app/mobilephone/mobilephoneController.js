@@ -62,7 +62,7 @@ async function renderMobilephoneDetailPage(req, res) {
     const userID = res.locals.user ? res.locals.user.id : null;
     mobilephone.price = calculateDiscountedPrice(mobilephone.price, mobilephone.discount);
 
-    const relatedMobilephones = await mobilephoneService.getRelatedMobilephones(mobilephoneID, 5);
+    const relatedMobilephones = await mobilephoneService.getRelatedMobilephones(mobilephoneID, 8);
     relatedMobilephones.forEach((product) => {
       product.price = calculateDiscountedPrice(product.price, product.discount);
     });

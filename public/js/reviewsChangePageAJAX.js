@@ -142,9 +142,11 @@ function renderPagination(total_pages, page) {
                 ...</button>`;
         }
 
-        paginationElement.innerHTML += `
-        <button onclick="changeReviewPage(${total_pages})" class="relative ${total_pages === page? 'z-10 text-white bg-slate-800' : 'text-gray-900'} inline-flex items-center px-3 py-3 md:px-7 my:py-5 text-lg font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
-        ${total_pages}</button>`;
+        if(total_pages > 1){
+            paginationElement.innerHTML += `
+            <button onclick="changeReviewPage(${total_pages})" class="relative ${total_pages === page? 'z-10 text-white bg-slate-800' : 'text-gray-900'} inline-flex items-center px-3 py-3 md:px-7 my:py-5 text-lg font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
+            ${total_pages}</button>`;
+        }
 
         if(page == total_pages){
             paginationElement.innerHTML += `<button disabled onclick="changeReviewPage(${page+1})" class="relative inline-flex items-center rounded-r-md px-2 py-2 md:px-5 md:py-5 text-black ring-1 ring-inset ring-gray-300 hover:bg-gray-400 focus:z-20 focus:outline-offset-0">
