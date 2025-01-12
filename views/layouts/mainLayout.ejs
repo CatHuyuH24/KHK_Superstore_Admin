@@ -39,13 +39,12 @@
                             <a href="/orderList" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Đơn mua</a>
                             <a href="/logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" id="logout-link">Đăng xuất</a>
                         </div>
-                        <a href="/cart" class="text-white hover:text-gray-300 ml-2">
-                            <i class="fas fa-shopping-bag text-3xl"></i>
-                        </a>
                     </div>
                 
                     <!-- Shopping Bag Icon -->
-                  
+                    <a href="/cart" class="text-white hover:text-gray-300" id="cart">
+                        <i class="fas fa-shopping-bag text-3xl"></i>
+                    </a>
                 </div>
                 
                 <!-- Register and Login Links for logged out users -->
@@ -105,6 +104,7 @@
     
                 const authLinks = document.getElementById('auth-links');
                 const userMenu = document.getElementById('user-menu');
+                const cart=document.getElementById('cart');
                 
                 // Hide user menu and show register/login links
                 if (authLinks) {
@@ -113,6 +113,7 @@
     
                 if (userMenu) {
                     userMenu.style.display = 'none';
+                    cart.style.display='none';
                 }
             }
         });

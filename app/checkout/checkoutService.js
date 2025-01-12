@@ -4,7 +4,7 @@ const pool = require('../../config/database');
 const getProductInCartByUserIdToOrder= async(user_id)=>{
     try {
         const result=await pool.query(`
-        SELECT p.image_url, c.quantity, c.price,
+        SELECT p.id,p.image_url, c.quantity, c.price,
         c.quantity * p.price AS total, p.name,
         p.price*p.discount/100 AS discount_price
         FROM carts c
@@ -43,9 +43,9 @@ async function createNewOrder(user_id, total, address) {
     }
 }
 
-async function createOrderDetail(order_id,product_id,quantity){
+async function createOrderDetail(order_id,product_id,quantity,discount_price){
     try{
-        const result=await pool.query(`insert into orders_detail (order_id,product_id,quantity) values($1,$2,$3)`,[order_id,product_id,quantity]);
+        const result=await pool.query(`insert into orders_detail (order_id,product_id,quantity,price) values($1,$2,$3,$4)`,[order_id,product_id,quantity,discount_price]);
     }catch(error){
         console.error('Error creating new order detail', error);
         throw error; 

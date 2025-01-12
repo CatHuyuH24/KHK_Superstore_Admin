@@ -49,6 +49,7 @@ const checkoutRouter = require("./app/checkout/checkoutRouter");
 const profileRouter = require("./app/profile/profileRouter");
 const changePasswordRouter = require("./app/profile/changePasswordRouter"); 
 const resetPassRouter=require("./app/resetPassword/resetPassRouter");
+const orderListRouter=require("./app/OrderList/orderListRouter");
 
 // Set the view engine to EJS
 app.set("view engine", "ejs");
@@ -81,7 +82,7 @@ app.use("/checkout", checkoutRouter);
 app.use("/profile", profileRouter);
 app.use("/change-password", changePasswordRouter);
 app.use("/resetPass",resetPassRouter);
-
+app.use("/orderList",orderListRouter);
 
 const PORT = process.env.SERVER_PORT || 3000;
 app.listen(PORT, () => {

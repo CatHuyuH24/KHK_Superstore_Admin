@@ -1,5 +1,6 @@
 const checkoutService = require('./checkoutService');
 const profileService=require('../profile/profileService');
+const cartService=require('../cart/cartService')
 
 const renderCheckoutPage=async (req,res)=>{
     try{
@@ -14,7 +15,8 @@ const renderCheckoutPage=async (req,res)=>{
             totalSum: totalSum,
             totalDiscount: totalDiscount,
             user_id:user_id,
-            totalPay: totalPay
+            totalPay: totalPay,
+            userProfile:userProfile
           };
 
         
@@ -47,18 +49,19 @@ async function SaveOrderToDB(req,res){
         }
 
 
-        const { name, email, phonenumber, address_line} = req.body;
+        const {phonenumber,address_line} = req.body;
+     
 
         const totalPay = parseFloat(req.body.totalPay);
         
         const orderInfo=await checkoutService.createNewOrder(userID,totalPay,address_line);
 
         for (const product of products) {
-          await checkoutService.createOrderDetail(orderInfo.order_id, product.product_id, product.quantity);
-          cartService.deleteProductInCart(product.product_id,userID);
+          await checkoutService.createOrderDetail(orderInfo.order_id, product.id, product.quantity,product.discount_price);
+          cartService.deleteProductInCart(product.id,userID);
         }
 
-        return res.redirect(`/checkout/payment?order_code=${orderInfo.order_code}`);
+        return res.redirect(`/checkout/orderSuccess?order_code=${orderInfo.order_code}`);
 
     }catch(error){
         console.error('Error save customer order:',error);
@@ -67,7 +70,7 @@ async function SaveOrderToDB(req,res){
 
 
 
-async function renderPaymentPage(req,res){
+async function renderOrderSuccessPage(req,res){
 
     const userID = res.locals.user ? res.locals.user.id : null;
     if (!userID) {
@@ -81,12 +84,12 @@ async function renderPaymentPage(req,res){
     let orderDetail=[];
     orderDetail=result.details;
     const response={
-      title:"Payment",
+      title:"Order Success",
       Order:Order,
       orderCode:orderCode,
       orderDetail:orderDetail,
     };
-    res.render('payment',response);
+    res.render('orderSuccess',response);
 }
 
 
@@ -133,6 +136,6 @@ async function renderOrderListPage(req, res) {
 module.exports = {
     renderCheckoutPage,
     SaveOrderToDB,
-    renderPaymentPage,
+    renderOrderSuccessPage,
     renderOrderListPage
 };
