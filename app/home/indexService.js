@@ -21,6 +21,9 @@ const { prepareFilterStatements } = require('../Utils/filterStatementUtils');
  * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
  * @param {string} manufacturer - manufacturer filter.
  * @param {string} search - Search keyword.
+ * @param {string} startDate - start date
+ * @param {string} endDate - end date
+ * @param {number} fps - frame fresh rate
  * @returns {Promise<Object>} - An object containing the total count of discounted products and the list of discounted products.
  * @returns {number} return.totalCount - Total number of discounted products matching the filters.
  * @returns {Array} return.products - Array of discounted products in random order.
@@ -34,7 +37,10 @@ async function getAllDiscountedProductsWithFilterAndCount(
   limit,
   sort,
   manufacturer,
-  search
+  search,
+  startDate,
+  endDate,
+  fps
 ) {
   try {
     page = Math.max(1, page);
@@ -43,8 +49,9 @@ async function getAllDiscountedProductsWithFilterAndCount(
       manufacturerFilter, 
       searchFilter, 
       sortFilter, 
-      productsCategoryFilter
-    } = prepareFilterStatements(minPrice, maxPrice, sort, manufacturer, search);
+      productsCategoryFilter,
+      dateFilter
+    } = prepareFilterStatements(minPrice, maxPrice, sort, manufacturer, search, null, startDate, endDate, fps);
     
     const result = await pool.query(
       `
@@ -52,16 +59,16 @@ async function getAllDiscountedProductsWithFilterAndCount(
             FROM products p 
             JOIN categories c on p.category_id = c.id
             JOIN manufacturers m ON p.manufacturer_id = m.id
-            WHERE discount > 0
-            ${productsCategoryFilter}
-            ${searchFilter}
-            ${manufacturerFilter}
-            ${priceFilter}
-            ${sortFilter}
+            WHERE discount > 0 
+              ${productsCategoryFilter}
+              ${searchFilter}
+              ${priceFilter}
+              ${dateFilter}
+              ${sortFilter}
+              ${manufacturerFilter}
             LIMIT $1 OFFSET $2`,
       [limit, (page - 1) * limit]
     );
-
     let count = 0;
     if(result.rows.length > 0){
       count = parseInt(result.rows[0].total_count);

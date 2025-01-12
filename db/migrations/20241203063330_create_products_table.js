@@ -19,6 +19,7 @@ exports.up = async function (knex) {
       screen_width_inches REAL,
       status VARCHAR(255) DEFAULT 'on stock',
       total_purcharsed INT DEFAULT 0,
+      created_at timestamp without time zone,
       FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
       FOREIGN KEY (manufacturer_id) REFERENCES manufacturers(id) ON DELETE CASCADE,
       CONSTRAINT check_status CHECK (status IN ('on stock', 'out of stock', 'suspended')),

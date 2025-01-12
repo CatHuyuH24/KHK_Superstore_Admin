@@ -22,17 +22,19 @@ const productService = require('../../services/product/productService');
  * @param {string} sort - Sort order (column, direction). e.g. "id,ASC". If not provided, by default is random order.
  * @param {string} manufacturer - Manufacturer filter.
  * @param {string} search - Search keyword.
+ * @param {string} startDate - start date
+ * @param {string} endDate - end date
  * @returns {Promise<Object>} - An object containing the total count of televisions and the list of televisions.
  * @returns {number} return.totalCount - Total number of televisions matching the filters.
  * @returns {Array} return.products - Array of televisions.
  * @example
  * const { totalCount, products } = await getAllComputersWithFilterAndCount(0, 1000, 1, 10, "price,ASC", "Apple", "macbook");
  */
-async function getAllTelevisionsWithFilterAndCount(minPrice, maxPrice, page, limit, sort, manufacturer, search) {
+async function getAllTelevisionsWithFilterAndCount(minPrice, maxPrice, page, limit, sort, manufacturer, search, startDate, endDate) {
   try {
       page = Math.max(1, page);
       const { totalCount, products } = await productService.getAllProductsOfCategoriesWithFilterAndCount(
-          minPrice, maxPrice, page, limit, sort, manufacturer, search, 'televisions'
+          minPrice, maxPrice, page, limit, sort, manufacturer, search, 'televisions', startDate, endDate
       );
       
       return { totalCount, products };

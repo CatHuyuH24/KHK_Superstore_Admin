@@ -12,9 +12,6 @@
     <meta name="description" content="TailwindCSS Ecommerce Template" />
     <link href="//fonts.googleapis.com/css?family=Righteous" rel="stylesheet" />
     <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700" rel="stylesheet" />
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/all.min.css" />
-    <link rel="stylesheet" href="/css/style.css" />
     <link id="favicon" rel="icon" type="image/png" href="/images/store_icon.ico" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/tailwind.css" />
@@ -34,7 +31,7 @@
                 <!-- Avatar -->
                 <div class="absolute -top-16 left-1/2 transform -translate-x-1/2">
                     <label for="avatar" class="block">
-                        <img id="avatarPreview" src="https://via.placeholder.com/100" alt="Avatar Preview"
+                        <img id="avatarPreview" src="<%= avatarUrl || 'https://via.placeholder.com/100' %>" alt="Avatar Preview"
                             class="w-32 h-32 rounded-full border-4 border-white shadow-md cursor-pointer object-cover" />
                         <input type="file" id="avatar" accept="image/*" class="hidden"
                             onchange="previewAvatar(event)" />

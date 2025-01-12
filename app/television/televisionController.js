@@ -14,11 +14,22 @@ async function renderTelevisionCategoryPage(req, res) {
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
     const selectedManufacturers = manufacturer === "All" ? [] : manufacturer.split(",");
     const userID = res.locals.user ? res.locals.user.id : null;
+    const startDate = req.query.startDate || null;
+    const endDate = req.query.endDate || null;
 
     const {totalCount, products} = 
-    await televisionService.getAllTelevisionsWithFilterAndCount
-    (minPrice, maxPrice, page, 
-      limit, sort, manufacturer, search);
+    await televisionService.getAllTelevisionsWithFilterAndCount(
+        minPrice,
+        maxPrice,
+        page,
+        limit,
+        sort,
+        manufacturer,
+        search,
+        startDate,
+        endDate,
+        'televisions',
+    );
 
     products.forEach(product => {
       product.price = calculateDiscountedPrice(product.price, product.discount);

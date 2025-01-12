@@ -13,6 +13,8 @@ async function renderHomePage(req, res) {
     const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
     const userID = res.locals.user ? res.locals.user.id : null;
+    const startDate = req.query.startDate || null;
+    const endDate = req.query.endDate || null;
 
     const selectedManufacturers =
       manufacturer === 'All' ? [] : manufacturer.split(',');
@@ -25,7 +27,10 @@ async function renderHomePage(req, res) {
         limit,
         sort,
         manufacturer,
-        search
+        search,
+        startDate,
+        endDate,
+        null,
       );
 
     // get manufacturers of all products

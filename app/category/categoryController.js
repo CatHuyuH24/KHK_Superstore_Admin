@@ -11,6 +11,11 @@ async function renderCategoryPage(req, res) {
     const minPrice = req.query.min ? parseInt(req.query.min) : null;
     const maxPrice = req.query.max ? parseInt(req.query.max) : null;
     const userID = res.locals.user ? res.locals.user.id : null;
+    const startDate = req.query.startDate || null;
+    const endDate = req.query.endDate || null;
+    const fps =req.query.fps || 'All'
+
+    const selectedFPS = fps === 'All' ? [] : fps.split(',').map(fpsValue => parseInt(fpsValue, 10));
 
     const selectedManufacturers =
       manufacturer === 'All' ? [] : manufacturer.split(',');
@@ -23,7 +28,11 @@ async function renderCategoryPage(req, res) {
         limit,
         sort,
         manufacturer,
-        search
+        search,
+        startDate,
+        endDate,
+        null,
+        fps,
       );
 
     products.forEach((product) => {
@@ -41,6 +50,7 @@ async function renderCategoryPage(req, res) {
       products: products,
       manufacturers: manufacturers,
       selectedManufacturers,
+      selectedFPS,
       user_id: userID,
     };
 

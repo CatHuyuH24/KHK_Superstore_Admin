@@ -14,6 +14,7 @@ const { prepareFilterStatements } = require('../../app/Utils/filterStatementUtil
  * - number (number of products)
  * - category_name
  * - total_count (total number of products matching the filters)
+ * - created_at
  *
  * @param {number} minPrice - Minimum price filter.
  * @param {number} maxPrice - Maximum price filter.
@@ -23,6 +24,9 @@ const { prepareFilterStatements } = require('../../app/Utils/filterStatementUtil
  * @param {string} manufacturer - manufacturer filter. e.g ["Apple", "Samsung",...].
  * @param {string} search - Search keyword.
  * @param {string} products_category - category of products. e.g. "computers". If not provided, all products will be fetched.
+ * @param {string} startDate - Start date filter.
+ * @param {string} endDate - End date filter.
+ * @param {number} fps - frame fresh rate filter.
  * @returns {Promise<Object>} An object containing the total count of products and the array of products.
  * @returns {number} return.totalCount - Total number of products matching the filters.
  * @returns {Array} return.products - Array of products.
@@ -37,22 +41,22 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
   sort,
   manufacturer,
   search,
-  products_category
+  products_category,
+  startDate,
+  endDate,
+  fps,
 ) {
   try {
     const {
       priceFilter, 
       manufacturerFilter, 
+      dateFilter,
       searchFilter, 
       sortFilter, 
       productsCategoryFilter,
+      fpsFilter,
     } = prepareFilterStatements(
-      minPrice,
-      maxPrice,
-      sort,
-      manufacturer,
-      search,
-      products_category
+      minPrice, maxPrice, sort, manufacturer, search, products_category, startDate, endDate, fps,
     );
 
     const result = await pool.query(
@@ -64,9 +68,11 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
             WHERE 1=1
             ${productsCategoryFilter}
             ${searchFilter}
-            ${manufacturerFilter}
             ${priceFilter}
+            ${dateFilter}
             ${sortFilter}
+            ${manufacturerFilter}
+            ${fpsFilter}
             LIMIT $1 OFFSET $2`,
       [limit, (page - 1) * limit]
     );
@@ -83,7 +89,11 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
   } catch (error) {
     console.error(
       `Error fetching ${products_category} products from productService:`,
-      error.message
+      error.message,
+      {
+          minPrice, maxPrice, sort, manufacturer, search, products_category, startDate, endDate, fps,
+        stack: error.stack
+      }
     );
     return { totalCount: 0, products: [] };
   }
@@ -133,6 +143,7 @@ async function getAllManufacturersOfCategory(products_category) {
  * @returns {number} return.total_purchased - Total number of products purchased.
  * @returns {string} return.manufacturer_name - Manufacturer name.
  * @returns {string} return.category_name - Category name.
+ * @returns {Date} return.created_at - Product creation timestamp.
  * @throws {Error} - Throws an error if there is an issue with the database query.
  * @example
  * const product = await getProductById(1);
@@ -174,7 +185,7 @@ async function getProductById(id) {
 }
 
 module.exports = {
-    getAllProductsOfCategoriesWithFilterAndCount,
+  getAllProductsOfCategoriesWithFilterAndCount,
   getAllManufacturersOfCategory,
   getProductById,
 };
