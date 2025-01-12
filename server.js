@@ -4,6 +4,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const flash = require("connect-flash");
+require('./app/login/facebook_auth.js');
 require("dotenv").config();
 
 const { ConnectSessionKnexStore } = require("connect-session-knex");
@@ -47,6 +48,7 @@ const cartRouter = require("./app/cart/cartRouter");
 const checkoutRouter = require("./app/checkout/checkoutRouter");
 const profileRouter = require("./app/profile/profileRouter");
 const changePasswordRouter = require("./app/profile/changePasswordRouter"); 
+const resetPassRouter=require("./app/resetPassword/resetPassRouter");
 
 // Set the view engine to EJS
 app.set("view engine", "ejs");
@@ -78,6 +80,7 @@ app.use("/cart", cartRouter);
 app.use("/checkout", checkoutRouter); 
 app.use("/profile", profileRouter);
 app.use("/change-password", changePasswordRouter);
+app.use("/resetPass",resetPassRouter);
 
 
 const PORT = process.env.SERVER_PORT || 3000;

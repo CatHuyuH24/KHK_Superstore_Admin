@@ -13,6 +13,9 @@ exports.up = async function (knex) {
     salt VARCHAR(255) NOT NULL,
     role VARCHAR(32) NOT NULL,
     avatar_img_url VARCHAR,
+    verified BOOLEAN DEFAULT FALSE,
+    resetpassworduniquestring varchar(200) default null,
+    resetPasswordExpires TIMESTAMP,
     is_active BOOLEAN DEFAULT TRUE NOT NULL,
     fullname VARCHAR(255), 
     phone_number INTEGER
