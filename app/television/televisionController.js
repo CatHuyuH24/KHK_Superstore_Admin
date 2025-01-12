@@ -91,6 +91,7 @@ async function renderTelevisionDetailPage(req, res) {
       title: TITLE, 
       user_id: userID, 
       reviews: reviews,
+      avartar_url: reviews[0].avartar_image_url,
       review_average: reviewAverage,
       reviewer_count: reviewerCount,
       total_reviews_count: totalCount,
@@ -99,6 +100,7 @@ async function renderTelevisionDetailPage(req, res) {
       reviews_per_page: limit,
       error: false,
     }
+    console.log(reviews[0]);
 
     if(req.xhr) {
       return res.json(response);

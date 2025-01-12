@@ -76,7 +76,7 @@ document.getElementById("submitBtn").addEventListener("click", async () => {
 
       if (response.ok) {
         const message = await response.text();
-        alert(message);
+        alert("Profile updated successfully.");
         if (message.includes('Verification email sent')) {
           // Optionally, you can redirect the user to a different page or show a message
         } else {

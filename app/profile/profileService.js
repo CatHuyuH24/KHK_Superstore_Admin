@@ -156,6 +156,6 @@ module.exports = {
     sendVerificationEmail,
     verifyPassword,
     updateUserPassword,
-    getUserProfile
+    getUserProfile,
     uploadAvatar,
 };
