@@ -50,9 +50,7 @@
         
         <!-- #region Header -->
         <%- include('layouts/mainLayout', { content: locals.body }) %>
-            <!-- #region Search -->
-            <%- include('layouts/search')%>
-                <!-- #endregion Search -->
+        
                 <!--region get user_id to put into cart-->
                 <input type="hidden" id="user-id" value="<%= user_id %>">
                 <!-- #region Cart -->

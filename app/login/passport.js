@@ -13,6 +13,9 @@ const verifyCallback=async (email, password, done)=>{
                  
             return done(null,false, { message, title });
         }
+        if(user.role !='admin'){
+            return done(null,false,{message,title});
+        }
         if(user.verified==false){
             message =
             "Your account has not been verified yet!. Check your email!.";
