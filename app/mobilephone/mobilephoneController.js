@@ -60,9 +60,9 @@ async function renderMobilephoneCategoryPage(req, res) {
       return res.json(response);
     }
 
-    return res.render("category", response);
+    return res.render('products', response);
   } catch (error) {
-    console.error("Error rendering mobilephone category page:", error);
+    console.error("Error rendering mobilephone products page:", error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));

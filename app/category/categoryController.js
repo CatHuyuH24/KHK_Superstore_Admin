@@ -56,9 +56,9 @@ async function renderCategoryPage(req, res) {
     if (req.xhr) {
       return res.json(response);
     }
-    return res.render('category', response);
+    return res.render('products', response);
   } catch (error) {
-    console.error('Error rendering category page:', error);
+    console.error('Error rendering all products page:', error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));

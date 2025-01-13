@@ -60,9 +60,9 @@ async function renderComputerCategoryPage(req, res) {
       return res.json(response);
     }
 
-    return res.render("category", response);
+    return res.render('products', response);
   } catch (error) {
-    console.error("Error rendering computer category page:", error);
+    console.error("Error rendering computer products page:", error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));

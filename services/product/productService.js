@@ -137,7 +137,7 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
 /**
  * Get all manufacturers of a specific product category.
  *
- * @param {string} products_category category of products, e.g. "computers". If not provided, categories of all products will be fetched. e.g. "computers".
+ * @param {string} products_category category of products, e.g. "computers". If not provided, categories of all products will be fetched.
  * @returns {Promise<Array>} An array of manufacturers.
  */
 async function getAllManufacturersOfCategory(products_category) {
@@ -154,6 +154,16 @@ async function getAllManufacturersOfCategory(products_category) {
 
   const manufacturers = manufacturersList.rows.map((row) => row.manufacturer_name);
   return manufacturers;
+}
+
+async function getAllCategories() {
+  try {
+    const query = `SELECT * FROM categories`;
+    const result = await pool.query(query);
+    return result.rows;
+  }catch(err){
+    console.log('Error fetching all categories: ', err);
+  }
 }
 
 /**
@@ -301,4 +311,5 @@ module.exports = {
   getAllManufacturersOfCategory,
   getProductById,
   getRelatedProductsFromProductId,
+  getAllCategories,
 };
