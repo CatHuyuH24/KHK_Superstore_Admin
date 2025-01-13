@@ -51,7 +51,7 @@ const changePasswordRouter = require("./app/profile/changePasswordRouter");
 const resetPassRouter=require("./app/resetPassword/resetPassRouter");
 const orderListRouter=require("./app/OrderList/orderListRouter");
 const reviewAPIRouter = require("./API/reviews/reviewRouter.js");
-
+const orderManagement=require("./app/orderManagement/orderRouter.js");
 
 // Set the view engine to EJS
 app.set("view engine", "ejs");
@@ -85,6 +85,7 @@ app.use("/profile", profileRouter);
 app.use("/change-password", changePasswordRouter);
 app.use("/resetPass",resetPassRouter);
 app.use("/orderList",orderListRouter);
+app.use("/orderManagement",orderManagement);
 
 app.use("/api/reviews", reviewAPIRouter);
 
