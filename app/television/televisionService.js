@@ -65,7 +65,7 @@ async function getTelevisionByID(id) {
 
 
 async function getAllTelevisionManufacturers() {
-  const manufacturers = productService.getAllManufacturersOfCategory('televisions');
+  const manufacturers = productService.getAllManufacturerNamesOfCategory('televisions');
   return manufacturers;
 }
 

@@ -50,8 +50,10 @@ const profileRouter = require("./app/profile/profileRouter");
 const changePasswordRouter = require("./app/profile/changePasswordRouter"); 
 const resetPassRouter=require("./app/resetPassword/resetPassRouter");
 const orderListRouter=require("./app/OrderList/orderListRouter");
-const reviewAPIRouter = require("./API/reviews/reviewRouter.js");
 
+// API routers
+const reviewAPIRouter = require("./API/reviews/reviewRouter.js");
+const productAPIRouter = require("./API/products/productRouter.js");
 
 // Set the view engine to EJS
 app.set("view engine", "ejs");
@@ -87,6 +89,7 @@ app.use("/resetPass",resetPassRouter);
 app.use("/orderList",orderListRouter);
 
 app.use("/api/reviews", reviewAPIRouter);
+app.use("/api/products", productAPIRouter);
 
 const PORT = process.env.SERVER_PORT || 3000;
 app.listen(PORT, () => {

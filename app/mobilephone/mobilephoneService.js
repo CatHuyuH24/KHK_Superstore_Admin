@@ -64,7 +64,7 @@ async function getMobilephoneByID(id) {
 }
 
 async function getAllMobilephoneManufacturers() {
-  const manufacturers = productService.getAllManufacturersOfCategory('mobilephones');
+  const manufacturers = productService.getAllManufacturerNamesOfCategory('mobilephones');
   return manufacturers;
 }
 

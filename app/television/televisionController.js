@@ -41,6 +41,8 @@ async function renderTelevisionCategoryPage(req, res) {
     });
 
     const manufacturersList = await televisionService.getAllTelevisionManufacturers();
+    const categories = await productService.getAllCategories();
+    const allManufacturers = await productService.getAllManufacturers();
 
     const response = {
       title: "Televisions - Superstore",
@@ -54,15 +56,17 @@ async function renderTelevisionCategoryPage(req, res) {
       selectedManufacturers,
       selectedFPS,
       user_id: userID,
+      categories: categories,
+      allManufacturers: allManufacturers
     };
 
     if (req.xhr) {
       return res.json(response);
     }
 
-    return res.render('products', response);
+    return res.render('category', response);
   } catch (error) {
-    console.error("Error rendering television products page:", error);
+    console.error("Error rendering television category page:", error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));
@@ -100,7 +104,6 @@ async function renderTelevisionDetailPage(req, res) {
       reviews_per_page: limit,
       error: false,
     }
-    console.log(reviews[0]);
 
     if(req.xhr) {
       return res.json(response);

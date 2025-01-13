@@ -61,8 +61,6 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
     search, products_category, startDate, endDate, fps,
   );
 
-  console.log("filter by fps: ", fpsFilter);
-
   let sortFilter = "";
   const [sortColumn, sortDir] = sort.split(",");
   if(sortColumn != null && sortDir != null) {
@@ -135,12 +133,12 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
 }
 
 /**
- * Get all manufacturers of a specific product category.
+ * Get all manufacturers' names of a specific product category.
  *
  * @param {string} products_category category of products, e.g. "computers". If not provided, categories of all products will be fetched.
- * @returns {Promise<Array>} An array of manufacturers.
+ * @returns {Promise<Array>} An array of manufacturers' names.
  */
-async function getAllManufacturersOfCategory(products_category) {
+async function getAllManufacturerNamesOfCategory(products_category) {
   let productsCategoryFilter = '';
   if (products_category != null)
     productsCategoryFilter = `WHERE category_id = (SELECT id from categories where category_name = '${products_category}')`;
@@ -205,7 +203,7 @@ async function getAllCategories() {
  * //   last_modified: '2023-10-01T00:00:00.000Z',
  * //   fps_hz: 60,
  * //   screen_width_inches: 15.6,
- * //   status: 'on stock',
+ * //   status: 'On stock',
  * //   total_purchased: 200,
  * //   manufacturer_name: 'Manufacturer Name',
  * //   category_name: 'Category Name'
@@ -306,10 +304,44 @@ async function getRelatedProductsFromProductId(currentId, categoryName, limit = 
   }
 }
 
+async function addProduct(name, categoryId,
+   manufacturerId, price, imageURL, detail, discount, number, fps, status) {
+  try {
+    if(discount == null || discount == "") {
+      discount = 0;
+    }
+    const query = `
+    INSERT INTO products (name, category_id, manufacturer_id, price, image_url, detail, discount, number, fps_hz, status) 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`;
+    const result = 
+      await pool.query(query, [name, categoryId, manufacturerId, price, imageURL, detail, discount, number, fps, status]);
+    if (result.rowCount == 1){
+      return result.rows[0].id;
+    } else {
+      return null;
+    }
+  } catch(error) {
+    console.error('Error adding product:', error);
+    return false;
+  }
+}
+
+async function getAllManufacturers() {
+  try {
+    const query = `SELECT * FROM manufacturers`;
+    const result = await pool.query(query);
+    return result.rows;
+  } catch (error) {
+    console.error('Error fetching all manufacturers:', error);
+  }
+}
+
 module.exports = {
   getAllProductsOfCategoriesWithFilterAndCount,
-  getAllManufacturersOfCategory,
+  getAllManufacturerNamesOfCategory,
   getProductById,
   getRelatedProductsFromProductId,
   getAllCategories,
+  addProduct,
+  getAllManufacturers,
 };

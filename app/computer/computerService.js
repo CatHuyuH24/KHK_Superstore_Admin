@@ -65,7 +65,7 @@ async function getComputerByID(id) {
 
 
 async function getAllComputerManufacturers() {
-  const manufacturers = productService.getAllManufacturersOfCategory('computers');
+  const manufacturers = productService.getAllManufacturerNamesOfCategory('computers');
   return manufacturers;
 }
 

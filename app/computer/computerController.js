@@ -41,6 +41,8 @@ async function renderComputerCategoryPage(req, res) {
     });
 
     const manufacturersList = await computerService.getAllComputerManufacturers();
+    const categories = await productService.getAllCategories();
+    const allManufacturers = await productService.getAllManufacturers();
 
     const response = {
       title: "Computers - Superstore",
@@ -54,15 +56,17 @@ async function renderComputerCategoryPage(req, res) {
       selectedManufacturers,
       selectedFPS,
       user_id: userID,
+      categories: categories,
+      allManufacturers: allManufacturers,
     };
 
     if (req.xhr) {
       return res.json(response);
     }
 
-    return res.render('products', response);
+    return res.render('category', response);
   } catch (error) {
-    console.error("Error rendering computer products page:", error);
+    console.error("Error rendering computer category page:", error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .send(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR));

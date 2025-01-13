@@ -70,71 +70,66 @@
           <%- include('layouts/filter') %>
           <%- include('layouts/sort_filter') %>
           <!-- #endregion Sidebar -->
-          
+          <button id="add-product-btn" class="px-4 py-2 text-white bg-green-700 rounded-full shadow-lg focus:outline-none hover:bg-green-500 transition">
+            ADD PRODUCT
+          </button>
           <!-- Add product form-->
-              <div id="add-product-form" class="fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50">
+              <div id="add-product-form" class="fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="flex-col bg-white p-6 rounded-lg shadow-lg h-auto w-full max-h-screen overflow-y-auto">
                     <h2 class="text-2xl font-medium text-gray-800 mb-4">ADD A PRODUCT</h2>
-                    <form action="/api/reviews" method="POST">
+                    <form action="/api/products" method="POST">
                         <div class="mb-4">
-                            <label for="product_image" class="block flex-col">
-                                <img id="product_image_preview" src="<%= 'https://via.placeholder.com/100' %>" alt="Product Image Preview"
+                            <label for="product-image" class="block flex-col">
+                                <img id="product-image-preview" src="https://placehold.co/600x400?text=Product+image" alt="Product Image Preview"
                                     class="w-32 h-32 border-4 border-white shadow-md cursor-pointer object-cover" />
-                                <input type="file" id="product_image" name="product_image" accept="image/*" class=""
+                                <input type="file" id="product-image" name="product-image" accept="image/*" class=""
                                     onchange="previewImage(event)" />
                             </label>
                         </div>
             
                         <label for="product-name" class="block text-gray-700">Product Name</label>
-                        <input type="text" name="product-name" class="w-full mt-2 p-2 border border-gray-300 rounded-md" required><br>
+                        <input type="text" id="product-name" class="w-full mt-2 p-2 border border-gray-300 rounded-md" required><br>
                         <label for="product-price" class="block text-gray-700">Price</label>
-                        <input type="number" name="product-price" class="w-full mt-2 p-2 border border-gray-300 rounded-md" required><br>
+                        <input type="number" id="product-price" class="w-full mt-2 p-2 border border-gray-300 rounded-md" required><br>
                         
                         <div class="mb-4">
-                            <label for="category" class="block text-gray-700">Category</label>
-                            <select name="category" class="w-full mt-2 p-2 border border-gray-300 rounded-md">
-                                <option value="5">5 - Excellent</option>
-                                <option value="4">4 - Good</option>
-                                <option value="3">3 - Average</option>
-                                <option value="2">2 - Poor</option>
-                                <option value="1">1 - Terrible</option>
+                            <label for="product-category" class="block text-gray-700">Category</label>
+                            <select id="product-category" class="w-full mt-2 p-2 border border-gray-300 rounded-md">
+                                <% categories.forEach( category => { %>
+                                    <option value="<%= category.id %>"><%= category.category_name %></option>
+                                <% }); %>
                             </select>
                         </div>
             
                         <div class="mb-4">
-                            <label for="manufacturers" class="block text-gray-700">Manufacturers</label>
-                            <select name="manufacturers" class="w-full mt-2 p-2 border border-gray-300 rounded-md">
-                                <option value="5">5 - Excellent</option>
-                                <option value="4">4 - Good</option>
-                                <option value="3">3 - Average</option>
-                                <option value="2">2 - Poor</option>
-                                <option value="1">1 - Terrible</option>
+                            <label for="product-manufacturer" class="block text-gray-700">Manufacturer</label>
+                            <select id="product-manufacturer" class="w-full mt-2 p-2 border border-gray-300 rounded-md">
+                                <% allManufacturers.forEach( manufacturer => { %>
+                                    <option value="<%= manufacturer.id %>"><%= manufacturer.manufacturer_name %></option>
+                                <% }); %>
                             </select>
                         </div>
             
                         <div class="mb-4">
-                            <label for="status" class="block text-gray-700">Status</label>
-                            <select name="status" class="w-full mt-2 p-2 border border-gray-300 rounded-md">
-                                <option value="In stock">In stock</option>
+                            <label for="product-status" class="block text-gray-700">Status</label>
+                            <select id="product-status" class="w-full mt-2 p-2 border border-gray-300 rounded-md">
+                                <option value="On stock">On stock</option>
                                 <option value="Out of stock">Out of stock</option>
                                 <option value="Suspended">Suspended</option>
                             </select>
                         </div>
             
                         <label for="product-fps" class="block text-gray-700">FPS</label>
-                        <input type="number" name="product-fps" class="w-full mt-2 p-2 border border-gray-300 rounded-md"><br>
-            
-                        <label for="product-screen-width" class="block text-gray-700">Screen width</label>
-                        <input type="number" name="product-screen-width" class="w-full mt-2 p-2 border border-gray-300 rounded-md"><br>
-            
+                        <input type="number" id="product-fps" class="w-full mt-2 p-2 border border-gray-300 rounded-md"><br>
+           
                         <label for="product-discount" class="block text-gray-700">Discount</label>
-                        <input type="number" name="product-discount" class="w-full mt-2 p-2 border border-gray-300 rounded-md"><br>
+                        <input type="number" id="product-discount" class="w-full mt-2 p-2 border border-gray-300 rounded-md"><br>
             
                         <label for="product-number" class="block text-gray-700">Number in stock</label>
-                        <input type="number" name="product-number" class="w-full mt-2 p-2 border border-gray-300 rounded-md" required><br>
+                        <input type="number" id="product-number" class="w-full mt-2 p-2 border border-gray-300 rounded-md" required><br>
                         <div class="mb-4">
                             <label for="product-detail" class="block text-gray-700">Detail</label>
-                            <textarea id="product-detail" name="description" rows="4" class="w-full mt-2 p-2 border border-gray-300 rounded-md"></textarea>
+                            <textarea id="product-detail" rows="4" class="w-full mt-2 p-2 border border-gray-300 rounded-md" required></textarea>
                         </div>
                         <div class="flex justify-end">
                             <button id="cancel-btn" type="button" class="mr-4 px-4 py-2 bg-gray-500 text-white rounded-md">Cancel</button>
@@ -143,9 +138,7 @@
                     </form>
                 </div>
             </div>
-          <button id="add-product-btn" class="fixed bottom-4 right-4 z-10 px-4 py-2 text-white bg-green-700 rounded-full shadow-lg focus:outline-none hover:bg-green-500 transition">
-            ADD PRODUCT
-          </button>
+          
           <!-- #region Products -->
           <div class="col-span-3">
             <div class="flex items-center mb-4"></div>
