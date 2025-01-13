@@ -93,7 +93,7 @@ app.use("/orderManagement",orderManagement);
 app.use("/api/reviews", reviewAPIRouter);
 app.use("/api/products", productAPIRouter);
 
-const PORT = process.env.SERVER_PORT || 3000;
+const PORT = process.env.SERVER_PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
 });
