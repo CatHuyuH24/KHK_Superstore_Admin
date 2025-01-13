@@ -2,10 +2,8 @@ async function updateFilter() {
   const form = document.getElementById('manufacturer-filter-form');
   const formData = new FormData(form);
 
-  // Lấy danh sách các thương hiệu (nhà sản xuất) đã được chọn
   const selectedManufacturers = formData.getAll('manufacturers');
 
-  // Tạo URL mới với các tham số
   const params = new URLSearchParams(window.location.search);
   params.set('page', 1);
   if (selectedManufacturers.length > 0) {
@@ -14,7 +12,6 @@ async function updateFilter() {
     params.delete('manufacturer');
   }
 
-  // Cập nhật URL mà không tải lại trang
   const newURL = `${window.location.pathname}?${params.toString()}`;
   window.history.pushState(null, '', newURL);
   // Gửi yêu cầu AJAX tới server
@@ -331,3 +328,24 @@ document.addEventListener("DOMContentLoaded", function () {
   startDateInput.addEventListener("change", validateDates);
   endDateInput.addEventListener("change", validateDates);
 });
+
+
+async function fetchUserData() {
+  try {
+      const nameFilter = filterNameInput.value;
+      const emailFilter = filterEmailInput.value;
+      const roleFilter = filterRoleSelect.value;
+
+      const queryParams = new URLSearchParams({
+          name: nameFilter || '',
+          email: emailFilter || '',
+          role: roleFilter || ''
+      });
+
+      const response = await fetch(`/account-management/users?${queryParams.toString()}`);
+      accounts = await response.json();
+      renderAccounts(accounts);
+  } catch (error) {
+      console.error('Error fetching user data:', error);
+  }
+}

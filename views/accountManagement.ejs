@@ -5,95 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Dữ liệu mẫu về tài khoản
-            const accounts = [
-                { id: 1, name: "Alice", email: "alice@example.com", registered: "2023-12-20", status: "active", role: "admin" },
-                { id: 2, name: "Bob", email: "bob@example.com", registered: "2023-12-21", status: "banned", role: "customer" },
-                { id: 3, name: "Charlie", email: "charlie@example.com", registered: "2023-12-22", status: "active", role: "customer" },
-                { id: 4, name: "Diana", email: "diana@example.com", registered: "2023-12-23", status: "active", role: "admin" },
-                { id: 5, name: "Eve", email: "eve@example.com", registered: "2023-12-24", status: "banned", role: "customer" },
-            ];
-
-            // Hàm hiển thị danh sách tài khoản
-            function renderAccounts(filteredAccounts) {
-                const accountList = document.getElementById('account-list');
-                accountList.innerHTML = filteredAccounts.map(account => `
-                    <div class="p-4 bg-white shadow-md rounded-lg flex items-center justify-between">
-                        <div>
-                            <p><strong>Name:</strong> ${account.name}</p>
-                            <p><strong>Email:</strong> ${account.email}</p>
-                            <p><strong>Registered:</strong> ${account.registered}</p>
-                            <p><strong>Role:</strong> ${account.role}</p>
-                            <p><strong>Status:</strong>
-                                <span class="${account.status === 'active' ? 'text-green-500' : 'text-red-500'}">
-                                    ${account.status}
-                                </span>
-                            </p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="py-2 px-4 w-20 bg-blue-500 text-white rounded hover:bg-blue-400">Details</button>
-                            <button class="py-2 px-4 w-20 bg-${account.status === 'active' ? 'red' : 'green'}-500 text-white rounded hover:bg-${account.status === 'active' ? 'red' : 'green'}-400">
-                                ${account.status === 'active' ? 'Ban' : 'Unban'}
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            // Lọc và sắp xếp
-            const filterNameInput = document.getElementById('filter-name');
-            const filterEmailInput = document.getElementById('filter-email');
-            const filterRoleSelect = document.getElementById('filter-role');
-            const sortBySelect = document.getElementById('sort-by');
-
-            function applyFiltersAndSorting() {
-                let filtered = accounts;
-
-                // Lọc theo tên
-                const nameFilter = filterNameInput.value.toLowerCase();
-                if (nameFilter) {
-                    filtered = filtered.filter(account => account.name.toLowerCase().includes(nameFilter));
-                }
-
-                // Lọc theo email
-                const emailFilter = filterEmailInput.value.toLowerCase();
-                if (emailFilter) {
-                    filtered = filtered.filter(account => account.email.toLowerCase().includes(emailFilter));
-                }
-
-                // Lọc theo vai trò
-                const roleFilter = filterRoleSelect.value;
-                if (roleFilter) {
-                    filtered = filtered.filter(account => account.role === roleFilter);
-                }
-
-                // Sắp xếp
-                const sortBy = sortBySelect.value;
-                if (sortBy) {
-                    filtered.sort((a, b) => {
-                        if (sortBy === 'name' || sortBy === 'email') {
-                            return a[sortBy].localeCompare(b[sortBy]);
-                        } else if (sortBy === 'registered') {
-                            return new Date(a[sortBy]) - new Date(b[sortBy]);
-                        }
-                    });
-                }
-
-                renderAccounts(filtered);
-            }
-
-            // Lắng nghe sự kiện
-            filterNameInput.addEventListener('input', applyFiltersAndSorting);
-            filterEmailInput.addEventListener('input', applyFiltersAndSorting);
-            filterRoleSelect.addEventListener('change', applyFiltersAndSorting);
-            sortBySelect.addEventListener('change', applyFiltersAndSorting);
-
-            // Hiển thị danh sách ban đầu
-            renderAccounts(accounts);
-        });
-    </script>
 </head>
 <body class="bg-gray-100 min-h-screen">
 <!-- #region Header -->
@@ -104,29 +15,82 @@
 <div class="container mx-auto p-6">
     <h1 class="text-3xl font-bold mb-6">Account Management</h1>
 
-    <!-- Bộ lọc -->
-    <div class="bg-white p-4 shadow-md rounded-lg mb-6">
-        <div class="flex gap-4 mb-4">
-            <input id="filter-name" type="text" placeholder="Filter by name"
-                   class="p-2 border border-gray-300 rounded w-1/4">
-            <input id="filter-email" type="text" placeholder="Filter by email"
-                   class="p-2 border border-gray-300 rounded w-1/4">
-            <select id="filter-role" class="p-2 border border-gray-300 rounded w-1/4">
-                <option value="">All Roles</option>
-                <option value="admin">Admin</option>
-                <option value="customer">Customer</option>
-            </select>
-            <select id="sort-by" class="p-2 border border-gray-300 rounded w-1/4">
-                <option value="">Sort by</option>
-                <option value="name">Name</option>
-                <option value="email">Email</option>
-                <option value="registered">Registration Time</option>
-            </select>
-        </div>
+  <!-- Bộ lọc -->
+  <div class="bg-white p-4 shadow-md rounded-lg mb-6">
+    <div class="flex gap-4 mb-4">
+      <input id="filter-name" type="text" placeholder="Filter by name" class="p-2 border border-gray-300 rounded w-1/4">
+      <input id="filter-email" type="text" placeholder="Filter by email" class="p-2 border border-gray-300 rounded w-1/4">
+      <select id="filter-role" class="p-2 border border-gray-300 rounded w-1/4">
+        <option value="">All Roles</option>
+        <option value="admin">Admin</option>
+        <option value="customer">Customer</option>
+      </select>
+      <select id="sort-by" class="p-2 border border-gray-300 rounded w-1/4">
+        <option value="">Sort by</option>
+        <option value="name">Name</option>
+        <option value="email">Email</option>
+        <option value="registered">Registration Time</option>
+      </select>
     </div>
+  </div>
 
     <!-- Danh sách tài khoản -->
-    <div id="account-list" class="space-y-4"></div>
+    <!-- <div id="account-list" class="space-y-4"></div> -->
+    <table class="min-w-full border-collapse border border-gray-300 shadow-md rounded-lg overflow-hidden">
+      <thead class="bg-white border-b">
+        <tr>
+          <th class="text-center px-4 py-2 font-bold text-gray-700">Avatar</th>
+          <th class="text-left px-4 py-2 font-bold text-gray-700">Name</th>
+          <th class="text-left px-4 py-2 font-bold text-gray-700">Email</th>
+          <th class="text-left px-4 py-2 font-bold text-gray-700">Role</th>
+          <th class="text-center px-4 py-2 font-bold text-gray-700">Active</th>
+          <th class="text-left px-4 py-2 font-bold text-gray-700">Phone Number</th>
+          <th class="text-center px-4 py-2 font-bold text-gray-700">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(user => { %>
+          <tr class="hover:bg-gray-50 border-b">
+            <td class="px-4 py-2 text-center">
+              <img src="<%= user.avatar_img_url %>" alt="Avatar" class="w-10 h-10 rounded-full mx-auto">
+            </td>
+            <td class="px-4 py-2 text-gray-800"><%= user.real_name %></td>
+            <td class="px-4 py-2 text-gray-800"><%= user.email %></td>
+            <td class="px-4 py-2 text-gray-800"><%= user.role %></td>
+            <td class="px-4 py-2 text-center">
+              <span class="<%= user.is_active ? 'text-green-600 font-bold' : 'text-red-600 font-bold' %>">
+                <%= user.is_active ? 'Yes' : 'No' %>
+              </span>
+            </td>
+            <td class="px-4 py-2 text-gray-800"><%= user.phone_number %></td>
+            <<td class="px-4 py-2 text-center space-y-2">
+              <!-- View Button -->
+              <button 
+                class="py-1 px-3 text-white rounded bg-blue-500 hover:bg-blue-400 shadow-lg transition-all duration-300"
+                onclick="handleView('<%= user.id %>')">
+                View
+              </button>
+            
+              <!-- Ban/Unban Button -->
+              <button 
+                class="py-1 px-3 text-white rounded shadow-lg transition-all duration-300
+                       <%= user.is_active ? 'bg-red-500 hover:bg-red-400' : 'bg-green-500 hover:bg-green-400' %>"
+                onclick="handleBanUnban('<%= user.id %>', <%= user.is_active %> )">
+                <%= user.is_active ? 'Ban' : 'Unban' %>
+              </button>
+            
+              <!-- Delete Button -->
+              <button 
+                class="py-1 px-3 text-white rounded bg-gray-500 hover:bg-gray-400 shadow-lg transition-all duration-300"
+                onclick="handleDelete('<%= user.id %>')">
+                Delete
+              </button>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    
 
     <!-- Phân trang -->
     <div class="mt-6 text-center">
@@ -138,8 +102,7 @@
 <!-- #region Footer-->
 <%- include('layouts/footer') %>
 <!-- #endregion Footer -->
-
+<script src="/js/sortAndFilterAccount.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="/js/filterHandlingAndPaginationAJAX.js"></script>
 </body>
 </html>
