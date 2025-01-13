@@ -1,5 +1,6 @@
 const pool = require('../../config/database');
 const { prepareFilterStatements } = require('../../app/Utils/filterStatementUtils');
+const cloudinary = require('../../config/cloudinary');
 
 /**
  * Get all products of a specific category with filters applied and the total number of products.
@@ -213,6 +214,7 @@ async function getAllCategories() {
  * // }
  */
 async function getProductById(id) {
+  console.log('productService:',id);
   try {
     const query = `
     SELECT p.*, m.manufacturer_name, c.category_name
@@ -345,6 +347,24 @@ async function getAllManufacturers() {
   }
 }
 
+async function uploadProductImage(filePath) {
+  try {
+    if(filePath == null || filePath == "") {
+      throw new Error('Product image path is empty');
+    }
+
+    const result = await cloudinary.uploader.upload(filePath, {
+      folder: 'products',
+    });
+
+    const imageUrl = result.secure_url;
+    return imageUrl;
+  } catch (error) {
+    console.error('Error uploading product image:', error);
+    throw error;
+  }
+}
+
 module.exports = {
   getAllProductsOfCategoriesWithFilterAndCount,
   getAllManufacturerNamesOfCategory,
@@ -353,4 +373,5 @@ module.exports = {
   getAllCategories,
   addProduct,
   getAllManufacturers,
+  uploadProductImage,
 };

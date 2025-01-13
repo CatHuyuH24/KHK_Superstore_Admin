@@ -55,7 +55,7 @@ async function getAllMobilephonesWithFilterAndCount(minPrice, maxPrice, page, li
  */
 async function getMobilephoneByID(id) {
   try {
-      const mobilephone = productService.getProductById(id);
+      const mobilephone = await productService.getProductById(id);
       return mobilephone;
   } catch (error) {
       console.error('Error fetching mobilephone by ID', error);

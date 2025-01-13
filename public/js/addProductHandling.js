@@ -17,11 +17,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const userId = document.getElementById('user-id').value;
 
     addProductButton.addEventListener('click', function() {
-        toggleFormVisibility();
+        toggleForm();
     });
 
     cancelButton.addEventListener('click', function() {
-        toggleFormVisibility();
+        toggleForm();
     });
     const addProductForm = document.querySelector("form[action='/api/products']");
     addProductForm.addEventListener('submit', async function(event) {
@@ -38,13 +38,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const categoryId = document.getElementById('product-category').value;
         const manufacturerId = document.getElementById('product-manufacturer').value;
         const price = document.getElementById('product-price').value;
-        const imageURL = document.getElementById('product-image-preview').src;
+        const imageFileInput = document.getElementById('product-image');
         const detail = document.getElementById('product-detail').value;
         const discount = document.getElementById('product-discount').value;
         const number = document.getElementById('product-number').value;
         const fps = document.getElementById('product-fps').value;
         const status = document.getElementById('product-status').value;
-        alert(imageURL);
+        
         // Validate the form
         if (discount < 0 || discount >= 100) {
             alert("Discount must be between 0 and 99.");
@@ -71,32 +71,33 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        const uploadStatus = document.getElementById('upload-status');
         // Send the form data to the server
         try{
+            uploadStatus.classList.toggle('hidden');
+
+            const formData = new FormData();
+            formData.append("name", name);
+            formData.append("categoryId", categoryId);
+            formData.append("manufacturerId", manufacturerId);
+            formData.append("price", price);
+            formData.append("imageFilePath", imageFileInput.files[0]);
+            formData.append("detail", detail);
+            formData.append("discount", discount);
+            formData.append("number", number);
+            formData.append("fps", fps);
+            formData.append("status", status);
+
             const response = await fetch("/api/products", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name: name,
-                    categoryId: categoryId,
-                    manufacturerId: manufacturerId,
-                    price: price,
-                    imageURL: "https://placehold.co/600x400?text=Dummy+image", // will be updated later
-                    detail: detail,
-                    discount: discount,
-                    number: number,
-                    fps: fps,
-                    status: status,
-                }),
+                body: formData,
             });
+            
             const result = await response.json();
             if(response.ok){
                 alert(result.message + "\nThe new product will be displayed soon.");
-                addProductFormContainer.classList.toggle('hidden');
-                addProductForm.reset();
-                
+                toggleForm();
+
                 // AJAX go to page 1
                 // this line works because this file will be included in an .ejs file where changePage() is defined (another .js file)
                 changePage(1); 
@@ -106,10 +107,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch(error){
             console.error("Error adding new product:", error);
             alert("Error adding product.\nPlease try again later.");
+        } finally {
+            uploadStatus.classList.toggle('hidden');
         }
     });
 
-    function toggleFormVisibility() {
+    function toggleForm() {
         addProductFormContainer.classList.toggle('hidden');
+        addProductForm.reset();
+        document.getElementById('product-image-preview').src = "https://placehold.co/600x400?text=Product+image";
     }
 });
