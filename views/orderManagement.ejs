@@ -216,7 +216,7 @@
 
                 <!-- Order Items - Scrollable Area -->
                 <div class="space-y-3">
-                    <h3 class="font-semibold text-gray-700">Chi tiết món</h3>
+                    <h3 class="font-semibold text-gray-700 ml-3">Order detail</h3>
                     <div id="orderItems" class="divide-y divide-gray-200 max-h-[40vh] overflow-y-auto rounded-lg">
                         <!-- Items will be inserted here -->
                     </div>
@@ -243,7 +243,7 @@
         <div class="bg-white rounded-xl p-6 w-[500px] transform transition-all duration-300 scale-95 opacity-0">
             <!-- Header -->
             <div class="flex justify-between items-center mb-6 border-b pb-3">
-                <h3 class="text-xl font-bold">Cập nhật đơn hàng #<span id="updateOrderId"></span></h3>
+                <h3 class="text-xl font-bold">Update order status<span id="updateOrderId"></span></h3>
                 <button id="closeUpdateModal" class="text-gray-400 hover:text-gray-600">
                     <i class="fas fa-times"></i>
                 </button>
@@ -256,7 +256,7 @@
                 <!-- Order Status -->
                 <!-- Order Status Select -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Tình trạng đơn hàng</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Order status</label>
                     <select id="orderStatusSelect"
                         class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-[#D9BB1C] focus:border-[#D9BB1C]">
                         <option value="Pending">Pending</option>
@@ -282,10 +282,10 @@
                 <div class="flex justify-end space-x-3 pt-4 border-t">
                     <button type="button" id="cancelUpdate"
                         class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
-                        Hủy
+                        Cancel
                     </button>
                     <button type="submit" class="px-4 py-2 bg-[#D9BB1C] text-white rounded-lg hover:bg-[#D1B31B]">
-                        Cập nhật
+                        Update
                     </button>
                 </div>
             </form>
