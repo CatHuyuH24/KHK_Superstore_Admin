@@ -76,6 +76,16 @@ async function deleteUser(req, res) {
     }
 }
 
+async function renderAccountDetailPage(req, res) {
+  try {
+    const { id } = req.params;
+    const user = await accountManagementService.getUserById(id);
+    res.render('accountDetailPage', { user });
+  } catch (error) {
+    res.status(500).send('Error fetching user details');
+  }
+}
+
 module.exports = {
   renderAccountManagementPage,
   getUsers,
@@ -84,4 +94,5 @@ module.exports = {
   renderAccountDetailPage,
   deleteUser,
   updateUserStatus,
+  renderAccountDetailPage,
 };

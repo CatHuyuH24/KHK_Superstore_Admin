@@ -156,6 +156,64 @@ async function handleBanUnban(userId, isActive) {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    let accounts = [];
+
+    // Fetch user data from the server
+    async function fetchUserData() {
+        try {
+            const response = await fetch('/account-management/users');
+            accounts = await response.json();
+            renderAccounts(accounts);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    }
+
+    // Function to render the account list
+    function renderAccounts(filteredAccounts) {
+        const accountList = document.getElementById('account-list');
+        accountList.innerHTML = filteredAccounts.map(account => `
+            <tr class="hover:bg-gray-100 cursor-pointer">
+                <td class="px-4 py-2">${account.real_name}</td>
+                <td class="px-4 py-2">${account.email}</td>
+                <td class="px-4 py-2">${account.role}</td>
+                <td class="px-4 py-2">${account.is_active ? 'Active' : 'Inactive'}</td>
+                <td class="px-4 py-2 text-center space-y-2">
+                    <button class="py-1 px-3 text-white rounded bg-blue-500 hover:bg-blue-400 shadow-lg transition-all duration-300" onclick="handleView('${account.id}')">View</button>
+                    <button class="py-1 px-3 text-white rounded shadow-lg transition-all duration-300 ${account.is_active ? 'bg-red-500 hover:bg-red-400' : 'bg-green-500 hover:bg-green-400'}" onclick="handleBanUnban('${account.id}', ${account.is_active})">${account.is_active ? 'Ban' : 'Unban'}</button>
+                    <button class="py-1 px-3 text-white rounded bg-gray-500 hover:bg-gray-400 shadow-lg transition-all duration-300" onclick="handleDelete('${account.id}')">Delete</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // Sort accounts
+    function sortAccounts(accounts, sortBy) {
+        return accounts.sort((a, b) => {
+            if (sortBy === 'name') {
+                return a.real_name.localeCompare(b.real_name);
+            } else if (sortBy === 'email') {
+                return a.email.localeCompare(b.email);
+            }
+            return 0;
+        });
+    }
+
+    // Apply sorting
+    function applySorting() {
+        const sortBy = document.getElementById('sort-by').value;
+        const sortedAccounts = sortAccounts(accounts, sortBy);
+        renderAccounts(sortedAccounts);
+    }
+
+    // Event listeners
+    document.getElementById('sort-by').addEventListener('change', applySorting);
+
+    // Fetch and display initial user data
+    fetchUserData();
+});
+
 // Attach event listeners to filter and sort inputs
 document.getElementById('filter-name').addEventListener('input', applyFilters);
 document.getElementById('filter-email').addEventListener('input', applyFilters);

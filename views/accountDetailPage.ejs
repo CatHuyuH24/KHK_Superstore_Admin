@@ -7,51 +7,69 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gradient-to-r from-blue-50 to-gray-100 font-sans">
-<div class="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-xl mt-10 relative">
-    <!-- Back Button -->
-    <button class="absolute top-4 left-4 flex items-center px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L4.414 9H17a1 1 0 110 2H4.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-        </svg>
-        Back
-    </button>
+    <!-- #region Header -->
+    <%- include('layouts/mainLayout', { content: locals.body }) %>
+    <div class="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-xl my-10 relative">
+        <!-- Back Button -->
+        <a href="/account-management" class="absolute top-4 left-4 flex items-center px-4 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L4.414 9H17a1 1 0 110 2H4.414l3.293 3.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Back
+        </a>
 
-    <!-- User Info -->
-    <div class="flex items-center mb-8 mt-14">
-        <img src="https://via.placeholder.com/150" alt="Avatar" class="w-24 h-24 rounded-full border-4 border-blue-500 shadow-md">
-        <div class="ml-6">
-            <h2 class="text-2xl font-semibold text-gray-800">John Doe</h2>
-            <p class="text-sm text-blue-500 font-medium">Admin</p>
+        <!-- User Info -->
+        <div class="flex items-center mb-8 mt-14">
+            <img src="<%= user.avatar_img_url || 'https://via.placeholder.com/150' %>" alt="Avatar" class="w-24 h-24 rounded-full border-4 border-blue-500 shadow-md">
+            <div class="ml-6">
+                <h2 class="text-2xl font-semibold text-gray-800"><%= user.real_name %></h2>
+                <p class="text-sm text-blue-500 font-medium"><%= user.role %></p>
+            </div>
         </div>
-    </div>
 
-    <!-- Account Details -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div class="p-5 bg-gray-50 rounded-lg shadow-sm">
-            <p class="text-sm text-gray-400">Username</p>
-            <p class="text-lg font-medium text-gray-800">johndoe</p>
+        <!-- Account Details -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Username -->
+            <div class="p-5 bg-gradient-to-r from-indigo-50 via-purple-50 to-indigo-100 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <p class="text-sm text-indigo-400 uppercase tracking-wide font-medium">Username</p>
+                <p class="text-xl font-semibold text-indigo-800"><%= user.id %></p>
+            </div>
+            
+            <!-- Email -->
+            <div class="p-5 bg-gradient-to-r from-blue-50 via-teal-50 to-blue-100 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <p class="text-sm text-blue-400 uppercase tracking-wide font-medium">Email</p>
+                <p class="text-xl font-semibold text-blue-800"><%= user.email %></p>
+            </div>
+            
+            <!-- Phone -->
+            <div class="p-5 bg-gradient-to-r from-green-50 via-emerald-50 to-green-100 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <p class="text-sm text-green-400 uppercase tracking-wide font-medium">Phone</p>
+                <p class="text-xl font-semibold text-green-800"><%= user.phone_number %></p>
+            </div>
+            
+            <!-- User ID -->
+            <div class="p-5 bg-gradient-to-r from-yellow-50 via-orange-50 to-yellow-100 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <p class="text-sm text-yellow-400 uppercase tracking-wide font-medium">User ID</p>
+                <p class="text-xl font-semibold text-yellow-800"><%= user.id %></p>
+            </div>
+            
+            <!-- Verified -->
+            <div class="p-5 bg-gradient-to-r from-pink-50 via-red-50 to-pink-100 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <p class="text-sm text-pink-400 uppercase tracking-wide font-medium">Verified</p>
+                <p class="text-xl font-semibold text-pink-800"><%= user.is_active ? 'Yes' : 'No' %></p>
+            </div>
+            
+            <!-- Status -->
+            <div class="p-5 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <p class="text-sm text-gray-500 uppercase tracking-wide font-medium">Status</p>
+                <p class="text-xl font-semibold text-gray-800"><%= user.is_active ? 'Active' : 'Inactive' %></p>
+            </div>
         </div>
-        <div class="p-5 bg-gray-50 rounded-lg shadow-sm">
-            <p class="text-sm text-gray-400">Email</p>
-            <p class="text-lg font-medium text-gray-800">johndoe@example.com</p>
-        </div>
-        <div class="p-5 bg-gray-50 rounded-lg shadow-sm">
-            <p class="text-sm text-gray-400">Phone</p>
-            <p class="text-lg font-medium text-gray-800">+1234567890</p>
-        </div>
-        <div class="p-5 bg-gray-50 rounded-lg shadow-sm">
-            <p class="text-sm text-gray-400">User ID</p>
-            <p class="text-lg font-medium text-gray-800">U12345</p>
-        </div>
-        <div class="p-5 bg-gray-50 rounded-lg shadow-sm">
-            <p class="text-sm text-gray-400">Verified</p>
-            <p class="text-lg font-medium text-gray-800">Yes</p>
-        </div>
-        <div class="p-5 bg-gray-50 rounded-lg shadow-sm">
-            <p class="text-sm text-gray-400">Status</p>
-            <p class="text-lg font-medium text-gray-800">Active</p>
-        </div>
+        
     </div>
-</div>
+    <%- include('layouts/footer') %>
+    <!-- #endregion Footer -->
+    <script src="/js/sortAndFilterAccount.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>
