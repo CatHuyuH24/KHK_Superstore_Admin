@@ -55,7 +55,7 @@ async function getAllComputersWithFilterAndCount(minPrice, maxPrice, page, limit
  */
 async function getComputerByID(id) {
   try {
-      const computer = productService.getProductById(id);
+      const computer = await productService.getProductById(id);
       return computer;
   } catch (error) {
       console.error('Error fetching computer by ID', error);
@@ -65,7 +65,7 @@ async function getComputerByID(id) {
 
 
 async function getAllComputerManufacturers() {
-  const manufacturers = productService.getAllManufacturersOfCategory('computers');
+  const manufacturers = productService.getAllManufacturerNamesOfCategory('computers');
   return manufacturers;
 }
 

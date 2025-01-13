@@ -16,7 +16,7 @@
 
 //     axios.post('/login', { email, password })
 //         .then(response => {
-//             console.log("Response from server: ", response);
+//             ("Response from server: ", response);
 //             if (response.data.success) {
                
 //                 localStorage.setItem('token', response.data.token);

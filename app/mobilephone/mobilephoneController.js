@@ -41,6 +41,8 @@ async function renderMobilephoneCategoryPage(req, res) {
     });
 
     const manufacturersList = await mobilephoneService.getAllMobilephoneManufacturers();
+    const categories = await productService.getAllCategories();
+    const allManufacturers = await productService.getAllManufacturers();
 
     const response = {
       title: "Mobilephones - Superstore",
@@ -54,13 +56,15 @@ async function renderMobilephoneCategoryPage(req, res) {
       selectedManufacturers,
       selectedFPS,
       user_id: userID,
+      categories: categories,
+      allManufacturers: allManufacturers,
     };
 
     if (req.xhr) {
       return res.json(response);
     }
 
-    return res.render("category", response);
+    return res.render('category', response);
   } catch (error) {
     console.error("Error rendering mobilephone category page:", error);
     res
