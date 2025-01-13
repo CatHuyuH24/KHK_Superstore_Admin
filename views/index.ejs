@@ -113,95 +113,92 @@
           <div class="col-span-3">
             <div class="flex items-center mb-4"></div>
 
-            <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              <% products.forEach( product => { %>
-                <div class="bg-white shadow-md flex flex-col h-full rounded-lg">
+            <div id="product-list" class="flex flex-col space-y-4">
+              <% products.forEach(product => { %>
+                <div class="bg-white shadow-md flex flex-row rounded-lg p-4">
                   <!-- Phần hình ảnh sản phẩm -->
-                  <div class="relative group w-full h-80 flex items-center justify-center">
-                    <img src="<%= product.image_url %>" alt="<%= product.name %>" class="max-w-full max-h-full" />
-                    <a href="/category/<%= product.category_name %>/<%= product.id %>">
-                      <div
-                        class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
-                      </div>
-                    </a>
+                  <div class="relative group w-1/4 h-32 flex items-center justify-center mr-4">
+                    <img src="<%= product.image_url %>" alt="<%= product.name %>" class="max-w-full max-h-full rounded-md" />
                   </div>
 
-                  <div class="flex-grow pt-4 pb-3 px-4 flex flex-col">
-                    <!-- Tên sản phẩm -->
-                    <a href="/category/<%= product.category_name %>/<%= product.id %>">
-                      <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
-                        <%= product.name %>
-                      </h4>
-                    </a>
+                  <!-- Thông tin sản phẩm -->
+                  <div class="flex-grow flex flex-col justify-between">
+                    <div>
+                      <a href="/category/<%= product.category_name %>/<%= product.id %>">
+                        <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+                          <%= product.name %>
+                        </h4>
+                      </a>
 
-                    <div class="flex justify-between mb-1 space-x-2">
-                      <p class="text-xl text-primary font-semibold">
-                        <%= product.manufacturer_name %>
-                      </p>
-                      <% if (product.number > 0) {%>
-                        <p class="text-right text-base text-green-600">In stock</p>
-                      <% }else{ %>
-                        <p class="text-right text-base text-red-600">Out of stock</p>
-                      <% } %>
-                    </div>
+                      <div class="flex justify-between mb-1 space-x-2">
+                        <p class="text-xl text-primary font-semibold">
+                          <%= product.manufacturer_name %>
+                        </p>
+                        <% if (product.number > 0) {%>
+                          <p class="text-right text-base text-green-600">In stock</p>
+                        <% } else { %>
+                          <p class="text-right text-base text-red-600">Out of stock</p>
+                        <% } %>
+                      </div>
 
-                    <div class="flex items-baseline mb-1 space-x-2">
-                      <p class="text-xl text-primary font-semibold">
-                        $<%= product.price %>
-                      </p>
+                      <div class="flex items-baseline mb-1 space-x-2">
+                        <p class="text-xl text-primary font-semibold">
+                          $<%= product.price %>
+                        </p>
 
-                      <% if (product.discount > 0) {%>
+                        <% if (product.discount > 0) { %>
                           <p class="text-base text-red-600 font-extrabold">-<%= product.discount %>%</p>
-                      <% } %>
-                    </div>
-                    
-                    <div class="flex gap-1 text-sm lg:text-base text-gray-600">
-                      <% if(product.review_average == null){ %>
-                        <span>No reviews</span>
-                      <% } else { %>
-                        <% let rating = Number(product.review_average).toFixed(1); %>
-                        <% let total = 0; %>
-                        <% while (rating > 0) { %>
-                          <% if (rating > 0.7) { %>
-                            <span class="star on"></span>
-                          <% } else if (rating >= 0.3) { %>
-                            <span class="star half"></span>
-                          <% } else {%>
-                            <span class="star off"></span>
+                        <% } %>
+                      </div>
+
+                      <div class="flex gap-1 text-sm lg:text-base text-gray-600">
+                        <% if(product.review_average == null){ %>
+                          <span>No reviews</span>
+                        <% } else { %>
+                          <% let rating = Number(product.review_average).toFixed(1); %>
+                          <% let total = 0; %>
+                          <% while (rating > 0) { %>
+                            <% if (rating > 0.7) { %>
+                              <span class="star on"></span>
+                            <% } else if (rating >= 0.3) { %>
+                              <span class="star half"></span>
+                            <% } else {%>
+                              <span class="star off"></span>
+                            <% } %>
+                            <% total++; %>
+                            <% rating--; %>
                           <% } %>
-                          <% total++; %>
-                          <% rating--; %>
+                          <% while (total < 5) { %>
+                            <span class="star off"></span>
+                            <% total++; %>
+                          <% } %>
+                          <span>
+                (<%= product.reviewer_count %>)
+              </span>
                         <% } %>
-                        <% while (total < 5) { %>
-                          <span class="star off"></span>
-                          <% total++; %>
-                        <% } %>
-                        <span>
-                            (<%= product.reviewer_count %>)
-                        </span>
-                      <% } %>
+                      </div>
                     </div>
 
-                  </div> 
-
-                  <!-- Nút Add to Cart -->
-                  <a href="#"
-                    class="add-to-cart-btn block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition"
-                    data-product-id="<%= product.id %>"
-                    data-product-price="<%= product.price %>">
-                    Add to cart
-                  </a>
+                    <!-- Nút Update và Delete -->
+                    <div class="flex justify-end space-x-4 mt-4">
+                      <a href="/update/<%= product.id %>"
+                         class="update-btn py-2 px-4 text-center text-white bg-blue-500 hover:bg-blue-400 transition rounded">
+                        Update
+                      </a>
+                      <a href="/delete/<%= product.id %>"
+                         class="delete-btn py-2 px-4 text-center text-white bg-red-500 hover:bg-red-400 transition rounded">
+                        Delete
+                      </a>
+                    </div>
+                  </div>
                 </div>
-                <% }); %>
-
+              <% }); %>
             </div>
-            <!-- #endregion Products -->
 
-            <!-- #region Pagination -->
+            <!-- Pagination -->
             <%- include('layouts/paging') %>
-            <!-- #endregion Pagination -->
           </div>
-                     
+
         </div>
       </main>                  
     </div>

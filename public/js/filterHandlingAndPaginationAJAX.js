@@ -157,52 +157,49 @@ function updateProductList(products) {
   // Render danh sách sản phẩm mới
   products.forEach((product) => {
     let productHTML = `
-      <div class="bg-white shadow-md flex flex-col h-full rounded-lg">
-        <div class="relative group w-full h-80 flex items-center justify-center">
-          <img src="${product.image_url}" alt="${product.name}" class="max-w-full max-h-full" />
+    <div class="bg-white shadow-md flex flex-row rounded-lg p-4">
+      <!-- Phần hình ảnh sản phẩm -->
+      <div class="relative group w-1/4 h-32 flex items-center justify-center mr-4">
+        <img src="${product.image_url}" alt="${product.name}" class="max-w-full max-h-full rounded-md" />
+      </div>
+
+      <!-- Thông tin sản phẩm -->
+      <div class="flex-grow flex flex-col justify-between">
+        <div>
           <a href="/category/${product.category_name}/${product.id}">
-                      <div
-                        class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition">
-                      </div>
-                    </a>
-                  </div>
+            <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+              ${product.name}
+            </h4>
+          </a>
 
-                  <div class="flex-grow pt-4 pb-3 px-4 flex flex-col">
-                    <a href="/category/${product.category_name}/${product.id}">
-                      <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
-                        ${product.name}
-                      </h4>
-                    </a>
-
-                    <div class="flex justify-between mb-1 space-x-2">
-                      <p class="text-xl text-primary font-semibold">
-                        ${product.manufacturer_name}
-                      </p>`;
+          <div class="flex justify-between mb-1 space-x-2">
+            <p class="text-xl text-primary font-semibold">
+              ${product.manufacturer_name}
+            </p>`;
     if (product.number > 0) {
       productHTML += `<p class="text-right text-base text-green-600">In stock</p>`;
     } else {
       productHTML += `<p class="text-right text-base text-red-600">Out of stock</p>`;
     }
     productHTML += `
-                    </div>
-                    <div class="flex items-baseline mb-1 space-x-2">
-                      <p class="text-xl text-primary font-semibold">
-                        $${product.price}
-                      </p>`;
+          </div>
+          <div class="flex items-baseline mb-1 space-x-2">
+            <p class="text-xl text-primary font-semibold">
+              $${product.price}
+            </p>`;
 
     if (product.discount > 0) {
       productHTML += `<p class="text-base text-red-600 font-extrabold">-${product.discount}%</p>`;
     }
     productHTML += `
-                    </div>
-                    
-                    <div class="flex gap-1 text-sm text-gray-600">
-                      
-                    `;
+          </div>
+          
+          <div class="flex gap-1 text-sm text-gray-600">
+            
+          `;
     if (product.review_average == null) {
-      productHTML += `<span">No reviews</span>`;
+      productHTML += `<span>No reviews</span>`;
     } else {
-
       let rating = Number(product.review_average).toFixed(1);
       let total = 0;
       while (rating > 0) {
@@ -220,25 +217,31 @@ function updateProductList(products) {
         productHTML += `<span class="star off"></span>`;
         total++;
       }
-      productHTML += `<span>(${product.reviewer_count})</span>`
+      productHTML += `<span>(${product.reviewer_count})</span>`;
     }
 
     productHTML += `
-                  </div>
-                </div> 
+        </div>
+      </div> 
 
-                <!-- Nút Add to Cart -->
-                <a href="#"
-                  class="add-to-cart-btn block w-full py-3 mt-auto text-center text-white bg-green-700 border border-primary hover:bg-green-500 transition"
-                  data-product-id="${product.id}"
-                  data-product-price="${product.price}">
-                  Add to cart
-                </a>
-              </div>`;
+      <!-- Nút Update và Delete -->
+      <div class="flex justify-end space-x-4 mt-4">
+        <a href="/update/${product.id}" 
+          class="update-btn py-2 px-4 text-center text-white bg-blue-500 hover:bg-blue-400 transition rounded">
+          Update
+        </a>
+        <a href="/delete/${product.id}" 
+          class="delete-btn py-2 px-4 text-center text-white bg-red-500 hover:bg-red-400 transition rounded">
+          Delete
+        </a>
+      </div>
+    </div>
+  </div>`;
 
     productContainer.insertAdjacentHTML('beforeend', productHTML);
   });
-  
+
+
   productContainer.scrollIntoView({ behavior: 'smooth' });
 }
 

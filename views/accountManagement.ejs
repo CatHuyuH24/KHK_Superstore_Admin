@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Dữ liệu mẫu về tài khoản
+            const accounts = [
+                { id: 1, name: "Alice", email: "alice@example.com", registered: "2023-12-20", status: "active", role: "admin" },
+                { id: 2, name: "Bob", email: "bob@example.com", registered: "2023-12-21", status: "banned", role: "customer" },
+                { id: 3, name: "Charlie", email: "charlie@example.com", registered: "2023-12-22", status: "active", role: "customer" },
+                { id: 4, name: "Diana", email: "diana@example.com", registered: "2023-12-23", status: "active", role: "admin" },
+                { id: 5, name: "Eve", email: "eve@example.com", registered: "2023-12-24", status: "banned", role: "customer" },
+            ];
+
+            // Hàm hiển thị danh sách tài khoản
+            function renderAccounts(filteredAccounts) {
+                const accountList = document.getElementById('account-list');
+                accountList.innerHTML = filteredAccounts.map(account => `
+                    <div class="p-4 bg-white shadow-md rounded-lg flex items-center justify-between">
+                        <div>
+                            <p><strong>Name:</strong> ${account.name}</p>
+                            <p><strong>Email:</strong> ${account.email}</p>
+                            <p><strong>Registered:</strong> ${account.registered}</p>
+                            <p><strong>Role:</strong> ${account.role}</p>
+                            <p><strong>Status:</strong>
+                                <span class="${account.status === 'active' ? 'text-green-500' : 'text-red-500'}">
+                                    ${account.status}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="py-2 px-4 w-20 bg-blue-500 text-white rounded hover:bg-blue-400">Details</button>
+                            <button class="py-2 px-4 w-20 bg-${account.status === 'active' ? 'red' : 'green'}-500 text-white rounded hover:bg-${account.status === 'active' ? 'red' : 'green'}-400">
+                                ${account.status === 'active' ? 'Ban' : 'Unban'}
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Lọc và sắp xếp
+            const filterNameInput = document.getElementById('filter-name');
+            const filterEmailInput = document.getElementById('filter-email');
+            const filterRoleSelect = document.getElementById('filter-role');
+            const sortBySelect = document.getElementById('sort-by');
+
+            function applyFiltersAndSorting() {
+                let filtered = accounts;
+
+                // Lọc theo tên
+                const nameFilter = filterNameInput.value.toLowerCase();
+                if (nameFilter) {
+                    filtered = filtered.filter(account => account.name.toLowerCase().includes(nameFilter));
+                }
+
+                // Lọc theo email
+                const emailFilter = filterEmailInput.value.toLowerCase();
+                if (emailFilter) {
+                    filtered = filtered.filter(account => account.email.toLowerCase().includes(emailFilter));
+                }
+
+                // Lọc theo vai trò
+                const roleFilter = filterRoleSelect.value;
+                if (roleFilter) {
+                    filtered = filtered.filter(account => account.role === roleFilter);
+                }
+
+                // Sắp xếp
+                const sortBy = sortBySelect.value;
+                if (sortBy) {
+                    filtered.sort((a, b) => {
+                        if (sortBy === 'name' || sortBy === 'email') {
+                            return a[sortBy].localeCompare(b[sortBy]);
+                        } else if (sortBy === 'registered') {
+                            return new Date(a[sortBy]) - new Date(b[sortBy]);
+                        }
+                    });
+                }
+
+                renderAccounts(filtered);
+            }
+
+            // Lắng nghe sự kiện
+            filterNameInput.addEventListener('input', applyFiltersAndSorting);
+            filterEmailInput.addEventListener('input', applyFiltersAndSorting);
+            filterRoleSelect.addEventListener('change', applyFiltersAndSorting);
+            sortBySelect.addEventListener('change', applyFiltersAndSorting);
+
+            // Hiển thị danh sách ban đầu
+            renderAccounts(accounts);
+        });
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+<!-- #region Header -->
+<%- include('layouts/mainLayout', { content: locals.body }) %>
+<!-- #region Search -->
+<%- include('layouts/search')%>
+<!-- #endregion Search -->
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">Account Management</h1>
+
+    <!-- Bộ lọc -->
+    <div class="bg-white p-4 shadow-md rounded-lg mb-6">
+        <div class="flex gap-4 mb-4">
+            <input id="filter-name" type="text" placeholder="Filter by name"
+                   class="p-2 border border-gray-300 rounded w-1/4">
+            <input id="filter-email" type="text" placeholder="Filter by email"
+                   class="p-2 border border-gray-300 rounded w-1/4">
+            <select id="filter-role" class="p-2 border border-gray-300 rounded w-1/4">
+                <option value="">All Roles</option>
+                <option value="admin">Admin</option>
+                <option value="customer">Customer</option>
+            </select>
+            <select id="sort-by" class="p-2 border border-gray-300 rounded w-1/4">
+                <option value="">Sort by</option>
+                <option value="name">Name</option>
+                <option value="email">Email</option>
+                <option value="registered">Registration Time</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Danh sách tài khoản -->
+    <div id="account-list" class="space-y-4"></div>
+
+    <!-- Phân trang -->
+    <div class="mt-6 text-center">
+        <button class="py-2 px-4 bg-gray-300 text-gray-700 rounded" disabled>Previous</button>
+        <button class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-400">Next</button>
+    </div>
+
+</div>
+<!-- #region Footer-->
+<%- include('layouts/footer') %>
+<!-- #endregion Footer -->
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="/js/filterHandlingAndPaginationAJAX.js"></script>
+</body>
+</html>
