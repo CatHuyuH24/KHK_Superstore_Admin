@@ -11,6 +11,7 @@ const { prepareFilterStatements } = require('../../app/Utils/filterStatementUtil
  * - imageurl
  * - detail
  * - discount
+ * - status ('On stock', 'Out of stock', 'Suspended')
  * - number (number of products in stock)
  * - category_name
  * - reviewer_count (number of unique users who rated the product)
@@ -78,6 +79,7 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
                 p.number, 
                 p.price, 
                 p.discount, 
+                p.status,
                 m.manufacturer_name, 
                 c.category_name, 
                 COUNT(DISTINCT r.user_id) AS reviewer_count,
@@ -101,6 +103,7 @@ async function getAllProductsOfCategoriesWithFilterAndCount(
                 p.number, 
                 p.price, 
                 p.discount, 
+                p.status,
                 m.id, 
                 c.id, 
                 m.manufacturer_name, 
@@ -212,7 +215,7 @@ async function getAllCategories() {
 async function getProductById(id) {
   try {
     const query = `
-    SELECT p.*, m.manufacturer_name, c.category_name, p.status
+    SELECT p.*, m.manufacturer_name, c.category_name
     FROM products p
     JOIN manufacturers m ON p.manufacturer_id = m.id
     JOIN categories c ON p.category_id = c.id
@@ -289,6 +292,7 @@ async function getRelatedProductsFromProductId(currentId, categoryName, limit = 
               p.number, 
               p.price, 
               p.discount, 
+              p.status,
               m.id, 
               c.id, 
               m.manufacturer_name, 
@@ -310,6 +314,11 @@ async function addProduct(name, categoryId,
     if(discount == null || discount == "") {
       discount = 0;
     }
+
+    if(fps == "") {
+      fps = null;
+    }
+
     const query = `
     INSERT INTO products (name, category_id, manufacturer_id, price, image_url, detail, discount, number, fps_hz, status) 
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`;

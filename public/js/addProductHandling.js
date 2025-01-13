@@ -38,13 +38,40 @@ document.addEventListener('DOMContentLoaded', function() {
         const categoryId = document.getElementById('product-category').value;
         const manufacturerId = document.getElementById('product-manufacturer').value;
         const price = document.getElementById('product-price').value;
-        // const imageURL = document.getElementById('product-image-preview').src;
+        const imageURL = document.getElementById('product-image-preview').src;
         const detail = document.getElementById('product-detail').value;
         const discount = document.getElementById('product-discount').value;
         const number = document.getElementById('product-number').value;
         const fps = document.getElementById('product-fps').value;
         const status = document.getElementById('product-status').value;
+        alert(imageURL);
+        // Validate the form
+        if (discount < 0 || discount >= 100) {
+            alert("Discount must be between 0 and 99.");
+            return;
+        }
 
+        if (number < 0) {
+            alert("Number must be a positive number.");
+            return;
+        }
+
+        if (fps < 0) {
+            alert("FPS must be a non-negative number.");
+            return;
+        }
+
+        if (price <= 0) {
+            alert("Price must be a positive number.");
+            return;
+        }
+
+        if(status == "Out of stock" && number > 0) {
+            alert("Status is Out of stock but number is greater than 0.");
+            return;
+        }
+
+        // Send the form data to the server
         try{
             const response = await fetch("/api/products", {
                 method: "POST",
@@ -69,6 +96,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert(result.message + "\nThe new product will be displayed soon.");
                 addProductFormContainer.classList.toggle('hidden');
                 addProductForm.reset();
+                
+                // AJAX go to page 1
+                // this line works because this file will be included in an .ejs file where changePage() is defined (another .js file)
+                changePage(1); 
             } else {
                 alert(result.message);
             }
