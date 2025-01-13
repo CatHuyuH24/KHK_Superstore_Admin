@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+<!-- #region Header -->
+<%- include('layouts/mainLayout', { content: locals.body }) %>
+<!-- #region Search -->
+<%- include('layouts/search')%>
+<!-- #endregion Search -->
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">Account Management</h1>
+
+  <!-- Bộ lọc -->
+  <div class="bg-white p-4 shadow-md rounded-lg mb-6">
+    <div class="flex gap-4 mb-4">
+      <input id="filter-name" type="text" placeholder="Filter by name" class="p-2 border border-gray-300 rounded w-1/4">
+      <input id="filter-email" type="text" placeholder="Filter by email" class="p-2 border border-gray-300 rounded w-1/4">
+      <select id="filter-role" class="p-2 border border-gray-300 rounded w-1/4">
+        <option value="">All Roles</option>
+        <option value="admin">Admin</option>
+        <option value="customer">Customer</option>
+      </select>
+      <select id="sort-by" class="p-2 border border-gray-300 rounded w-1/4">
+        <option value="">Sort by</option>
+        <option value="name">Name</option>
+        <option value="email">Email</option>
+        <option value="registered">Registration Time</option>
+      </select>
+    </div>
+  </div>
+
+    <!-- Danh sách tài khoản -->
+    <!-- <div id="account-list" class="space-y-4"></div> -->
+    <table class="min-w-full border-collapse border border-gray-300 shadow-md rounded-lg overflow-hidden">
+      <thead class="bg-white border-b">
+        <tr>
+          <th class="text-center px-4 py-2 font-bold text-gray-700">Avatar</th>
+          <th class="text-left px-4 py-2 font-bold text-gray-700">Name</th>
+          <th class="text-left px-4 py-2 font-bold text-gray-700">Email</th>
+          <th class="text-left px-4 py-2 font-bold text-gray-700">Role</th>
+          <th class="text-center px-4 py-2 font-bold text-gray-700">Active</th>
+          <th class="text-left px-4 py-2 font-bold text-gray-700">Phone Number</th>
+          <th class="text-center px-4 py-2 font-bold text-gray-700">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(user => { %>
+          <tr class="hover:bg-gray-50 border-b">
+            <td class="px-4 py-2 text-center">
+              <img src="<%= user.avatar_img_url %>" alt="Avatar" class="w-10 h-10 rounded-full mx-auto">
+            </td>
+            <td class="px-4 py-2 text-gray-800"><%= user.real_name %></td>
+            <td class="px-4 py-2 text-gray-800"><%= user.email %></td>
+            <td class="px-4 py-2 text-gray-800"><%= user.role %></td>
+            <td class="px-4 py-2 text-center">
+              <span class="<%= user.is_active ? 'text-green-600 font-bold' : 'text-red-600 font-bold' %>">
+                <%= user.is_active ? 'Yes' : 'No' %>
+              </span>
+            </td>
+            <td class="px-4 py-2 text-gray-800"><%= user.phone_number %></td>
+            <<td class="px-4 py-2 text-center space-y-2">
+              <!-- View Button -->
+              <button 
+                class="py-1 px-3 text-white rounded bg-blue-500 hover:bg-blue-400 shadow-lg transition-all duration-300"
+                onclick="handleView('<%= user.id %>')">
+                View
+              </button>
+            
+              <!-- Ban/Unban Button -->
+              <button 
+                class="py-1 px-3 text-white rounded shadow-lg transition-all duration-300
+                       <%= user.is_active ? 'bg-red-500 hover:bg-red-400' : 'bg-green-500 hover:bg-green-400' %>"
+                onclick="handleBanUnban('<%= user.id %>', <%= user.is_active %> )">
+                <%= user.is_active ? 'Ban' : 'Unban' %>
+              </button>
+            
+              <!-- Delete Button -->
+              <button 
+                class="py-1 px-3 text-white rounded bg-gray-500 hover:bg-gray-400 shadow-lg transition-all duration-300"
+                onclick="handleDelete('<%= user.id %>')">
+                Delete
+              </button>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    
+
+    <!-- Phân trang -->
+    <div class="mt-6 text-center">
+        <button class="py-2 px-4 bg-gray-300 text-gray-700 rounded" disabled>Previous</button>
+        <button class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-400">Next</button>
+    </div>
+
+</div>
+<!-- #region Footer-->
+<%- include('layouts/footer') %>
+<!-- #endregion Footer -->
+<script src="/js/sortAndFilterAccount.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+</body>
+</html>
