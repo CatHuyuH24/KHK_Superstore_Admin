@@ -52,7 +52,7 @@
     "wad_khk_superstore": "file:"
   },
   "devDependencies": {
-    "nodemon": "^3.1.7",
+    "nodemon": "^3.1.9",
     "tailwindcss": "^3.4.15"
   }
 }
