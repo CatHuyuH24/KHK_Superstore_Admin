@@ -45,7 +45,7 @@ async function renderComputerCategoryPage(req, res) {
     const allManufacturers = await productService.getAllManufacturers();
 
     const response = {
-      title: "Computers - Superstore",
+      title: "Computers Management - Superstore",
       error: false,
       total: totalCount,
       page: page,

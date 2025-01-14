@@ -5,7 +5,7 @@
         <i class="gg-profile"></i>
       </div>
       <div class="w-full text-blue-300 md:text-center font-mono text-4xl font-semibold uppercase tracking-widest">
-        <a href="/">SUPERSTORE</a>
+        <a href="/">SUPERSTORE ADMIN</a>
       </div>
       <div class="flex items-center justify-end w-full">
         <button @click="cartOpen = !cartOpen" class="text-gray-600 focus:outline-none mx-4 sm:mx-0">
@@ -21,7 +21,7 @@
       </div>
     </div>
     <nav :class="isOpen ? '' : 'hidden'" class=" mt-4">
-      <div id="category-bar" class="flex items-center justify-between py-3 px-5">
+      <div id="category-bar" class="flex items-center justify-between py-1 px-5">
         <!-- Product Management Dropdown -->
         <div class="relative group flex-1 text-center ">
           <a href="/category" class="text-white hover:underline cursor-pointer">
@@ -29,7 +29,7 @@
           </a>
           <!-- Dropdown Menu -->
           <div
-            class="absolute left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg hidden group-hover:block">
+            class="absolute left-1/2 transform -translate-x-1/2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg hidden group-hover:block">
             <a href="/category/computers" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
               Computers
             </a>

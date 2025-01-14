@@ -45,7 +45,7 @@ async function renderTelevisionCategoryPage(req, res) {
     const allManufacturers = await productService.getAllManufacturers();
 
     const response = {
-      title: "Televisions - Superstore",
+      title: "Televisions Management - Superstore",
       error: false,
       total: totalCount,
       page: page,
