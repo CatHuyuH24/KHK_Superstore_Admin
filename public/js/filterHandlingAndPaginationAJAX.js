@@ -39,35 +39,35 @@ async function applyFilterByFPS() {
 }
 
 
-async function applyFilters() {
-  const form = document.getElementById('price-filter-form');
-  const formData = new FormData(form);
+// async function applyFilters() {
+//   const form = document.getElementById('price-filter-form');
+//   const formData = new FormData(form);
 
-  // Lấy giá trị min và max
-  const minPrice = formData.get('min');
-  const maxPrice = formData.get('max');
+//   // Lấy giá trị min và max
+//   const minPrice = formData.get('min');
+//   const maxPrice = formData.get('max');
 
-  // Tạo URL mới với các tham số
-  const params = new URLSearchParams(window.location.search);
-  params.set('page', 1); // Reset về trang đầu tiên
-  if (minPrice) {
-    params.set('min', minPrice);
-  } else {
-    params.delete('min');
-  }
-  if (maxPrice) {
-    params.set('max', maxPrice);
-  } else {
-    params.delete('max');
-  }
+//   // Tạo URL mới với các tham số
+//   const params = new URLSearchParams(window.location.search);
+//   params.set('page', 1); // Reset về trang đầu tiên
+//   if (minPrice) {
+//     params.set('min', minPrice);
+//   } else {
+//     params.delete('min');
+//   }
+//   if (maxPrice) {
+//     params.set('max', maxPrice);
+//   } else {
+//     params.delete('max');
+//   }
 
-  // Cập nhật URL mà không tải lại trang
-  const newURL = `${window.location.pathname}?${params.toString()}`;
-  window.history.pushState(null, '', newURL);
+//   // Cập nhật URL mà không tải lại trang
+//   const newURL = `${window.location.pathname}?${params.toString()}`;
+//   window.history.pushState(null, '', newURL);
 
-  // Gửi yêu cầu AJAX tới server
-  await fetchAndRender(newURL);
-}
+//   // Gửi yêu cầu AJAX tới server
+//   await fetchAndRender(newURL);
+// }
 
 async function applyDateFilters() {
   const form = document.getElementById('created-time-filter-form');
@@ -100,9 +100,6 @@ async function applyDateFilters() {
 
 function applyAndUpdateFilters() {
   applyFilters();
-  applyFilterByFPS();
-  applyDateFilters();
-  updateFilter();
 }
 
 async function updateSortFilter() {
@@ -340,4 +337,67 @@ async function fetchUserData() {
   } catch (error) {
       console.error('Error fetching user data:', error);
   }
+}
+
+async function applyFilters() {
+  const manufacturerForm = document.getElementById('manufacturer-filter-form');
+  const fpsForm = document.getElementById('FPS-filter-form');
+  const priceForm = document.getElementById('price-filter-form');
+  const dateForm = document.getElementById('created-time-filter-form');
+
+  const manufacturerFormData = new FormData(manufacturerForm);
+  const fpsFormData = new FormData(fpsForm);
+  const priceFormData = new FormData(priceForm);
+  const dateFormData = new FormData(dateForm);
+
+  const selectedManufacturers = manufacturerFormData.getAll('manufacturers');
+  const selectedFPS = fpsFormData.getAll('fps');
+  const minPrice = priceFormData.get('min');
+  const maxPrice = priceFormData.get('max');
+  const startDate = dateFormData.get('startDate');
+  const endDate = dateFormData.get('endDate');
+
+  const params = new URLSearchParams(window.location.search);
+  params.set('page', 1);
+
+  if (selectedManufacturers.length > 0) {
+    params.set('manufacturer', selectedManufacturers.join(','));
+  } else {
+    params.delete('manufacturer');
+  }
+
+  if (selectedFPS.length > 0) {
+    params.set('fps', selectedFPS.join(','));
+  } else {
+    params.delete('fps');
+  }
+
+  if (minPrice) {
+    params.set('min', minPrice);
+  } else {
+    params.delete('min');
+  }
+
+  if (maxPrice) {
+    params.set('max', maxPrice);
+  } else {
+    params.delete('max');
+  }
+
+  if (startDate) {
+    params.set('startDate', startDate);
+  } else {
+    params.delete('startDate');
+  }
+
+  if (endDate) {
+    params.set('endDate', endDate);
+  } else {
+    params.delete('endDate');
+  }
+
+  const newURL = `${window.location.pathname}?${params.toString()}`;
+  window.history.pushState(null, '', newURL);
+
+  await fetchAndRender(newURL);
 }

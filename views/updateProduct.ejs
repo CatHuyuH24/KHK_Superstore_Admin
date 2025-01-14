@@ -99,10 +99,10 @@
                     </div>
         
                     <label for="product-fps" class="block text-gray-700">FPS</label>
-                    <% if (product.fps == null) { %>
+                    <% if (product.fps_hz == null) { %>
                         <input type="number" id="product-fps" class="w-full mt-2 p-2 border border-gray-300 rounded-md"><br>
                     <% } else { %>
-                        <input type="number" id="product-fps" class="w-full mt-2 p-2 border border-gray-300 rounded-md" value="<%= product.fps %>"><br>
+                        <input type="number" id="product-fps" class="w-full mt-2 p-2 border border-gray-300 rounded-md" value="<%= product.fps_hz %>"><br>
                     <% } %>
         
                     <label for="product-discount" class="block text-gray-700">Discount</label>
