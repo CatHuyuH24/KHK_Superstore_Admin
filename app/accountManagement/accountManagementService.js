@@ -48,6 +48,8 @@ async function deleteUser(id) {
 }
 
 async function getUserById(id) {
+    id = parseInt(id);
+    console.log('id:', typeof(id));
     try {
         const query = 'SELECT id, real_name, email, avatar_img_url, role, is_active, phone_number FROM users WHERE id = $1';
         const result = await pool.query(query, [id]);

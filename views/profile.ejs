@@ -20,106 +20,107 @@
 <body>
     <!-- #region Header -->
     <%- include('layouts/mainLayout', { content: locals.body }) %>
-      
-            <!--region get user_id to put into cart-->
-            <input type="hidden" id="user-id" value="<%= user_id %>" />
-            <!-- #endregion Header -->
 
-            <div class="max-w-xl mx-auto mt-20 mb-10 bg-white shadow-md rounded-2xl p-6 relative">
-                <!-- Avatar -->
-                <div class="absolute -top-16 left-1/2 transform -translate-x-1/2">
-                    <label for="avatar" class="block">
-                        <img id="avatarPreview" src="<%= avatarUrl || 'https://via.placeholder.com/100' %>" alt="Avatar Preview"
-                            class="w-32 h-32 rounded-full border-4 border-white shadow-md cursor-pointer object-cover" />
-                        <input type="file" id="avatar" accept="image/*" class="hidden"
-                            onchange="previewAvatar(event)" />
-                    </label>
+        <!--region get user_id to put into cart-->
+        <input type="hidden" id="user-id" value="<%= user_id %>" />
+        <!-- #endregion Header -->
 
-                </div>
+        <div class="max-w-xl mx-auto mt-20 mb-10 bg-white shadow-md rounded-2xl p-6 relative">
+            <!-- Avatar -->
+            <div class="absolute -top-16 left-1/2 transform -translate-x-1/2">
+                <label for="avatar" class="block">
+                    <img id="avatarPreview" src="<%= avatarUrl || 'https://via.placeholder.com/100' %>"
+                        alt="Avatar Preview"
+                        class="w-32 h-32 rounded-full border-4 border-white shadow-md cursor-pointer object-cover" />
+                    <input type="file" id="avatar" accept="image/*" class="hidden" onchange="previewAvatar(event)" />
+                </label>
 
-                <div id="uploadStatus" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded shadow-lg">
-                    Uploading...
-                </div>
-
-                <!-- Save Avatar Button -->
-                <div class="mt-12">
-                    <button type="button" id="saveAvatarBtn"
-                            class="w-full bg-gradient-to-r from-blue-500 to-green-500 text-white py-3 rounded-lg hover:from-blue-600 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105 shadow-lg">
-                        Save Avatar
-                    </button>
-                </div>
-
-
-                <div class="pt-4">
-                    <h1 class="text-2xl font-bold text-center mb-6">Update Profile</h1>
-                    <form id="profileForm" class="space-y-4">
-
-                        <div class="mb-4">
-                            <label for="name" class="block text-gray-700 font-semibold mb-2">Full Name</label>
-                            <input type="text" id="name"
-                                   class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm transition placeholder-gray-400"
-                                   placeholder="Enter your full name" value="<%= user.real_name %>" />
-                            <p id="nameError" class="text-red-500 text-sm mt-2 hidden">
-                                Name is required.
-                            </p>
-                        </div>
-
-                        <!-- Email -->
-                        <div class="mb-4">
-                            <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
-                            <input type="email" id="email"
-                                   class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm transition placeholder-gray-400"
-                                   placeholder="Enter your email" value="<%= user.email %>" />
-                            <p id="emailError" class="text-red-500 text-sm mt-2 hidden">
-                                Invalid email format.
-                            </p>
-                        </div>
-
-
-                        <!-- Phone -->
-                        <div class="mb-4">
-                            <label for="phone" class="block text-gray-700 font-semibold mb-2">Phone Number</label>
-                            <div class="relative">
-                                <input type="text" id="phone"
-                                       class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm transition placeholder-gray-400"
-                                       placeholder="Enter your phone number" value="<%= user.phone_number %>" />
-                            </div>
-                            <p id="phoneError" class="text-red-500 text-sm mt-2 hidden">
-                                Invalid phone number.
-                            </p>
-                        </div>
-
-
-                        <!-- Submit Button -->
-                        <div>
-                            <button type="button" id="submitBtn"
-                                    class="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white py-3 rounded-lg hover:from-blue-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105 shadow-lg">
-                                Save
-                            </button>
-                        </div>
-
-
-                        <!-- Change Password Button -->
-                        <div>
-                            <a href="/change-password"
-                               class="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white py-3 rounded-lg hover:from-blue-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105 shadow-lg text-center block">
-                                Change Password
-                            </a>
-                        </div>
-
-
-                    </form>
-                </div>
             </div>
 
-            <!-- #region Footer-->
-            <%- include('layouts/footer') %>
-                <!-- #endregion Footer -->
-                <script src="/js/cart.js"></script>
-                <script src="https://cdn.tailwindcss.com"></script>
-                <script src="/js/filterHandlingAndPaginationAJAX.js"></script>
-                <script src="/layouts/search"></script>
-                <script src="/js/profile.js"></script>
+            <div id="uploadStatus"
+                class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded shadow-lg">
+                Uploading...
+            </div>
+
+            <!-- Save Avatar Button -->
+            <div class="mt-12">
+                <button type="button" id="saveAvatarBtn"
+                    class="w-full bg-gradient-to-r from-blue-500 to-green-500 text-white py-3 rounded-lg hover:from-blue-600 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    Save Avatar
+                </button>
+            </div>
+
+
+            <div class="pt-4">
+                <h1 class="text-3xl font-bold mb-6">Admin Profile</h1>
+                <form id="profileForm" class="space-y-4">
+
+                    <div class="mb-4">
+                        <label for="name" class="block text-gray-700 font-semibold mb-2">Full Name</label>
+                        <input type="text" id="name"
+                            class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm transition placeholder-gray-400"
+                            placeholder="Enter your full name" value="<%= user.real_name %>" />
+                        <p id="nameError" class="text-red-500 text-sm mt-2 hidden">
+                            Name is required.
+                        </p>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+                        <input type="email" id="email"
+                            class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm transition placeholder-gray-400"
+                            placeholder="Enter your email" value="<%= user.email %>" />
+                        <p id="emailError" class="text-red-500 text-sm mt-2 hidden">
+                            Invalid email format.
+                        </p>
+                    </div>
+
+
+                    <!-- Phone -->
+                    <div class="mb-4">
+                        <label for="phone" class="block text-gray-700 font-semibold mb-2">Phone Number</label>
+                        <div class="relative">
+                            <input type="text" id="phone"
+                                class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm transition placeholder-gray-400"
+                                placeholder="Enter your phone number" value="<%= user.phone_number %>" />
+                        </div>
+                        <p id="phoneError" class="text-red-500 text-sm mt-2 hidden">
+                            Invalid phone number.
+                        </p>
+                    </div>
+
+
+                    <!-- Submit Button -->
+                    <div>
+                        <button type="button" id="submitBtn"
+                            class="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white py-3 rounded-lg hover:from-blue-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                            Save
+                        </button>
+                    </div>
+
+
+                    <!-- Change Password Button -->
+                    <div>
+                        <a href="/change-password"
+                            class="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white py-3 rounded-lg hover:from-blue-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 transform hover:scale-105 shadow-lg text-center block">
+                            Change Password
+                        </a>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+
+        <!-- #region Footer-->
+        <%- include('layouts/footer') %>
+            <!-- #endregion Footer -->
+            <script src="/js/cart.js"></script>
+            <script src="https://cdn.tailwindcss.com"></script>
+            <script src="/js/filterHandlingAndPaginationAJAX.js"></script>
+            <script src="/layouts/search"></script>
+            <script src="/js/profile.js"></script>
 </body>
 
 </html>

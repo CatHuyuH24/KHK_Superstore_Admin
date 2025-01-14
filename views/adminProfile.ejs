@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- Header -->
+    <%- include('layouts/mainLayout', { content: locals.body }) %>
+    <!--region get user_id to put into cart-->
+    <input type="hidden" id="user-id" value="<%= user_id %>" />
+
+    <!-- Admin Profile -->
+    <div class="container mx-auto px-6 py-10">
+        <div class="bg-white shadow-lg rounded-xl p-8">
+            <!-- Avatar and User Details -->
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-6">
+                    <div>
+                        <label for="avatar" class="block cursor-pointer">
+                            <img id="avatarPreview" src="<%= avatarUrl || 'https://via.placeholder.com/120' %>" 
+                                 alt="Avatar Preview" 
+                                 class="w-28 h-28 rounded-full border-4 border-blue-500 shadow-md object-cover" />
+                        </label>
+                        <input type="file" id="avatar" accept="image/*" class="hidden" onchange="previewAvatar(event)" />
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800"><%= user.real_name %></h1>
+                        <p class="text-blue-500 text-sm font-medium">Admin</p>
+                    </div>
+                </div>
+                
+                <div id="uploadStatus"
+                    class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded shadow-lg">
+                    Uploading...
+                </div>
+                <button type="button" id="saveAvatarBtn"
+                    class="bg-gradient-to-r from-blue-500 to-green-500 text-white py-2 px-4 rounded-lg hover:from-blue-600 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-lg">
+                    Save Avatar
+                </button>
+            </div>
+
+            <!-- Profile Form -->
+            <form id="adminProfileForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Full Name -->
+                <div>
+                    <label for="name" class="block text-gray-700 font-semibold mb-2">Full Name</label>
+                    <input type="text" id="name" value="<%= user.real_name %>"
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm placeholder-gray-400"
+                        placeholder="Enter full name" />
+                    <p id="nameError" class="text-red-500 text-sm mt-2 hidden">Name is required.</p>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+                    <input type="email" id="email" value="<%= user.email %>" readonly
+                    class="w-full border border-gray-300 rounded-lg p-3 bg-gray-100 text-gray-600 shadow-sm cursor-not-allowed" />
+                    <p id="emailError" class="text-red-500 text-sm mt-2 hidden">Invalid email format.</p>
+                </div>
+
+                <!-- Phone -->
+                <div>
+                    <label for="phone" class="block text-gray-700 font-semibold mb-2">Phone Number</label>
+                    <input type="text" id="phone" value="<%= user.phone_number %>"
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm placeholder-gray-400"
+                        placeholder="Enter phone number" />
+                    <p id="phoneError" class="text-red-500 text-sm mt-2 hidden">Invalid phone number.</p>
+                </div>
+
+                <!-- Admin ID -->
+                <div>
+                    <label for="adminId" class="block text-gray-700 font-semibold mb-2">Admin ID</label>
+                    <input type="text" id="adminId" value="<%= user_id %>" readonly
+                        class="w-full border border-gray-300 rounded-lg p-3 bg-gray-100 text-gray-600 shadow-sm cursor-not-allowed" />
+                </div>
+            </form>
+
+            <!-- Actions -->
+            <div class="mt-8 flex gap-4">
+                <button type="button" id="saveProfileBtn"
+                    class="bg-gradient-to-r from-blue-500 to-teal-500 text-white py-3 px-6 rounded-lg hover:from-blue-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-lg">
+                    Save Changes
+                </button>
+                <a href="/change-password"
+                    class="bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 px-6 rounded-lg hover:from-red-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-red-400 shadow-lg">
+                    Change Password
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <%- include('layouts/footer') %>
+
+    <script src="/js/profile.js"></script>
+</body>
+
+</html>

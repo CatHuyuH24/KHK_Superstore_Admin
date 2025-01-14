@@ -82,7 +82,7 @@ app.use("/search", searchRouter);
 app.use("/category", categoryRouter);
 app.use("/login", loginRouter);
 app.use("/logout", logoutRouter);
-app.use("/profile", profileRouter);
+app.use("/admin-profile", profileRouter);
 app.use("/change-password", changePasswordRouter);
 app.use("/resetPass",resetPassRouter);
 app.use("/orderList",orderListRouter);
@@ -92,7 +92,7 @@ app.use("/orderManagement",orderManagement);
 app.use("/api/reviews", reviewAPIRouter);
 app.use("/api/products", productAPIRouter);
 
-const PORT = process.env.SERVER_PORT || 4000;
+const PORT = process.env.SERVER_PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
 });

@@ -10,7 +10,7 @@ document.getElementById('saveAvatarBtn').addEventListener('click', async () => {
   uploadStatus.style.display = 'block';
 
   try {
-    const response = await fetch('/profile/upload-avatar', {
+    const response = await fetch('/admin-profile/upload-avatar', {
       method: 'POST',
       body: formData,
     });
@@ -31,7 +31,7 @@ document.getElementById('saveAvatarBtn').addEventListener('click', async () => {
   }
 });
 
-document.getElementById("submitBtn").addEventListener("click", async () => {
+document.getElementById("saveProfileBtn").addEventListener("click", async () => {
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const phone = document.getElementById("phone").value.trim();
@@ -66,7 +66,7 @@ document.getElementById("submitBtn").addEventListener("click", async () => {
 
   if (isValid) {
     try {
-      const response = await fetch("/profile/update", {
+      const response = await fetch("/admin-profile/update", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

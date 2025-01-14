@@ -1,98 +1,3 @@
-// filterHandling.js
-
-// Update account list based on filters
-function applyFilters() {
-    const nameFilter = document.getElementById('filter-name').value.trim().toLowerCase();
-    const emailFilter = document.getElementById('filter-email').value.trim().toLowerCase();
-    const roleFilter = document.getElementById('filter-role').value;
-    const sortBy = document.getElementById('sort-by').value;
-
-    // Fetch existing user data (assuming it's globally available as `users`)
-    const filteredUsers = filterAccounts(users, { name: nameFilter, email: emailFilter, role: roleFilter });
-    const sortedUsers = sortAccounts(filteredUsers, sortBy);
-
-    // Re-render the table
-    renderUserTable(sortedUsers);
-}
-
-// Filter user data
-function filterAccounts(accounts, filters) {
-    let filtered = accounts;
-
-    if (filters.name) {
-        filtered = filtered.filter(account =>
-            account.real_name.toLowerCase().includes(filters.name)
-        );
-    }
-
-    if (filters.email) {
-        filtered = filtered.filter(account =>
-            account.email.toLowerCase().includes(filters.email)
-        );
-    }
-
-    if (filters.role) {
-        filtered = filtered.filter(account => account.role === filters.role);
-    }
-
-    return filtered;
-}
-
-// Sort user data
-function sortAccounts(accounts, sortBy) {
-    if (sortBy) {
-        accounts.sort((a, b) => {
-            if (sortBy === 'name' || sortBy === 'email') {
-                return a[sortBy].localeCompare(b[sortBy]);
-            } else if (sortBy === 'registered') {
-                return new Date(a[sortBy]) - new Date(b[sortBy]);
-            }
-        });
-    }
-    return accounts;
-}
-
-// Render the user table
-function renderUserTable(users) {
-    const tableBody = document.querySelector('tbody');
-    tableBody.innerHTML = ''; // Clear the table body
-
-    users.forEach(user => {
-        const row = `
-            <tr class="hover:bg-gray-50 border-b">
-                <td class="px-4 py-2 text-center">
-                    <img src="${user.avatar_img_url}" alt="Avatar" class="w-10 h-10 rounded-full mx-auto">
-                </td>
-                <td class="px-4 py-2 text-gray-800">${user.real_name}</td>
-                <td class="px-4 py-2 text-gray-800">${user.email}</td>
-                <td class="px-4 py-2 text-gray-800">${user.role}</td>
-                <td class="px-4 py-2 text-center">
-                    <span class="${user.is_active ? 'text-green-600 font-bold' : 'text-red-600 font-bold'}">
-                        ${user.is_active ? 'Yes' : 'No'}
-                    </span>
-                </td>
-                <td class="px-4 py-2 text-gray-800">${user.phone_number}</td>
-                <td class="px-4 py-2 text-center space-y-2">
-                    <button class="py-1 px-3 text-white rounded bg-blue-500 hover:bg-blue-400 shadow-lg transition-all duration-300"
-                        onclick="handleView('${user.id}')">
-                        View
-                    </button>
-                    <button class="py-1 px-3 text-white rounded shadow-lg transition-all duration-300 
-                        ${user.is_active ? 'bg-red-500 hover:bg-red-400' : 'bg-green-500 hover:bg-green-400'}"
-                        onclick="handleBanUnban('${user.id}', ${user.is_active})">
-                        ${user.is_active ? 'Ban' : 'Unban'}
-                    </button>
-                    <button class="py-1 px-3 text-white rounded bg-gray-500 hover:bg-gray-400 shadow-lg transition-all duration-300"
-                        onclick="handleDelete('${user.id}')">
-                        Delete
-                    </button>
-                </td>
-            </tr>
-        `;
-        tableBody.insertAdjacentHTML('beforeend', row);
-    });
-}
-
 function handleView(userId) {
     window.location.href = `/account-management/detail/${userId}`;
 }
@@ -164,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await fetch('/account-management/users');
             accounts = await response.json();
-            renderAccounts(accounts);
+            applyFilters(); // Apply filters initially
         } catch (error) {
             console.error('Error fetching user data:', error);
         }
@@ -188,6 +93,16 @@ document.addEventListener('DOMContentLoaded', function () {
         `).join('');
     }
 
+    // Filter accounts
+    function filterAccounts(accounts, filters) {
+        return accounts.filter(account => {
+            const nameMatch = account.real_name.toLowerCase().includes(filters.name.toLowerCase());
+            const emailMatch = account.email.toLowerCase().includes(filters.email.toLowerCase());
+            const roleMatch = !filters.role || account.role === filters.role;
+            return nameMatch && emailMatch && roleMatch;
+        });
+    }
+
     // Sort accounts
     function sortAccounts(accounts, sortBy) {
         return accounts.sort((a, b) => {
@@ -195,27 +110,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 return a.real_name.localeCompare(b.real_name);
             } else if (sortBy === 'email') {
                 return a.email.localeCompare(b.email);
+            } else if (sortBy === 'registered') {
+                return new Date(a.created_at) - new Date(b.created_at); // Assuming you have a created_at column
             }
             return 0;
         });
     }
 
-    // Apply sorting
-    function applySorting() {
+    // Apply filters and sorting
+    function applyFilters() {
+        const filters = {
+            name: document.getElementById('filter-name').value,
+            email: document.getElementById('filter-email').value,
+            role: document.getElementById('filter-role').value,
+        };
         const sortBy = document.getElementById('sort-by').value;
-        const sortedAccounts = sortAccounts(accounts, sortBy);
-        renderAccounts(sortedAccounts);
+        let filteredAccounts = filterAccounts(accounts, filters);
+        filteredAccounts = sortAccounts(filteredAccounts, sortBy);
+        renderAccounts(filteredAccounts);
     }
 
     // Event listeners
-    document.getElementById('sort-by').addEventListener('change', applySorting);
+    document.getElementById('filter-name').addEventListener('input', applyFilters);
+    document.getElementById('filter-email').addEventListener('input', applyFilters);
+    document.getElementById('filter-role').addEventListener('change', applyFilters);
+    document.getElementById('sort-by').addEventListener('change', applyFilters);
 
     // Fetch and display initial user data
     fetchUserData();
 });
-
-// Attach event listeners to filter and sort inputs
-document.getElementById('filter-name').addEventListener('input', applyFilters);
-document.getElementById('filter-email').addEventListener('input', applyFilters);
-document.getElementById('filter-role').addEventListener('change', applyFilters);
-document.getElementById('sort-by').addEventListener('change', applyFilters);
