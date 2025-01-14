@@ -37,7 +37,7 @@ async function renderHomePage(req, res) {
 
     // get manufacturers of all products
     const allmanufacturers =
-      await productService.getAllManufacturersOfCategory();
+      await productService.getAllManufacturerNamesOfCategory();
 
       // products.forEach(product => {
       //   if(product.review_average == null) {

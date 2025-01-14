@@ -55,7 +55,7 @@ async function getAllTelevisionsWithFilterAndCount(minPrice, maxPrice, page, lim
  */
 async function getTelevisionByID(id) {
   try {
-      const television = productService.getProductById(id);
+      const television = await productService.getProductById(id);
       return television;
   } catch (error) {
       console.error('Error fetching television by ID', error);
@@ -65,7 +65,7 @@ async function getTelevisionByID(id) {
 
 
 async function getAllTelevisionManufacturers() {
-  const manufacturers = productService.getAllManufacturersOfCategory('televisions');
+  const manufacturers = productService.getAllManufacturerNamesOfCategory('televisions');
   return manufacturers;
 }
 

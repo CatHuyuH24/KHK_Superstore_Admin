@@ -44,13 +44,16 @@ const registrationRouter = require("./app/registration/registrationRouter");
 const categoryRouter = require("./app/category/categoryRouter");
 const loginRouter = require("./app/login/loginRouter");
 const logoutRouter = require("./app/logout/logoutRouter");
-const cartRouter = require("./app/cart/cartRouter");
-const checkoutRouter = require("./app/checkout/checkoutRouter");
 const profileRouter = require("./app/profile/profileRouter");
-const changePasswordRouter = require("./app/profile/changePasswordRouter"); 
+const changePasswordRouter = require("./app/profile/changePasswordRouter");
 const resetPassRouter=require("./app/resetPassword/resetPassRouter");
 const orderListRouter=require("./app/OrderList/orderListRouter");
+
+// API routers
 const reviewAPIRouter = require("./API/reviews/reviewRouter.js");
+const accountManagementRouter = require("./app/accountManagement/accountManagementRouter");
+
+const productAPIRouter = require("./API/products/productRouter.js");
 const orderManagement=require("./app/orderManagement/orderRouter.js");
 
 // Set the view engine to EJS
@@ -79,17 +82,17 @@ app.use("/search", searchRouter);
 app.use("/category", categoryRouter);
 app.use("/login", loginRouter);
 app.use("/logout", logoutRouter);
-app.use("/cart", cartRouter);
-app.use("/checkout", checkoutRouter); 
 app.use("/profile", profileRouter);
 app.use("/change-password", changePasswordRouter);
 app.use("/resetPass",resetPassRouter);
 app.use("/orderList",orderListRouter);
+app.use("/account-management", accountManagementRouter);
 app.use("/orderManagement",orderManagement);
 
 app.use("/api/reviews", reviewAPIRouter);
+app.use("/api/products", productAPIRouter);
 
-const PORT = process.env.SERVER_PORT || 3000;
+const PORT = process.env.SERVER_PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
 });

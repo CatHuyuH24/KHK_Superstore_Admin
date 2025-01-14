@@ -14,7 +14,7 @@
 </head>
 
 <body class="bg-gray-100">
-    <div x-data="{ cartOpen: false, isOpen: false }">
+    <div>
         <!-- #region Header -->
         <div class="bg-slate-900 pt-2 px-4 hidden md:block">
             <div class="flex justify-between items-center">
@@ -35,23 +35,20 @@
                         <!-- Dropdown Menu -->
                         <div
                             class="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
-                            <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Tài khoản</a>
-                            <a href="/orderList" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Đơn mua</a>
+                            <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">My account</a>
+                            <!-- <a href="/orderList" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Đơn mua</a> -->
                             <a href="/logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-100" id="logout-link">Đăng xuất</a>
                         </div>
                     </div>
                 
                     <!-- Shopping Bag Icon -->
-                    <a href="/cart" class="text-white hover:text-gray-300" id="cart">
+                    <!-- <a href="/cart" class="text-white hover:text-gray-300" id="cart">
                         <i class="fas fa-shopping-bag text-3xl"></i>
-                    </a>
+                    </a> -->
                 </div>
                 
                 <!-- Register and Login Links for logged out users -->
                 <div class="flex space-x-4" id="auth-links">
-                    <a href="/register" class="text-white flex items-center">
-                        <i class="fas fa-user-edit mr-2"></i>Register
-                    </a>
                     <a href="/login" class="text-white flex items-center">
                         <i class="fas fa-sign-in-alt mr-2"></i>Login
                     </a>
@@ -59,17 +56,6 @@
             </div>
         </div>
         <%- include('header') %>
-        <!-- #endregion Header -->
-        
-
-        <main >
-            <!-- Page-specific content here -->
-            <%- content %>
-        </main>
-
-        <!-- #region Footer-->
-        <!-- Add footer content here -->
-        <!-- #endregion Footer -->
     </div>
     <script src="/js/header.js"></script>
 

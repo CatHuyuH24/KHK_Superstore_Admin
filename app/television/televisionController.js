@@ -41,6 +41,8 @@ async function renderTelevisionCategoryPage(req, res) {
     });
 
     const manufacturersList = await televisionService.getAllTelevisionManufacturers();
+    const categories = await productService.getAllCategories();
+    const allManufacturers = await productService.getAllManufacturers();
 
     const response = {
       title: "Televisions - Superstore",
@@ -54,13 +56,15 @@ async function renderTelevisionCategoryPage(req, res) {
       selectedManufacturers,
       selectedFPS,
       user_id: userID,
+      categories: categories,
+      allManufacturers: allManufacturers
     };
 
     if (req.xhr) {
       return res.json(response);
     }
 
-    return res.render("category", response);
+    return res.render('category', response);
   } catch (error) {
     console.error("Error rendering television category page:", error);
     res
@@ -91,7 +95,6 @@ async function renderTelevisionDetailPage(req, res) {
       title: TITLE, 
       user_id: userID, 
       reviews: reviews,
-      avartar_url: reviews[0].avartar_image_url,
       review_average: reviewAverage,
       reviewer_count: reviewerCount,
       total_reviews_count: totalCount,
@@ -100,7 +103,6 @@ async function renderTelevisionDetailPage(req, res) {
       reviews_per_page: limit,
       error: false,
     }
-    console.log(reviews[0]);
 
     if(req.xhr) {
       return res.json(response);

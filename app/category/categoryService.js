@@ -43,7 +43,7 @@ async function getAllProductsWithFiltersAndCountAndmanufacturers(minPrice, maxPr
       (minPrice, maxPrice, page, limit, sort, manufacturer, search, null, startDate, endDate, fps);
       
     // Get all manufacturers of all products (product_type is not provided)
-    const manufacturersArray = await productService.getAllManufacturersOfCategory();
+    const manufacturersArray = await productService.getAllManufacturerNamesOfCategory();
 
     return { products: products, total: totalCount, manufacturers: manufacturersArray };
   } catch (error) {
