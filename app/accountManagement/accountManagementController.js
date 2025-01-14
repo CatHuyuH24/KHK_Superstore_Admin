@@ -1,26 +1,43 @@
 const accountManagementService = require('./accountManagementService');
 const pool = require("../../config/database");
 
-async function renderAccountManagementPage(req, res) {
-  try {
-    const users = await accountManagementService.getAllUsers();
-    res.render('accountManagement', { users });
-  } catch (error) {
-    res.status(500).send('Error fetching users');
-  }
-}
+// async function renderAccountManagementPage(req, res) {
+//   try {
+//     const users = await accountManagementService.getAllUsers();
+//     res.render('accountManagement', { users });
+//   } catch (error) {
+//     res.status(500).send('Error fetching users');
+//   }
+// }
 
 async function getUsers(req, res) {
     try {
         const filters = {
-            name: req.query.name || null,
-            email: req.query.email || null,
-            role: req.query.role || null
+            page: parseInt(req.query.page) || 1,
+            limit: parseInt(req.query.limit) || 3,
+            name: req.query.name || "",
+            email: req.query.email || "",
+            sort: req.query.sort || "role"
         };
-        const users = await accountManagementService.getAllUsers(filters);
-        res.json(users);
+        const {totalCount,users} = await accountManagementService.getAllUsers(filters);
+       console.log(totalCount);
+
+        const response = {
+          error: false,
+          total: totalCount,
+          page: filters.page,
+          totalPages: Math.ceil(totalCount / filters.limit),
+          itemsPerPage: filters.limit,
+          users: users,
+        };
+    
+        if (req.xhr) {
+          return res.json(response);
+        }
+        return res.render('accountManagement', response);
+
     } catch (error) {
-        res.status(500).send('Error fetching filtered users');
+        console.error("error render user",error);
     }
 }
 
@@ -87,7 +104,6 @@ async function renderAccountDetailPage(req, res) {
 }
 
 module.exports = {
-  renderAccountManagementPage,
   getUsers,
   createUser,
   updateUser,

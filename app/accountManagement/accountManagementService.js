@@ -2,30 +2,49 @@ const pool = require("../../config/database");
 
 async function getAllUsers(filters = {}) {
     try {
-        const { name, email, role } = filters;
-        let query = 'SELECT id, real_name, email, avatar_img_url, role, is_active, phone_number FROM users WHERE 1=1';
+        const { page, limit, name, email, sort } = filters;
+        console.log(filters);
+
+        let query = 'SELECT id, real_name, email, avatar_img_url, role, is_active, phone_number, COUNT(*) OVER() AS total_count FROM users WHERE 1=1';
         const values = [];
 
         if (name) {
-            query += ' AND LOWER(real_name) LIKE $1';
-            values.push(`%${name.toLowerCase()}%`);
-        }
-        if (email) {
-            query += ' AND LOWER(email) LIKE $2';
-            values.push(`%${email.toLowerCase()}%`);
-        }
-        if (role) {
-            query += ' AND role = $3';
-            values.push(role);
+            query += ` AND real_name ILIKE '%${name}%'`;
+
         }
 
-        const result = await pool.query(query, values);
-        return result.rows;
+        if (email) {
+            query += ` AND email ILIKE '%${email}%'`;
+
+        }
+
+        if (sort) {
+            query += ` ORDER BY ${sort}`;
+        }
+
+        query += ' LIMIT $1 OFFSET $2';
+        values.push(limit);
+        values.push((page - 1) * limit);
+
+         const result = await pool.query(query, values);
+
+        let count = 0;
+        if (result.rows.length > 0) {
+            count = parseInt(result.rows[0].total_count);
+        }
+
+   
+        return {
+            totalCount: count,
+            users: result.rows,
+        };
     } catch (error) {
         console.error('Error fetching filtered users:', error.message);
         throw error;
     }
 }
+
+
 
 async function updateUserStatus(id, isActive) {
     try {

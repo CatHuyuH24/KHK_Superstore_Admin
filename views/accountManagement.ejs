@@ -20,13 +20,9 @@
         <div class="flex gap-4 mb-4">
             <input id="filter-name" type="text" placeholder="Filter by name" class="p-2 border border-gray-300 rounded w-1/4">
             <input id="filter-email" type="text" placeholder="Filter by email" class="p-2 border border-gray-300 rounded w-1/4">
-            <select id="filter-role" class="p-2 border border-gray-300 rounded w-1/4">
-                <option value="">All Roles</option>
-                <option value="admin">Admin</option>
-                <option value="customer">Customer</option>
-            </select>
+           <button id="apply" type="text"  class="p-2 border border-gray-300 rounded w-1/4 text-left hover:bg-gray-300">Apply filter </button>
             <select id="sort-by" class="p-2 border border-gray-300 rounded w-1/4">
-                <option value="">Sort by</option>
+                <option value="default">Default</option>
                 <option value="name">Name</option>
                 <option value="email">Email</option>
                 <option value="registered">Registration Time</option>
@@ -34,8 +30,6 @@
         </div>
     </div>
 
-    <!-- Danh sách tài khoản -->
-    <!-- <div id="account-list" class="space-y-4"></div> -->
     <table class="min-w-full border-collapse border border-gray-300 shadow-md rounded-lg overflow-hidden">
         <thead class="bg-white border-b">
         <tr>
@@ -92,16 +86,38 @@
     </table>
 
     <!-- Phân trang -->
-    <div class="mt-6 text-center">
-        <button class="py-2 px-4 bg-gray-300 text-gray-700 rounded" disabled>Previous</button>
-        <button class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-400">Next</button>
-    </div>
+    <div class="flex items-center justify-between px-6 py-4 sm:px-8">
+        <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-center">
+            <div>
+                <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination" id="Pagination">
+                    <button onclick="changePage(<%= page - 1 %>)" class="relative inline-flex items-center rounded-l-md px-4 py-4 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                        <span class="sr-only">Previous</span>
+                        <svg class="size-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                        <button onclick="changePage(<%= i %>)" class="relative <%= i === page? 'z-10 text-white bg-slate-800' : 'text-gray-900' %> inline-flex items-center px-6 py-4 text-lg font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                            <%= i %>
+                        </button>
+                    <% } %>
 
+                    <button onclick="changePage(<%= page + 1 %>)" class="relative inline-flex items-center rounded-r-md px-4 py-4 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                        <span class="sr-only">Next</span>
+                        <svg class="size-6" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </nav>
+            </div>
+        </div>
+      </div>
 </div>
+
 <!-- #region Footer-->
 <%- include('layouts/footer') %>
 <!-- #endregion Footer -->
-<script src="/js/sortAndFilterAccount.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="/js/filterAccount.js"></script>
 </body>
 </html>

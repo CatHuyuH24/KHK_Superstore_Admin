@@ -3,11 +3,10 @@ const accountManagementController = require('./accountManagementController');
 
 const router = express.Router();
 
-// Render the account management page
-router.get('/', accountManagementController.renderAccountManagementPage);
 
-// Fetch user data
-router.get('/users', accountManagementController.getUsers);
+router.get('/', accountManagementController.getUsers);
+
+
 
 // Create, update, and delete user APIs
 router.post('/create', accountManagementController.createUser);
