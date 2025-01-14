@@ -14,6 +14,11 @@ function setUpdateProductButtons(){
     const updateProductButtons = document.querySelectorAll('.update-product-btn');
     updateProductButtons.forEach(button => {
         button.addEventListener('click', function() {
+            const userId = document.getElementById('user-id').value;
+            if(userId == null || userId == "") {
+                window.location.href = "/login";
+                return;
+            }
             const productId = button.getAttribute('product-id');
             window.location.href = `/api/products/${productId}`;// get-method
         });
