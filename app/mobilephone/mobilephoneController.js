@@ -45,7 +45,7 @@ async function renderMobilephoneCategoryPage(req, res) {
     const allManufacturers = await productService.getAllManufacturers();
 
     const response = {
-      title: "Mobilephones - Superstore",
+      title: "Mobilephones Management - Superstore",
       error: false,
       total: totalCount,
       page: page,

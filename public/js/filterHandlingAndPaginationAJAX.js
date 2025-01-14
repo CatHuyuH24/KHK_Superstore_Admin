@@ -172,13 +172,8 @@ function updateProductList(products) {
           <div class="flex justify-between mb-1 space-x-2">
             <p class="text-xl text-primary font-semibold">
               ${product.manufacturer_name}
-            </p>`;
-    if (product.number > 0) {
-      productHTML += `<p class="text-right text-base text-green-600">In stock</p>`;
-    } else {
-      productHTML += `<p class="text-right text-base text-red-600">Out of stock</p>`;
-    }
-    productHTML += `
+            </p>
+            <p class="text-right text-base text-red-600">${product.status}</p>
           </div>
           <div class="flex items-baseline mb-1 space-x-2">
             <p class="text-xl text-primary font-semibold">
@@ -221,16 +216,12 @@ function updateProductList(products) {
         </div>
       </div> 
 
-      <!-- Nút Update và Delete -->
+      <!-- Nút Update -->
       <div class="flex justify-end space-x-4 mt-4">
-        <a href="/update/${product.id}" 
-          class="update-btn py-2 px-4 text-center text-white bg-blue-500 hover:bg-blue-400 transition rounded">
+        <button product-id=${product.id}
+          class="update-product-btn py-2 px-4 text-center text-white bg-blue-500 hover:bg-blue-400 transition rounded">
           Update
-        </a>
-        <a href="/delete/${product.id}" 
-          class="delete-btn py-2 px-4 text-center text-white bg-red-500 hover:bg-red-400 transition rounded">
-          Delete
-        </a>
+        </button>
       </div>
     </div>
   </div>`;
@@ -258,6 +249,7 @@ async function fetchAndRender(newURL) {
         if (!data.error) {
           updateProductList(data.products);
           updatePagination(data.total, data.itemsPerPage, data.page);
+          setUpdateProductButtons();// addproducthandling.js must be included before this file
         } else {
           console.error('Error fetching data:', data.error);
         }

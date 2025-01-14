@@ -76,7 +76,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/", indexRouter);
+app.use("/", categoryRouter);
 app.use("/register", registrationRouter);
 app.use("/search", searchRouter);
 app.use("/category", categoryRouter);

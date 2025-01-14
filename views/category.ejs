@@ -95,7 +95,7 @@
                         <label for="product-discount" class="block text-gray-700">Discount</label>
                         <input type="number" id="product-discount" class="w-full mt-2 p-2 border border-gray-300 rounded-md"><br>
             
-                        <label for="product-number" class="block text-gray-700">Number in stock</label>
+                        <label for="product-number" class="block text-gray-700">Number on stock</label>
                         <input type="number" id="product-number" class="w-full mt-2 p-2 border border-gray-300 rounded-md" required><br>
                         <div class="mb-4">
                             <label for="product-detail" class="block text-gray-700">Detail</label>
@@ -125,7 +125,7 @@
                   <div class="flex-grow flex flex-col justify-between">
                     <div>
                       <a href="/category/<%= product.category_name %>/<%= product.id %>">
-                        <h4 class="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+                        <h4 class="font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
                           <%= product.name %>
                         </h4>
                       </a>
@@ -134,11 +134,7 @@
                         <p class="text-xl text-primary font-semibold">
                           <%= product.manufacturer_name %>
                         </p>
-                        <% if (product.number > 0) {%>
-                          <p class="text-right text-base text-green-600">In stock</p>
-                        <% } else { %>
-                          <p class="text-right text-base text-red-600">Out of stock</p>
-                        <% } %>
+                        <p class="text-right text-base text-red-600"><%= product.status %></p>
                       </div>
 
                       <div class="flex items-baseline mb-1 space-x-2">
@@ -181,14 +177,10 @@
 
                     <!-- Nút Update và Delete -->
                     <div class="flex justify-end space-x-4 mt-4">
-                      <a href="/update/<%= product.id %>"
-                         class="update-btn py-2 px-4 text-center text-white bg-blue-500 hover:bg-blue-400 transition rounded">
+                      <button product-id="<%= product.id %>"
+                         class="update-product-btn py-2 px-4 text-center text-white bg-blue-500 hover:bg-blue-400 transition rounded">
                         Update
-                      </a>
-                      <a href="/delete/<%= product.id %>"
-                         class="delete-btn py-2 px-4 text-center text-white bg-red-500 hover:bg-red-400 transition rounded">
-                        Delete
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -211,8 +203,8 @@
   </div>
   <script src="/js/cart.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="/js/filterHandlingAndPaginationAJAX.js"></script>
   <script src="/js/addProductHandling.js"></script>
+  <script src="/js/filterHandlingAndPaginationAJAX.js"></script>
 
 </body>
 

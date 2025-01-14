@@ -44,7 +44,7 @@ async function renderCategoryPage(req, res) {
     const allManufacturers = await productService.getAllManufacturers();
 
     const response = {
-      title: 'Category Page - Superstore',
+      title: 'Product Management - Superstore',
       error: false,
       total: total,
       page: page,

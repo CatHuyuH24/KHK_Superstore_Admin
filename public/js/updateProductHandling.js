@@ -1,54 +1,25 @@
-
 function previewImage(event) {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        document.getElementById('product-image-preview').src = e.target.result;
-      };
-      reader.readAsDataURL(file);
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('product-image-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
     }
-  }
-
-function setUpdateProductButtons(){
-    const updateProductButtons = document.querySelectorAll('.update-product-btn');
-    updateProductButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const userId = document.getElementById('user-id').value;
-            if(userId == null || userId == "") {
-                window.location.href = "/login";
-                return;
-            }
-            const productId = button.getAttribute('product-id');
-            window.location.href = `/api/products/${productId}`;// get-method
-        });
-    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const addProductButton = document.getElementById('add-product-btn');
-    const addProductFormContainer = document.getElementById('add-product-form');
     const cancelButton = document.getElementById('cancel-btn');
-    const userId = document.getElementById('user-id').value;
-    
-    setUpdateProductButtons();
-    
-    addProductButton.addEventListener('click', function() {
-        if(userId == null || userId == "") {
-            window.location.href = "/login";
-            return;
-        }
-        
-        toggleForm();
-    });
 
     cancelButton.addEventListener('click', function() {
-        toggleForm();
+        window.history.back();
     });
-    const addProductForm = document.querySelector("form[action='/api/products']");
-    addProductForm.addEventListener('submit', async function(event) {
-        event.preventDefault();
 
+    const updateProductForm = document.querySelector("form[method='POST']");
+    updateProductForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const id = document.getElementById('product-id').value;
         const name = document.getElementById('product-name').value;
         const categoryId = document.getElementById('product-category').value;
         const manufacturerId = document.getElementById('product-manufacturer').value;
@@ -59,7 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const number = document.getElementById('product-number').value;
         const fps = document.getElementById('product-fps').value;
         const status = document.getElementById('product-status').value;
-        
+
+        const method = document.getElementById('_method').value;
+
         // Validate the form
         if (discount < 0 || discount >= 100) {
             alert("Discount must be between 0 and 99.");
@@ -81,17 +54,19 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        if(status == "Out of stock" && number > 0) {
+        if (status == "Out of stock" && number > 0) {
             alert("Status is Out of stock but number is greater than 0.");
             return;
         }
 
         const uploadStatus = document.getElementById('upload-status');
         // Send the form data to the server
-        try{
+        try {
             uploadStatus.classList.toggle('hidden');
 
             const formData = new FormData();
+
+            formData.append("id", id);
             formData.append("name", name);
             formData.append("categoryId", categoryId);
             formData.append("manufacturerId", manufacturerId);
@@ -103,35 +78,23 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append("fps", fps);
             formData.append("status", status);
 
-            const response = await fetch("/api/products", {
+            const url = "/api/products/" + id + "?_method=" + method;
+            const response = await fetch(url, {
                 method: "POST",
                 body: formData,
             });
-            
-            const result = await response.json();
-            if(response.ok){
-                alert(result.message + "\nThe new product will be displayed soon.");
-                toggleForm();
 
-                // AJAX go to page 1
-                // this line works because this file will be included in an .ejs file where changePage() is defined (another .js file)
-                changePage(1); 
+            const result = await response.json();
+            if (response.ok) {
+                alert(result.message + "\nThe new information will be updated to display soon.");
             } else {
                 alert(result.message);
             }
-        } catch(error){
-            console.error("Error adding new product:", error);
-            alert("Error adding product.\nPlease try again later.");
+        } catch (error) {
+            console.error("Error updating product:", error);
+            alert("Error updating product.\nPlease try again later.");
         } finally {
-            uploadStatus.classList.toggle('hidden');
+            window.location.href = "/";
         }
     });
-
-    function toggleForm() {
-        addProductFormContainer.classList.toggle('hidden');
-        addProductForm.reset();
-        document.getElementById('product-image-preview').src = "https://placehold.co/600x400?text=Product+image";
-    }
-
-    
 });
