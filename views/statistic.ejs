@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Statistic</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="referrer" content="always" />
+  <meta name="description" content="TailwindCSS Ecommerce Template" />
+  <link href="//fonts.googleapis.com/css?family=Righteous" rel="stylesheet" />
+  <link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i,700" rel="stylesheet" />
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i" rel="stylesheet" />
+  <link id="favicon" rel="icon" type="image/png" href="/images/store_icon.ico">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tailwind.css" />
+    
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+ </head>
+
+  <body>
+    <!-- Các trường ẩn để lưu dữ liệu -->
+    <%- include('layouts/mainLayout', { content: locals.body }) %>
+    <div class="mx-4">
+        <input type="hidden" id="topDayData" value="<%= JSON.stringify(topDay) %>">
+        <input type="hidden" id="topMonthData" value="<%= JSON.stringify(topMonth) %>">
+        <input type="hidden" id="topYearData" value="<%= JSON.stringify(topYear) %>">
+        <input type="hidden" id="saleCategoryData" value="<%= JSON.stringify(saleCategoryData) %>">
+        <input type="hidden" id="revenue" value="<%= JSON.stringify(revenue) %>">
+
+        <!-- Thêm input chọn thời gian -->
+        <input type="date" name="timeSelector" id="timeSelector" value="<%=dateSelected%>" class="mt-4 p-2 border rounded">
+
+        <div id="monthlyRevenueChart" class="w-full h-96 mt-8 rounded-lg"></div>
+
+        <div id="categoryChart" class="w-full h-96 mt-8  rounded-lg"></div>
+       
+    </div>
+
+    <div class="charts-container flex justify-between my-4">
+        <div id="topSellerDay" class="chart w-1/3 bg-gray-100 p-4"></div>
+        <div id="topSellerMonth" class="chart w-1/3 bg-gray-100 p-4"></div>
+        <div id="topSellerYear" class="chart w-1/3 bg-gray-100 p-4"></div>
+    </div>
+    <%- include('layouts/footer') %>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/js/statistic.js"></script>
+
+  </body>
+  
+  </html>

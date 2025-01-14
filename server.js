@@ -55,7 +55,7 @@ const accountManagementRouter = require("./app/accountManagement/accountManageme
 
 const productAPIRouter = require("./API/products/productRouter.js");
 const orderManagement=require("./app/orderManagement/orderRouter.js");
-
+const statisticRouter=require("./app/statistic/statisticRouter.js");
 // Set the view engine to EJS
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -88,6 +88,7 @@ app.use("/resetPass",resetPassRouter);
 app.use("/orderList",orderListRouter);
 app.use("/account-management", accountManagementRouter);
 app.use("/orderManagement",orderManagement);
+app.use("/statistic",statisticRouter);
 
 app.use("/api/reviews", reviewAPIRouter);
 app.use("/api/products", productAPIRouter);
