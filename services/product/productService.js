@@ -321,6 +321,8 @@ async function addProduct(name, categoryId,
       fps = null;
     }
 
+    detail = '$$' + detail + '$$';
+
     const query = `
     INSERT INTO products (name, category_id, manufacturer_id, price, image_url, detail, discount, number, fps_hz, status) 
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`;
@@ -365,6 +367,39 @@ async function uploadProductImage(filePath) {
   }
 }
 
+async function updateProductById(name, categoryId,
+  manufacturerId, price, imageURL, detail, discount, number, fps, status, id) {
+    if(discount == null || discount == "") {
+      discount = 0;
+    }
+
+    if(fps == "") {
+      fps = null;
+    }
+
+    let query = "";
+    let result;
+    if(imageURL != null && imageURL != "") {
+      query = `
+      UPDATE products
+      SET name = $1, category_id = $2, manufacturer_id = $3, price = $4, image_url = $5, detail = $6, discount = $7, number = $8, fps_hz = $9, status = $10
+      WHERE id = $11 RETURNING id`;
+      result = await pool.query(query,[name, categoryId, manufacturerId, price, imageURL, detail, discount, number, fps, status, id]);
+    } else {
+      query = `
+      UPDATE products
+      SET name = $1, category_id = $2, manufacturer_id = $3, price = $4, detail = $5, discount = $6, number = $7, fps_hz = $8, status = $9
+      WHERE id = $10 RETURNING id`;
+      result = await pool.query(query,[name,categoryId, manufacturerId, price, detail, discount, number, fps, status, id]);
+    }
+
+    if(result.rowCount == 1){
+      return result.rows[0].id;
+    } else {
+      return null;
+    }
+}
+
 module.exports = {
   getAllProductsOfCategoriesWithFilterAndCount,
   getAllManufacturerNamesOfCategory,
@@ -374,4 +409,5 @@ module.exports = {
   addProduct,
   getAllManufacturers,
   uploadProductImage,
+  updateProductById,
 };

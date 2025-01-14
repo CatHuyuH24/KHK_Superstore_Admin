@@ -95,7 +95,7 @@
                         <label for="product-discount" class="block text-gray-700">Discount</label>
                         <input type="number" id="product-discount" class="w-full mt-2 p-2 border border-gray-300 rounded-md"><br>
             
-                        <label for="product-number" class="block text-gray-700">Number in stock</label>
+                        <label for="product-number" class="block text-gray-700">Number on stock</label>
                         <input type="number" id="product-number" class="w-full mt-2 p-2 border border-gray-300 rounded-md" required><br>
                         <div class="mb-4">
                             <label for="product-detail" class="block text-gray-700">Detail</label>
@@ -177,14 +177,10 @@
 
                     <!-- Nút Update và Delete -->
                     <div class="flex justify-end space-x-4 mt-4">
-                      <a href="/update/<%= product.id %>"
-                         class="update-btn py-2 px-4 text-center text-white bg-blue-500 hover:bg-blue-400 transition rounded">
+                      <button product-id="<%= product.id %>"
+                         class="update-product-btn py-2 px-4 text-center text-white bg-blue-500 hover:bg-blue-400 transition rounded">
                         Update
-                      </a>
-                      <a href="/delete/<%= product.id %>"
-                         class="delete-btn py-2 px-4 text-center text-white bg-red-500 hover:bg-red-400 transition rounded">
-                        Delete
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
