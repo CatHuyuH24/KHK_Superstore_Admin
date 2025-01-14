@@ -214,7 +214,6 @@ async function getAllCategories() {
  * // }
  */
 async function getProductById(id) {
-  console.log('productService:',id);
   try {
     const query = `
     SELECT p.*, m.manufacturer_name, c.category_name
@@ -320,8 +319,9 @@ async function addProduct(name, categoryId,
     if(fps == "") {
       fps = null;
     }
-
-    detail = '$$' + detail + '$$';
+    if(detail.substr(0, 2) != '$$' && detail.substr(-2) != '$$'){
+      detail = '$$' + detail + '$$';
+    }
 
     const query = `
     INSERT INTO products (name, category_id, manufacturer_id, price, image_url, detail, discount, number, fps_hz, status) 
@@ -377,15 +377,21 @@ async function updateProductById(name, categoryId,
       fps = null;
     }
 
+    if(detail.substr(0, 2) != '$$' && detail.substr(-2) != '$$'){
+      detail = '$$' + detail + '$$';
+    }
+
     let query = "";
     let result;
     if(imageURL != null && imageURL != "") {
+      console.log('update with new image', imageURL, id, name);
       query = `
       UPDATE products
       SET name = $1, category_id = $2, manufacturer_id = $3, price = $4, image_url = $5, detail = $6, discount = $7, number = $8, fps_hz = $9, status = $10
       WHERE id = $11 RETURNING id`;
       result = await pool.query(query,[name, categoryId, manufacturerId, price, imageURL, detail, discount, number, fps, status, id]);
     } else {
+      console.log('update no new image', imageURL, id, name);
       query = `
       UPDATE products
       SET name = $1, category_id = $2, manufacturer_id = $3, price = $4, detail = $5, discount = $6, number = $7, fps_hz = $8, status = $9

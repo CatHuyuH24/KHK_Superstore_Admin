@@ -10,18 +10,15 @@ function previewImage(event) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const updateProductFormContainer = document.getElementById('update-product-form');
     const cancelButton = document.getElementById('cancel-btn');
-    const userId = document.getElementById('user-id').value;
 
     cancelButton.addEventListener('click', function() {
-        toggleForm();
+        window.history.back();
     });
 
-    const updateProductForm = document.querySelector("form");
+    const updateProductForm = document.querySelector("form[method='POST']");
     updateProductForm.addEventListener('submit', async function(event) {
         event.preventDefault();
-
         const id = document.getElementById('product-id').value;
         const name = document.getElementById('product-name').value;
         const categoryId = document.getElementById('product-category').value;
@@ -90,9 +87,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (response.ok) {
                 alert(result.message + "\nThe new information will be updated to display soon.");
-                toggleForm();
-
-                window.location.href = "/";
             } else {
                 alert(result.message);
             }
@@ -100,13 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("Error updating product:", error);
             alert("Error updating product.\nPlease try again later.");
         } finally {
-            uploadStatus.classList.toggle('hidden');
+            window.location.href = "/";
         }
     });
-
-    function toggleForm() {
-        updateProductFormContainer.classList.toggle('hidden');
-        updateProductForm.reset();
-        document.getElementById('product-image-preview').src = "https://placehold.co/600x400?text=Product+image";
-    }
 });
