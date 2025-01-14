@@ -10,7 +10,7 @@ function previewImage(event) {
     }
   }
 
-function setUpUdateProductButtons(){
+function setUpdateProductButtons(){
     const updateProductButtons = document.querySelectorAll('.update-product-btn');
     updateProductButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cancelButton = document.getElementById('cancel-btn');
     const userId = document.getElementById('user-id').value;
     
-    setUpUdateProductButtons();
+    setUpdateProductButtons();
     
     addProductButton.addEventListener('click', function() {
         if(userId == null || userId == "") {

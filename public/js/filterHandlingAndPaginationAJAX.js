@@ -216,16 +216,12 @@ function updateProductList(products) {
         </div>
       </div> 
 
-      <!-- Nút Update và Delete -->
+      <!-- Nút Update -->
       <div class="flex justify-end space-x-4 mt-4">
-        <a href="/update/${product.id}" 
-          class="update-btn py-2 px-4 text-center text-white bg-blue-500 hover:bg-blue-400 transition rounded">
+        <button product-id=${product.id}
+          class="update-product-btn py-2 px-4 text-center text-white bg-blue-500 hover:bg-blue-400 transition rounded">
           Update
-        </a>
-        <a href="/delete/${product.id}" 
-          class="delete-btn py-2 px-4 text-center text-white bg-red-500 hover:bg-red-400 transition rounded">
-          Delete
-        </a>
+        </button>
       </div>
     </div>
   </div>`;
@@ -253,6 +249,7 @@ async function fetchAndRender(newURL) {
         if (!data.error) {
           updateProductList(data.products);
           updatePagination(data.total, data.itemsPerPage, data.page);
+          setUpdateProductButtons();// addproducthandling.js must be included before this file
         } else {
           console.error('Error fetching data:', data.error);
         }
