@@ -20,6 +20,7 @@ exports.seed = async function(knex) {
       fullname: null,
       phone_number: null,
       verified: true,
+      created_at: new Date(),
     },
     {
       real_name: 'Customer',
@@ -33,6 +34,7 @@ exports.seed = async function(knex) {
       fullname: null,
       phone_number: null,
       verified: true,
+      created_at: new Date(),
     },
   ]);
 };

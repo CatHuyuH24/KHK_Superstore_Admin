@@ -11,8 +11,8 @@ exports.up = async function (knex) {
           comment VARCHAR,
           rating INT NOT NULL,
           created_at timestamp without time zone DEFAULT NOW(),
-          FOREIGN KEY (product_id) REFERENCES products(id),
-          FOREIGN KEY (user_id) REFERENCES users(id),
+          FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
           CONSTRAINT rating CHECK (rating >= 1 AND rating <= 5)
     );`);
   };
